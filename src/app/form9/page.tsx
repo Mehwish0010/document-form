@@ -99,7 +99,7 @@ const ResidencyCertificationForm = () => {
         const value = formData[key as keyof typeof formData];
         return !value || (typeof value === 'string' && value.trim() === '');
       })
-      .map(([_, label]) => label);
+      .map(([, label]) => label);
 
     if (missingFields.length > 0) {
       console.log('Missing fields:', missingFields);

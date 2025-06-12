@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import React from 'react';
 
@@ -7,7 +8,7 @@ export default function EmploymentForm() {
       <div className="flex items-center justify-between mb-2">
         {/* Logo Section */}
         <div className="w-30 h-30">
-          <img src="/logouss.png" alt="USCIS Logo" className="w-full h-full object-contain" />
+          <Image src="/logouss.png" alt="USCIS Logo" className="w-full h-full object-contain" />
         </div>
 
         {/* Heading Section */}
@@ -85,8 +86,8 @@ export default function EmploymentForm() {
         <div className="grid grid-cols-4 gap-2 mt-2">
           <div><label className="text-sm font-medium ml-2">Date of Birth (mm/dd/yyyy)</label><input className="border  bg-blue-100 border-black p-1 w-full" placeholder="" /></div>
           <div><label className="text-sm font-medium">U.S. Social Security Number</label><input className="border  bg-blue-100 border-black p-1 w-full" placeholder="" /></div>
-          <div><label className="text-sm font-medium">Employee's Email Address</label><input className="border  bg-blue-100 border-black p-1 w-full" placeholder="" /></div>
-          <div><label className="text-sm font-medium">Employee's Telephone Number</label><input className="border border-black p-1   bg-blue-100 w-full" placeholder="" /></div>
+          <div><label className="text-sm font-medium">Employee&#39;s Email Address</label><input className="border  bg-blue-100 border-black p-1 w-full" placeholder="" /></div>
+          <div><label className="text-sm font-medium">Employee&#39;s Telephone Number</label><input className="border border-black p-1   bg-blue-100 w-full" placeholder="" /></div>
         </div>
 
 
@@ -188,7 +189,7 @@ immigration status, is true and
     <input type="text" className="w-full p-2 bg-blue-100 text-xs" />
   </div>
   <div className="w-[48%]">
-    <label className="block font-medium">Today's Date (mm/dd/yyyy)</label>
+    <label className="block font-medium">Today&#39;s Date (mm/dd/yyyy)</label>
     <input type="text" className=" w-full p-2  bg-blue-100 text-xs" />
   </div>
 </div>
@@ -197,7 +198,7 @@ immigration status, is true and
         <h2 className="font-bold bg-gray-200">Section 2. Employer Review and Verification:</h2>
         <p className=" bg-gray-200">
           Employee or their authorized representative must complete and sign Section 2 within three business days after the employment date, 
-          as a result of any change in the company's performance. For example, the employee or employee who is not eligible for employment 
+          as a result of any change in the company&#39;s performance. For example, the employee or employee who is not eligible for employment 
           at the time of termination may be entitled to an annual salary or compensation plan that will be paid annually.
         </p>
       </div>
@@ -309,7 +310,7 @@ immigration status, is true and
       </p>
     </div>
     <div className="w-1/3">
-      <div className="text-xs mb-1">Today's Date (mm/dd/yyyy)</div>
+      <div className="text-xs mb-1">Today&#39s Date (mm/dd/yyyy)</div>
       <div className="border border-gray-800 h-8"></div>
     </div>
   </div>
@@ -331,11 +332,11 @@ immigration status, is true and
     {/* Employer Information */}
     <tr>
       <td className="border border-gray-800 p-1" colSpan={2}>
-        <div>Employer's Business or Organization Name</div>
+        <div>Employer&#39s Business or Organization Name</div>
         <div className=" h-8 mt-1"></div>
       </td>
       <td className="border border-gray-800 p-1" colSpan={2}>
-        <div>Employer's Business or Organization Address (Street Address, City, State, ZIP Code)</div>
+        <div>Employer&#39;s Business or Organization Address (Street Address, City, State, ZIP Code)</div>
         <div className=" h-8 mt-1"></div>
       </td>
     </tr>
@@ -361,7 +362,7 @@ immigration status, is true and
       <div className="bg-white p-8 w-[1050px] mt-8 ">
         {/* Page Number */}
       
-        {/* Header */}
+        
        
 
         {/* Content */}
@@ -424,15 +425,15 @@ immigration status, is true and
   <h4 className="font-bold text-center mb-4 pb-1 ">LIST B</h4>
   <p className="text-sm font-semibold mb-2 border-b">Documents that Establish Identity</p>
   <ol className="text-sm list-decimal pl-5 divide-y divide-black">
-    <li className="py-2 ">Driver's license or ID issued by a State  or outlying possession of the United States provided.It contains a photoraph or information such as name , date of birth, gender, height, eye color, and address.</li>
+    <li className="py-2 ">Driver&#39;s license or ID issued by a State  or outlying possession of the United States provided.It contains a photoraph or information such as name , date of birth, gender, height, eye color, and address.</li>
     <li className="py-2 ">ID card issued by federal, state, or local government agencies or entities, provided it conmtains a photograph or information such as name, date of birth, gender, height, eye color and address</li>
     <li className="py-2 ">School ID card with a photograph</li>
-    <li className="py-2 ">Voter's registration card</li>
+    <li className="py-2 ">Voter&#39;s registration card</li>
     <li className="py-2 ">U.S. Military card or draft record</li>
-    <li className="py-2" >Military dependent's ID card</li>
+    <li className="py-2" >Military dependent&#39;s ID card</li>
     <li className="py-2">U.S. Coast Guard Merchant Mariner Card</li>
     <li className="py-2 ">Native American tribal document</li>
-    <li className="py-2">Canadian driver's license</li>
+    <li className="py-2">Canadian driver&#39;s license</li>
     <p className='font-bold py-2 '>For persons under age 18 who are unable to present a document listed above:</p>
   <li className="py-2 ">School record or report card</li>
   <li className=" py-2 ">Clinic, doctor, or hospital record</li>
@@ -529,7 +530,7 @@ immigration status, is true and
         <div className="grid grid-cols-4">
           <div className="col-span-1 border-r border-gray-800 p-4">
             <p className="text-sm">
-              <span className="font-bold">. </span>Form I-bst with "RE" notation or refugee stamp issued to a refugee.
+              <span className="font-bold">. </span>Form I-bst with &quot;RE&quot; notation or refugee stamp issued to a refugee.
             </p>
           </div>
           <div className="col-span-1 border-r border-gray-800"></div>
@@ -558,7 +559,7 @@ immigration status, is true and
     <div className="flex items-center justify-between mb-2">
         {/* Logo Section */}
         <div className="w-30 h-30">
-          <img src="/logouss.png" alt="USCIS Logo" className="w-full h-full object-contain" />
+          <Image src="/logouss.png" alt="USCIS Logo" className="w-full h-full object-contain" />
         </div>
 
         {/* Heading Section */}
@@ -603,7 +604,7 @@ immigration status, is true and
 
       <p className="text-md  mb-6 font-serif ">
         <strong>Instructions:</strong> This supplement must be completed by any preparer and/or translator who assists an employee in completing Section 1
-        of Form I-9. The preparer and/or translator must enter the employee’s name in the spaces provided above. Each prepare or translator
+        of Form I-9. The preparer and/or translator must enter the employee&#39;s name in the spaces provided above. Each prepare or translator
         must complete, sign, and date a separate certification area. Employers must retain completed supplement sheets with the employee’s
         completed Form I-9.
       </p>
@@ -673,7 +674,7 @@ immigration status, is true and
     <div className="flex items-center justify-between mb-2">
         {/* Logo Section */}
         <div className="w-30 h-30">
-          <img src="/logouss.png" alt="USCIS Logo" className="w-full h-full object-contain" />
+          <Image src="/logouss.png" alt="USCIS Logo" className="w-full h-full object-contain" />
         </div>
 
         {/* Heading Section */}
@@ -778,7 +779,7 @@ immigration status, is true and
               <input type="text" className="w-full bg-blue-100 h-12" />
             </div>
             <div className='ml-6'>
-              <label className="block text-sm ml-6" >Today's Date</label>
+              <label className="block text-sm ml-6" >Today&#39s Date</label>
               <input type="text" className="w-full  bg-blue-100 h-12" />
             </div>
           </div>

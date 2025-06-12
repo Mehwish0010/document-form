@@ -126,16 +126,16 @@ export default function ComplianceHandbook() {
   
           <h3 className="font-bold text-bold text-xl underline">Introduction</h3>
           <p className="text-md ">
-            BATP is a provider of children's behavioral health services and dedicated to a mission of outstanding services and ethical conduct.
+            BATP is a provider of children&#39;s behavioral health services and dedicated to a mission of outstanding services and ethical conduct.
           </p>
           <p className="">
-            Compliance refers to BATP's effort to abide by all federal, state, and local laws and program regulations. The plan coordinates leadership, provides for training, performs internal monitoring of procedures, reports suspected violations, takes corrective action, and focuses on preventative activities.
+            Compliance refers to BATP&#39;s effort to abide by all federal, state, and local laws and program regulations. The plan coordinates leadership, provides for training, performs internal monitoring of procedures, reports suspected violations, takes corrective action, and focuses on preventative activities.
           </p>
           <p className="">
             This compliance handbook and code of conduct will set the ethical standards for the delivery of services, business transactions, relationships with clients, and relationships with payers and referral services.
           </p>
           <p className="">
-            It is the responsibility of each and every staff, employee, contractor, and agent to engage in behavior that is ethical and aligned with BATP's compliance plan. An individual is encouraged to raise concerns with the most appropriate person to take the situation as it relates to potential compliance issues, that individual must seek guidance. Designated "Compliance Staff" have been charged with overseeing compliance issues. These staff members are:
+            It is the responsibility of each and every staff, employee, contractor, and agent to engage in behavior that is ethical and aligned with BATP&#39;s compliance plan. An individual is encouraged to raise concerns with the most appropriate person to take the situation as it relates to potential compliance issues, that individual must seek guidance. Designated &quot;Compliance Staff&quot; have been charged with overseeing compliance issues. These staff members are:
           </p>
   
           <ul className="list-disc list-inside text-bold ml-4">
@@ -149,7 +149,7 @@ export default function ComplianceHandbook() {
           </p>
   
           <p className="">
-            Violating BATP's compliance plan and code of conduct is a very serious matter and will be treated as such. It is BATP's intent to pursue disciplinary action against unethical behavior and illegal conduct as well as create an environment that supports appropriate actions. The mutual support and efforts of all associated with BATP allow the agency to be a great place to work, practice, and grow. The ultimate goal of this plan is to promote ethical practices and a culture in which these practices will be maintained.
+            Violating BATP&#39;s compliance plan and code of conduct is a very serious matter and will be treated as such. It is BATP&#39s intent to pursue disciplinary action against unethical behavior and illegal conduct as well as create an environment that supports appropriate actions. The mutual support and efforts of all associated with BATP allow the agency to be a great place to work, practice, and grow. The ultimate goal of this plan is to promote ethical practices and a culture in which these practices will be maintained.
           </p>
         </section>
   
@@ -157,17 +157,17 @@ export default function ComplianceHandbook() {
         <section className="space-y-4 border-t pt-8">
           <h3 className="font-bold underline text-xl">Mission Statement</h3>
           <p className="font-bold">
-            Our mission is to facilitate recovery for children and adults with behavioral health problems. We seek to improve the behavioral health and wellbeing of children, families, and adults while strengthening the community's capacity to deal with behavioral health issues through the delivery of limited, accountable, and effective and accessible behavioral health services. We believe that the highest quality services are best provided through highly trained and clinically competent behavioral health professionals in collaboration with families, agency personnel, and involved community members. We hope to reunite individuals with their natural community supports. We seek to empower families to live life in accord with their highest values and to help their children overcome their behavioral health disabilities.
+            Our mission is to facilitate recovery for children and adults with behavioral health problems. We seek to improve the behavioral health and wellbeing of children, families, and adults while strengthening the community&#39s capacity to deal with behavioral health issues through the delivery of limited, accountable, and effective and accessible behavioral health services. We believe that the highest quality services are best provided through highly trained and clinically competent behavioral health professionals in collaboration with families, agency personnel, and involved community members. We hope to reunite individuals with their natural community supports. We seek to empower families to live life in accord with their highest values and to help their children overcome their behavioral health disabilities.
           </p>
   
           <h3 className="font-bold underline">
             Ethical Responsibilities of all BATP Staff, Employees, Contractors, and Agents
           </h3>
           <p className="">
-            Each staff, employee, contractor, or agent of BATP has a responsibility to conduct oneself in a totally ethical and honest manner. Dealings with payers, consumers, advocates, referral sources, co-workers, regulators, vendors, and others that are present must be beyond reproach. As stated previously, it is never in the agency's or individuals' best interest to perform an illegal or unethical act.
+            Each staff, employee, contractor, or agent of BATP has a responsibility to conduct oneself in a totally ethical and honest manner. Dealings with payers, consumers, advocates, referral sources, co-workers, regulators, vendors, and others that are present must be beyond reproach. As stated previously, it is never in the agency&#39s or individual &#39s best interest to perform an illegal or unethical act.
           </p>
           <p className="">
-            Each staff, employee, contractor, or agent of BATP has a responsibility to know the regulations and laws that apply to one's professional area of work as well as BATP's operations. It is expected that if a person has a concern or suspects an illegal situation, the individual will report the incident using the chain of command or other appropriate documented channels. Assistance should be obtained when a staff member is unsure about the ethical and legal response to a compliance situation. Compliance is everyone's responsibility and such; the individual has an obligation to report issues of concern. If the issue is not resolved through the usual chain of command or the individual feels uncomfortable reporting a particular issue to a potential violator, the issue should be reported to a supervisor or Designated Compliance Staff or presented on the Compliance Hotline: 609-471-2090.
+            Each staff, employee, contractor, or agent of BATP has a responsibility to know the regulations and laws that apply to one&#39;s professional area of work as well as BATP&#39s operations. It is expected that if a person has a concern or suspects an illegal situation, the individual will report the incident using the chain of command or other appropriate documented channels. Assistance should be obtained when a staff member is unsure about the ethical and legal response to a compliance situation. Compliance is everyone&#39s responsibility and such; the individual has an obligation to report issues of concern. If the issue is not resolved through the usual chain of command or the individual feels uncomfortable reporting a particular issue to a potential violator, the issue should be reported to a supervisor or Designated Compliance Staff or presented on the Compliance Hotline: 609-471-2090.
           </p>
   
           <h3 className="font-bold underline text-lg">Clinical Code of Conduct and Ethics</h3>
@@ -183,13 +183,13 @@ implementation. Every person will be trained in the Code as well as be required
 to sign a statement that they understand the Code, have not committed violations 
 of the Code, and are not aware of any violations of the Code by any other staff, 
 employee, contractor, or agent of BATP. The signed statement will be kept in 
-each person's file and updated on an annual basis. Any and all noted violations 
+each person&#39;s file and updated on an annual basis. Any and all noted violations 
 will be reviewed by Designated Compliance Staff.
             </p>
         <h2 className="text-lg font-bold mb-4">The Code</h2>
         <ul className="list-disc pl-6 space-y-4">
           <li>All consumers and their families will be treated with dignity and respect. Abuse, neglect, or mistreatment of any kind will not be tolerated.</li>
-          <li>All treatment must be in the best interest of the client. All decisions to begin, continue or discontinue treatment must be based exclusively on the clients' needs and best interests. Decisions must never be based on the financial interests of the agency, individual or collective interests of staff, employees, contractors, agents, referral sources, or payers. Under no circumstances should a BATP staff, employee, contractor, or agent make or accept a treatment or clinical recommendation that they know or suspect is not in the best interest of the client.</li>
+          <li>All treatment must be in the best interest of the client. All decisions to begin, continue or discontinue treatment must be based exclusively on the client&#39s needs and best interests. Decisions must never be based on the financial interests of the agency, individual or collective interests of staff, employees, contractors, agents, referral sources, or payers. Under no circumstances should a BATP staff, employee, contractor, or agent make or accept a treatment or clinical recommendation that they know or suspect is not in the best interest of the client.</li>
           <li>BATP staff, employees, contractors, and agents are charged with the treatment and rehabilitation of clients... <span className="italic">(truncated for brevity)</span></li>
           <li>Staff, employees, contractors, and agents may not solicit, accept, or receive tips, wages, compensation, or remuneration from consumers or their families.</li>
           <li>Services will be provided exclusively by staff, employees, contractors, and agents that have the proper credentials to deliver the type and intensity of service contracted and needed.</li>
@@ -208,7 +208,7 @@ will be reviewed by Designated Compliance Staff.
         <h2 className="text-lg font-semibold mb-4">Business Code of Conduct and Ethics</h2>
         <h3 className="font-bold underline">Purpose</h3>
         <p className="mt-2 semifont-bold">
-          In order to assure that BATP's business practices are consistent with best practices and existing laws and regulations, BATP has developed a business code of conduct and ethics.
+          In order to assure that BATP&#39;s business practices are consistent with best practices and existing laws and regulations, BATP has developed a business code of conduct and ethics.
         </p>
         <p className="mt-2 font-semibold">
           It is essential that all BATP staff... conduct themselves in an ethical and honest manner. Employees must not engage in inappropriate or unethical behavior at any time.
@@ -238,7 +238,7 @@ will be reviewed by Designated Compliance Staff.
           The management of BATP believes that training and communication is the cornerstone of any effective compliance effort. Through its communication and training effort, BATP will secure the understanding, commitment, and cooperation of all parties associated with BATP.
         </p>
         <p className="mt-2">
-          From the beginning of a person's association with BATP, they will receive training designed to promote awareness and conformance to BATP's standards of compliance and business ethics. By assuring that everyone receives the same message and support, BATP will see to it that compliance is built into the day-to-day activities of the organization.
+          From the beginning of a person&#39;s association with BATP, they will receive training designed to promote awareness and conformance to BATP&#39s standards of compliance and business ethics. By assuring that everyone receives the same message and support, BATP will see to it that compliance is built into the day-to-day activities of the organization.
         </p>
       </section>
 
@@ -269,7 +269,7 @@ will be reviewed by Designated Compliance Staff.
       <section className="mt-10">
         <h2 className="text-lg font-semibold mb-3">Reporting Known or Suspected Compliance Violations</h2>
         <p>
-          It is everyone's responsibility to report known or suspected violations of BATP's Compliance guidelines.
+          It is everyone&#39;s responsibility to report known or suspected violations of BATP&#39s Compliance guidelines.
         </p>
         <p className="mt-2">
           There are several ways that one can go about doing so. If you are comfortable, you can report the issue to your supervisor. Your supervisor will then take the issue to Designated Compliance Staff. If you report the violation in this fashion, you will most likely be called upon to provide detail and further information about the potential violation. If you do not wish (or feel unable to) report the violation to your supervisor, you may report the violation to Designated Compliance Staff. When reporting to compliance staff, you will be asked for detail about the issue so that a comprehensive investigation can be performed.
@@ -305,7 +305,7 @@ will be reviewed by Designated Compliance Staff.
           <p className="text-justify leading-relaxed">
             BATP is required by law and best practices to keep and maintain accurate financial records. 
             All staff, employees, contractors, and agents must be truthful in their actions and reporting 
-            to assure the integrity of BATP's accounting records. Staff, employees, contractors and agents 
+            to assure the integrity of BATP&#39s accounting records. Staff, employees, contractors and agents 
             may not engage in conduct that results in false or misleading financial statements. Anyone whose 
             lack of honesty or diligence results in inaccurate or false financial statements or records will 
             face disciplinary action and possible legal action.
@@ -322,7 +322,7 @@ will be reviewed by Designated Compliance Staff.
             If you are unclear whether your personal use of agency property is permissible, ask designated 
             compliance staff. Any use of agency property to obtain, transmit, view, or send offensive, 
             objectionable, or obscene material is grounds for discipline and possible termination. Additionally, 
-            any communications or e-mail shall be deemed agency property and available to the employer's 
+            any communications or e-mail shall be deemed agency property and available to the employer&#39s 
             supervisor and agency officials.
           </p>
         </div>

@@ -98,7 +98,7 @@ export default function ConfidentialityAgreement() {
             />, agree with the following statements:
         </p>
   
-        <p className="mb-8 font-semibold">I have read and understood BATP's Privacy Policy.</p>
+        <p className="mb-8 font-semibold">I have read and understood BATP&#39;s Privacy Policy.</p>
   
         <p className="mb-8">
           I understand that I may encounter confidential information during my time at BATP. As part of the condition of my work with BATP I will keep in strict confidence any information regarding any client, employee, consultant, or business of BATP or any other organization that comes to my attention while at BATP. I will do this in accordance with the BATP privacy policy and applicable laws, including those that require mandatory reporting. If I am unsure of whether or not to disclose, I will bring it up in supervision.

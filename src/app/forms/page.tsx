@@ -2,10 +2,9 @@
 
 import React, { useState, useRef } from 'react';
 import { Card, CardContent } from "../../components/ui/card";
-import { Input } from "../../components/ui/input";
+
 import { Label } from "../../components/ui/label";
-import { Button } from "../../components/ui/button";
-import { Textarea } from "../../components/ui/textarea";
+
 import { Checkbox } from "../../components/ui/checkbox";
 import SignatureCanvas from 'react-signature-canvas';
 
@@ -463,8 +462,8 @@ export default function Forms() {
             </li>
             
             <li className='mt-6'>
-              An offense designated as a felony under the act of April 14, 1972 (P.L. 233, No. 64), known as "The Controlled Substance, Drug, Device and Cosmetic Act."
-            </li>
+  An offense designated as a felony under the act of April 14, 1972 (P.L. 233, No. 64), known as &#39;The Controlled Substance, Drug, Device and Cosmetic Act.&#39;
+</li>
             
             <li className='mt-6'>
               An offense SIMILAR IN NATURE to those crimes listed above in clauses (1) and (2) under the laws or former laws of:
