@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     const page = pdfDoc.addPage([600, 800]);
 
     const fontSize = 10;
-    const { width, height } = page.getSize();
+    const {  height } = page.getSize();
     let y = height - 40;
 
     // Helper to draw text line by line

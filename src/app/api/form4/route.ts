@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     // Create PDF
     const pdfDoc = await PDFDocument.create();
     const page = pdfDoc.addPage([600, 800]);
-    const { width, height } = page.getSize();
+    const {  height } = page.getSize();
     let y = height - 40;
 
     // Helper to draw text line by line

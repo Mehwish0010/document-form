@@ -20,7 +20,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Verify transporter
-transporter.verify((error, success) => {
+transporter.verify((error) => {
   if (error) {
     console.error('❌ Email configuration error:', error);
   } else {
@@ -74,8 +74,8 @@ export async function POST(request: Request) {
           <h2 style="text-align: center; color: #333; margin-bottom: 5px;">RESIDENCY CERTIFICATION FORM</h2>
           <h3 style="text-align: center; color: #555; margin-top: 0; margin-bottom: 5px;">Local Earned Income Tax Withholding</h3>
           
-          <hr style="border: none; height: 1px; background-color: #333; margin: 5px auto 2px auto; width: 80%;">
-          <hr style="border: none; height: 1px; background-color: #333; margin: 2px auto 20px auto; width: 80%;">
+          <hr style="border: none; height: 1px; background-color: #333; margin: 5px auto 2px auto; ">
+          <hr style="border: none; height: 1px; background-color: #333; margin: 2px auto 20px auto; ">
           
           <p style="font-size: 12px; color: #666; margin-top: 20px; margin-bottom: 20px;">
             <strong>TO EMPLOYERS/TAXPAYERS:</strong> This form is to be used by employers and taxpayers to report essential information for the collection and distribution of Local Earned Income Taxes

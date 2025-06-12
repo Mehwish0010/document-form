@@ -29,7 +29,7 @@ interface EmailError extends Error {
 }
 
 // Verify transporter configuration
-transporter.verify(function(error, success) {
+transporter.verify(function(error) {
   if (error) {
     console.error('Email configuration error:', error);
   } else {
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
       const page = pdfDoc.addPage([600, 800]);
 
       const fontSize = 10;
-      const { width, height } = page.getSize();
+      const {  height } = page.getSize();
       let y = height - 40;
 
       // Helper to draw text line by line
