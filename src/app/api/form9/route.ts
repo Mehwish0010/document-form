@@ -2,103 +2,121 @@ import { NextResponse } from 'next/server';
 import { PDFDocument, rgb } from 'pdf-lib';
 import nodemailer from 'nodemailer';
 
+const emailConfig = {
+  user: 'mehwishsheikh0010sheikh@gmail.com',
+  pass: 'flbw wrtr rwgo grlu',
+  receiver: 'mehwishsheikh0010sheikh@gmail.com'
+};
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: emailConfig.user,
+    pass: emailConfig.pass
+  }
+});
+
 export async function POST(req: Request) {
   try {
-    const formData = await req.json();
+    const formData = await req.formData();
+    console.log('Received form data:', formData);
 
-    // Create a new PDF document
-    const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([600, 800]);
+    // Extract form fields
+    const firstName = formData.get('firstName') as string;
+    const lastName = formData.get('lastName') as string;
+    const email = formData.get('email') as string;
+    const phone = formData.get('phone') as string;
+    const address = formData.get('address') as string;
+    const city = formData.get('city') as string;
+    const state = formData.get('state') as string;
+    const zipCode = formData.get('zipCode') as string;
+    const pdfFile = formData.get('pdf') as File;
 
-    const fontSize = 10;
-    const {  height } = page.getSize();
-    let y = height - 40;
+    // Validate required fields
+    const missingFields = [];
+    if (!firstName) missingFields.push('First Name');
+    if (!lastName) missingFields.push('Last Name');
+    if (!email) missingFields.push('Email');
+    if (!phone) missingFields.push('Phone');
+    if (!address) missingFields.push('Address');
+    if (!city) missingFields.push('City');
+    if (!state) missingFields.push('State');
+    if (!zipCode) missingFields.push('ZIP Code');
 
-    // Helper to draw text line by line
-    const drawLine = (label: string, value: string | undefined) => {
-      page.drawText(`${label}: ${value || ''}`, {
-        x: 50,
-        y,
-        size: fontSize,
-        color: rgb(0, 0, 0),
-      });
-      y -= 16;
-    };
-
-    // Flatten some data (like SSN)
-    const ssn = [
-      formData.ssn1, formData.ssn2, formData.ssn3,
-      formData.ssn4, formData.ssn5, formData.ssn6,
-      formData.ssn7, formData.ssn8, formData.ssn9,
-    ].join('');
-
-    // Draw form data
-    drawLine('Name', formData.name);
-    drawLine('SSN', ssn);
-    drawLine('Street Address', formData.streetAddress);
-    drawLine('Address Line 2', formData.address2);
-    drawLine('City', formData.city);
-    drawLine('State', formData.state);
-    drawLine('Zip', formData.zip);
-    drawLine('Phone', formData.phone);
-    drawLine('Municipality', formData.municipality);
-    drawLine('County', formData.county);
-    drawLine('Resident PSD', formData.residentPsd);
-    drawLine('Resident Rate', formData.residentRate);
-    drawLine('Employer Name', formData.employerName);
-    drawLine('EIN', formData.ein);
-    drawLine('Employer Address', `${formData.employerStreet}, ${formData.employerCity}, ${formData.employerState} ${formData.employerZip}`);
-    drawLine('Employer Municipality', formData.employerMunicipality);
-    drawLine('Employer County', formData.employerCounty);
-    drawLine('Work PSD', formData.workPsd);
-    drawLine('Non-Resident Rate', formData.nonResRate);
-    drawLine('Date', formData.date);
-    drawLine('Employee Phone', formData.employeePhone);
-    drawLine('Email', formData.email);
-
-    // Embed signature if provided
-    if (formData.employeeSignature) {
-      const signatureImageBytes = Buffer.from(formData.employeeSignature.split(',')[1], 'base64');
-      const signatureImage = await pdfDoc.embedPng(signatureImageBytes);
-      const sigDims = signatureImage.scale(0.5);
-      page.drawImage(signatureImage, {
-        x: 50,
-        y: y - 50,
-        width: sigDims.width,
-        height: sigDims.height,
-      });
-      drawLine('Signature', '(image embedded)');
+    if (missingFields.length > 0) {
+      return NextResponse.json(
+        { error: `Missing required fields: ${missingFields.join(', ')}` },
+        { status: 400 }
+      );
     }
 
-    const pdfBytes = await pdfDoc.save();
+    // Validate PDF
+    if (!pdfFile) {
+      return NextResponse.json(
+        { error: 'Please upload a PDF file' },
+        { status: 400 }
+      );
+    }
 
-    // Set up email transport
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'mehwishsheikh0010sheikh@gmail.com', // your email
-        pass: 'flbwwtrrwgogrlu', // your app-specific password
-      },
-    });
+    // Convert PDF to buffer
+    const pdfBuffer = Buffer.from(await pdfFile.arrayBuffer());
 
-    await transporter.sendMail({
-      from: '"Residency Form Bot" <mehwishsheikh0010sheikh@gmail.com>',
-      to: 'another.email@gmail.com', // use different email!
-      subject: 'Residency Certification Form Submission',
-      text: 'Hi,\n\nPlease find attached the Residency Certification Form submitted by a user.\n\nRegards,\nTeam',
-      html: '<p>Please find attached the <strong>Residency Certification Form</strong>.</p>',
+    // Create HTML content for the email
+    const htmlContent = `
+      <div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto;">
+        <h2 style="color: #333;">New Form Submission</h2>
+        
+        <div style="margin: 20px 0; padding: 20px; background-color: #f9f9f9; border-radius: 5px;">
+          <h3 style="color: #444;">Personal Information</h3>
+          <p><strong>First Name:</strong> ${firstName}</p>
+          <p><strong>Last Name:</strong> ${lastName}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Phone:</strong> ${phone}</p>
+          <p><strong>Address:</strong> ${address}</p>
+          <p><strong>City:</strong> ${city}</p>
+          <p><strong>State:</strong> ${state}</p>
+          <p><strong>ZIP Code:</strong> ${zipCode}</p>
+        </div>
+      </div>
+    `;
+
+    // Define mailOptions
+    const mailOptions = {
+      from: emailConfig.user,
+      to: emailConfig.receiver,
+      subject: 'New Form Submission',
+      html: htmlContent,
       attachments: [
         {
-          filename: 'residency_form.pdf',
-          content: Buffer.from(pdfBytes),
-        },
-      ],
-    });
-    
+          filename: 'submission.pdf',
+          content: pdfBuffer
+        }
+      ]
+    };
 
-    return NextResponse.json({ success: true, message: 'Form submitted and emailed successfully.' });
+    // Send email
+    try {
+      console.log('Sending email...');
+      const info = await transporter.sendMail(mailOptions);
+      console.log('Email sent successfully:', info.messageId);
+
+      return NextResponse.json({
+        success: true,
+        message: 'Form submitted successfully and email notification sent'
+      });
+    } catch (emailError) {
+      console.error('Error sending email:', emailError);
+      return NextResponse.json(
+        { error: 'Failed to send email notification' },
+        { status: 500 }
+      );
+    }
+
   } catch (error) {
-    console.error('Form submission error:', error);
-    return NextResponse.json({ success: false, message: 'Failed to submit form.' }, { status: 500 });
+    console.error('Server error:', error);
+    return NextResponse.json(
+      { error: 'Server error' },
+      { status: 500 }
+    );
   }
 }
