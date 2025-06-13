@@ -1,14 +1,310 @@
-
+"use client"
 import Image from 'next/image';
-import React from 'react';
+import React, { useState, useRef } from 'react';
+import SignaturePad from 'react-signature-canvas';
 
 export default function EmploymentForm() {
+  const signaturePadRef = useRef<SignaturePad>(null);
+  const employeeSignaturePadRef = useRef<SignaturePad>(null);
+  const employerSignaturePadRef = useRef<SignaturePad>(null);
+  const supplementBSignaturePadRef = useRef<SignaturePad>(null);
+  const finalSignaturePadRef = useRef<SignaturePad>(null);
+
+  // Add loading state
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  // State for Section 1
+  const [section1, setSection1] = useState({
+    lastName: '',
+    firstName: '',
+    middleInitial: '',
+    otherLastNames: '',
+    address: '',
+    aptNumber: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    dateOfBirth: '',
+    ssn: '',
+    email: '',
+    telephone: '',
+    citizenshipStatus: '',
+    uscisNumber: '',
+    i94Number: '',
+    passportNumber: '',
+    employeeSignature: '',
+    employeeDate: ''
+  });
+
+  // State for Section 2
+  const [section2, setSection2] = useState({
+    document1: {
+      title: '',
+      authority: '',
+      number: '',
+      expiration: ''
+    },
+    document2: {
+      title: '',
+      authority: '',
+      number: '',
+      expiration: ''
+    },
+    document3: {
+      title: '',
+      authority: '',
+      number: '',
+      expiration: ''
+    },
+    certificationDate: '',
+    employerName: '',
+    employerSignature: '',
+    employerBusiness: '',
+    employerAddress: ''
+  });
+
+  // State for Supplement B
+  const [supplementB, setSupplementB] = useState({
+    lastName: '',
+    firstName: '',
+    middleInitial: '',
+    rehireDate: '',
+    documentTitle: '',
+    documentNumber: '',
+    expirationDate: '',
+    employerName: '',
+    employerSignature: '',
+    todayDate: '',
+    additionalInfo: '',
+    address: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    finalSignature: ''
+  });
+
+  const handleSection1Change = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSection1(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSection2Change = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const [section, field] = name.split('.');
+    setSection2(prev => ({
+      ...prev,
+      [section]: {
+        ...(prev[section as keyof typeof prev] as Record<string, string>),
+        [field]: value
+      }
+    }));
+  };
+
+  const handleSupplementBChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSupplementB(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleEmployeeSignatureChange = () => {
+    if (employeeSignaturePadRef.current) {
+      const signatureData = employeeSignaturePadRef.current.toDataURL();
+      setSection1(prev => ({
+        ...prev,
+        employeeSignature: signatureData
+      }));
+    }
+  };
+
+  const clearEmployeeSignature = () => {
+    if (employeeSignaturePadRef.current) {
+      employeeSignaturePadRef.current.clear();
+      setSection1(prev => ({
+        ...prev,
+        employeeSignature: ''
+      }));
+    }
+  };
+
+  const handleEmployerSignatureChange = () => {
+    if (employerSignaturePadRef.current) {
+      const signatureData = employerSignaturePadRef.current.toDataURL();
+      setSection2(prev => ({
+        ...prev,
+        employerSignature: signatureData
+      }));
+    }
+  };
+
+  const clearEmployerSignature = () => {
+    if (employerSignaturePadRef.current) {
+      employerSignaturePadRef.current.clear();
+      setSection2(prev => ({
+        ...prev,
+        employerSignature: ''
+      }));
+    }
+  };
+
+  const handleSupplementBSignatureChange = () => {
+    if (supplementBSignaturePadRef.current) {
+      const signatureData = supplementBSignaturePadRef.current.toDataURL();
+      setSupplementB(prev => ({
+        ...prev,
+        employerSignature: signatureData
+      }));
+    }
+  };
+
+  const clearSupplementBSignature = () => {
+    if (supplementBSignaturePadRef.current) {
+      supplementBSignaturePadRef.current.clear();
+      setSupplementB(prev => ({
+        ...prev,
+        employerSignature: ''
+      }));
+    }
+  };
+
+  const handleFinalSignatureChange = () => {
+    if (finalSignaturePadRef.current) {
+      const signatureData = finalSignaturePadRef.current.toDataURL();
+      setSupplementB(prev => ({
+        ...prev,
+        finalSignature: signatureData
+      }));
+    }
+  };
+
+  const clearFinalSignature = () => {
+    if (finalSignaturePadRef.current) {
+      finalSignaturePadRef.current.clear();
+      setSupplementB(prev => ({
+        ...prev,
+        finalSignature: ''
+      }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      // Collect all form data
+      const formData = {
+        section1: {
+          lastName: section1.lastName || '',
+          firstName: section1.firstName || '',
+          middleInitial: section1.middleInitial || '',
+          otherLastNames: section1.otherLastNames || '',
+          address: section1.address || '',
+          aptNumber: section1.aptNumber || '',
+          city: section1.city || '',
+          state: section1.state || '',
+          zipCode: section1.zipCode || '',
+          dateOfBirth: section1.dateOfBirth || '',
+          ssn: section1.ssn || '',
+          email: section1.email || '',
+          telephone: section1.telephone || '',
+          citizenshipStatus: section1.citizenshipStatus || '',
+          uscisNumber: section1.uscisNumber || '',
+          i94Number: section1.i94Number || '',
+          passportNumber: section1.passportNumber || '',
+          employeeSignature: section1.employeeSignature || '',
+          employeeDate: section1.employeeDate || ''
+        },
+        section2: {
+          document1: {
+            title: section2.document1?.title || '',
+            authority: section2.document1?.authority || '',
+            number: section2.document1?.number || '',
+            expiration: section2.document1?.expiration || ''
+          },
+          document2: {
+            title: section2.document2?.title || '',
+            authority: section2.document2?.authority || '',
+            number: section2.document2?.number || '',
+            expiration: section2.document2?.expiration || ''
+          },
+          document3: {
+            title: section2.document3?.title || '',
+            authority: section2.document3?.authority || '',
+            number: section2.document3?.number || '',
+            expiration: section2.document3?.expiration || ''
+          },
+          certificationDate: section2.certificationDate || '',
+          employerName: section2.employerName || '',
+          employerSignature: section2.employerSignature || '',
+          employerBusiness: section2.employerBusiness || '',
+          employerAddress: section2.employerAddress || ''
+        },
+        supplementB: {
+          lastName: supplementB.lastName || '',
+          firstName: supplementB.firstName || '',
+          middleInitial: supplementB.middleInitial || '',
+          rehireDate: supplementB.rehireDate || '',
+          documentTitle: supplementB.documentTitle || '',
+          documentNumber: supplementB.documentNumber || '',
+          expirationDate: supplementB.expirationDate || '',
+          employerName: supplementB.employerName || '',
+          employerSignature: supplementB.employerSignature || '',
+          todayDate: supplementB.todayDate || '',
+          additionalInfo: supplementB.additionalInfo || '',
+          address: supplementB.address || '',
+          city: supplementB.city || '',
+          state: supplementB.state || '',
+          zipCode: supplementB.zipCode || '',
+          finalSignature: supplementB.finalSignature || ''
+        }
+      };
+
+      console.log('Submitting form data:', JSON.stringify(formData, null, 2));
+
+      const response = await fetch('/api/form8', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const result = await response.json();
+      console.log('API Response:', result);
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit form');
+      }
+
+      alert('Form submitted successfully! Check your email for the PDF.');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitError(error instanceof Error ? error.message : 'Unknown error');
+      alert('Error submitting form: ' + (error instanceof Error ? error.message : 'Unknown error'));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <div className="max-w-[1100px] mx-auto  border border-black p-4 text-[16px] leading-tight font-serif">
+    <form onSubmit={handleSubmit} className="max-w-[1100px] mx-auto border border-black p-4 text-[16px] leading-tight font-serif">
       <div className="flex items-center justify-between mb-2">
         {/* Logo Section */}
         <div className="w-30 h-30">
-          <Image src="/logouss.png" alt="USCIS Logo" className="w-full h-full object-contain" />
+          <Image 
+            src="/logouss.png" 
+            alt="USCIS Logo" 
+            width={120}
+            height={120}
+            className="w-full h-full object-contain" 
+          />
         </div>
 
         {/* Heading Section */}
@@ -45,49 +341,101 @@ export default function EmploymentForm() {
         </h1>
 
         <div className="grid grid-cols-4 gap-2 mt-2 ">
-          <div><label className="text-sm font-medium ml-2">Last Name (Family Name)</label><input className="border border-black p-1 w-full bg-blue-100" placeholder="" /></div>
-          <div><label className="text-sm font-medium">First Name (Given Name)</label><input className="border border-black p-1 w-full bg-blue-100" placeholder="" /></div>
-          <div><label className="text-sm font-medium">Middle Initial</label><input className="border border-black p-1 w-full  bg-blue-100" placeholder="" /></div>
-          <div><label className="text-sm font-medium">Other Last Names Used (if any)</label><input className="border border-black  p-1 w-full bg-blue-100" placeholder="" /></div>
+          <div><label className="text-sm font-medium ml-2">Last Name (Family Name)</label><input 
+            name="lastName"
+            value={section1.lastName}
+            onChange={handleSection1Change}
+            className="border border-black p-1 w-full bg-blue-100" placeholder="" /></div>
+          <div><label className="text-sm font-medium">First Name (Given Name)</label><input 
+            name="firstName"
+            value={section1.firstName}
+            onChange={handleSection1Change}
+            className="border border-black p-1 w-full bg-blue-100" placeholder="" /></div>
+          <div><label className="text-sm font-medium">Middle Initial</label><input 
+            name="middleInitial"
+            value={section1.middleInitial}
+            onChange={handleSection1Change}
+            className="border border-black p-1 w-full  bg-blue-100" placeholder="" /></div>
+          <div><label className="text-sm font-medium">Other Last Names Used (if any)</label><input 
+            name="otherLastNames"
+            value={section1.otherLastNames}
+            onChange={handleSection1Change}
+            className="border border-black  p-1 w-full bg-blue-100" placeholder="" /></div>
         </div>
 
         <div className="flex flex-wrap gap-2 mt-2">
   {/* Address */}
   <div className="flex flex-col w-[250px]">
     <label className="text-sm font-medium ml-2">Address (Street Number and Name)</label>
-    <input className="border border-black p-1 w-full  bg-blue-100" />
+    <input 
+      name="address"
+      value={section1.address}
+      onChange={handleSection1Change}
+      className="border border-black p-1 w-full  bg-blue-100" />
   </div>
 
   {/* Apt Number */}
   <div className="flex flex-col w-[150px]">
     <label className="text-sm font-medium">Apt. Number (if any)</label>
-    <input className="border border-black   bg-blue-100 p-1 w-full" />
+    <input 
+      name="aptNumber"
+      value={section1.aptNumber}
+      onChange={handleSection1Change}
+      className="border border-black   bg-blue-100 p-1 w-full" />
   </div>
 
   {/* City */}
   <div className="flex flex-col w-[200px]">
     <label className="text-sm font-medium ml-2">City or Town</label>
-    <input className="border border-black  bg-blue-100 p-1 w-full" />
+    <input 
+      name="city"
+      value={section1.city}
+      onChange={handleSection1Change}
+      className="border border-black  bg-blue-100 p-1 w-full" />
   </div>
 
   {/* State */}
   <div className="flex flex-col w-[150px]">
     <label className="text-sm font-medium">State</label>
-    <input className="border border-black   bg-blue-100 p-1 w-full" />
+    <input 
+      name="state"
+      value={section1.state}
+      onChange={handleSection1Change}
+      className="border border-black   bg-blue-100 p-1 w-full" />
   </div>
 
   {/* ZIP Code */}
   <div className="flex flex-col w-[150px]">
     <label className="text-sm font-medium">ZIP Code</label>
-    <input className="border border-black bg-blue-100 p-1 w-full" />
+    <input 
+      name="zipCode"
+      value={section1.zipCode}
+      onChange={handleSection1Change}
+      className="border border-black bg-blue-100 p-1 w-full" />
   </div>
 </div>
 
         <div className="grid grid-cols-4 gap-2 mt-2">
-          <div><label className="text-sm font-medium ml-2">Date of Birth (mm/dd/yyyy)</label><input className="border  bg-blue-100 border-black p-1 w-full" placeholder="" /></div>
-          <div><label className="text-sm font-medium">U.S. Social Security Number</label><input className="border  bg-blue-100 border-black p-1 w-full" placeholder="" /></div>
-          <div><label className="text-sm font-medium">Employee&#39;s Email Address</label><input className="border  bg-blue-100 border-black p-1 w-full" placeholder="" /></div>
-          <div><label className="text-sm font-medium">Employee&#39;s Telephone Number</label><input className="border border-black p-1   bg-blue-100 w-full" placeholder="" /></div>
+          <div><label className="text-sm font-medium ml-2">Date of Birth (mm/dd/yyyy)</label><input 
+            name="dateOfBirth"
+            value={section1.dateOfBirth}
+            onChange={handleSection1Change}
+            className="border  bg-blue-100 border-black p-1 w-full" placeholder="" /></div>
+          <div><label className="text-sm font-medium">U.S. Social Security Number</label><input 
+            name="ssn"
+            value={section1.ssn}
+            onChange={handleSection1Change}
+            className="border  bg-blue-100 border-black p-1 w-full" placeholder="" /></div>
+          <div><label className="text-sm font-medium">Employee&apos;s Email Address</label><input 
+            name="email"
+            value={section1.email}
+            onChange={handleSection1Change}
+            className="border  bg-blue-100 border-black p-1 w-full" placeholder="" /></div>
+          <div><label className="text-sm font-medium">Employee&apos;s Telephone Number</label><input 
+            name="telephone"
+            value={section1.telephone}
+            onChange={handleSection1Change}
+            className="border border-black p-1   bg-blue-100 w-full" placeholder="" /></div>
         </div>
 
 
@@ -186,11 +534,26 @@ immigration status, is true and
 <div className="flex justify-between items-center text-[16px]">
   <div className="w-1/2">
     <label className="block font-medium">Signature of Employee</label>
-    <input type="text" className="w-full p-2 bg-blue-100 text-xs" />
+    <div className="border border-gray-300 rounded">
+      <SignaturePad
+        ref={employeeSignaturePadRef}
+        canvasProps={{
+          className: 'signature-canvas w-full h-32 bg-white',
+        }}
+        onEnd={handleEmployeeSignatureChange}
+      />
+    </div>
+    <button
+      type="button"
+      onClick={clearEmployeeSignature}
+      className="mt-2 text-sm text-red-600 hover:text-red-800"
+    >
+      Clear Signature
+    </button>
   </div>
   <div className="w-[48%]">
-    <label className="block font-medium">Today&#39;s Date (mm/dd/yyyy)</label>
-    <input type="text" className=" w-full p-2  bg-blue-100 text-xs" />
+    <label className="block font-medium">Today&apos;s Date (mm/dd/yyyy)</label>
+    <input type="text" className="w-full p-2 bg-blue-100 text-xs" />
   </div>
 </div>
 </div>
@@ -198,7 +561,7 @@ immigration status, is true and
         <h2 className="font-bold bg-gray-200">Section 2. Employer Review and Verification:</h2>
         <p className=" bg-gray-200">
           Employee or their authorized representative must complete and sign Section 2 within three business days after the employment date, 
-          as a result of any change in the company&#39;s performance. For example, the employee or employee who is not eligible for employment 
+          as a result of any change in the company&apos;s performance. For example, the employee or employee who is not eligible for employment 
           at the time of termination may be entitled to an annual salary or compensation plan that will be paid annually.
         </p>
       </div>
@@ -217,85 +580,237 @@ immigration status, is true and
     {/* Document 1 */}
     <tr>
       <td className="border border-gray-800 p-1 font-bold  bg-gray-200">Document Title 1</td>
-      <td className="border border-gray-800 p-1 h-8"></td>
-      <td className="border border-gray-800 p-1 h-8"></td>
-      <td className="border border-gray-800 p-1 h-8"></td>
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document1.title"
+          value={section2.document1.title}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document1.authority"
+          value={section2.document1.authority}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document1.number"
+          value={section2.document1.number}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
     </tr>
     <tr>
       <td className="border border-gray-800 p-1  bg-gray-200">Issuing Authority</td>
-      <td className="border border-gray-800 p-1 h-8"></td>
-      <td className="border border-gray-800 p-1 h-8"></td>
-      <td className="border border-gray-800 p-1 h-8"></td>
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document1.authority"
+          value={section2.document1.authority}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document1.authority"
+          value={section2.document1.authority}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document1.expiration"
+          value={section2.document1.expiration}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
     </tr>
     <tr>
       <td className="border border-gray-800 p-1  bg-gray-200 ">Document Number (if any)</td>
-      <td className="border border-gray-800 p-1 h-8"></td>
-      <td className="border border-gray-800 p-1 h-8"></td>
-      <td className="border border-gray-800 p-1 h-8"></td>
-    </tr>
-    <tr>
-      <td className="border border-gray-800 p-1  bg-gray-200">Expiration Date (if any)</td>
-      <td className="border border-gray-800 p-1 h-8"></td>
-      <td className="border border-gray-800 p-1 h-8"></td>
-      
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document1.number"
+          value={section2.document1.number}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document1.number"
+          value={section2.document1.number}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document1.expiration"
+          value={section2.document1.expiration}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
     </tr>
     
     {/* Document 2 */}
     <tr>
       <td className="border border-gray-800 p-1 font-bold  bg-gray-200">Document Title 2 (if any)</td>
-      <td className="border border-gray-800 p-1 h-8"></td>
-      <td className="border border-gray-800 p-1 h-8"></td>
-      <td className="border border-gray-800 p-1 align-top  " rowSpan={8} >
-  <span className='text-md font-semibold bg-gray-200 w-full'>  Additional Information</span> 
-        <div className="flex items-start mt-40 h-full text-sm">
-          <input 
-            type="checkbox" 
-            id="alternative-procedure" 
-            className="mt-0.5 mr-1" 
-          />
-          <label htmlFor="alternative-procedure">
-            Check here if you used an alternative procedure authorized by DHG to examine documents.
-          </label>
-        </div>
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document2.title"
+          value={section2.document2.title}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document2.authority"
+          value={section2.document2.authority}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document2.number"
+          value={section2.document2.number}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
       </td>
     </tr>
     <tr>
       <td className="border border-gray-800 p-1  bg-gray-200">Issuing Authority</td>
-      <td className="border border-gray-800 p-1 h-8"></td>
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document2.authority"
+          value={section2.document2.authority}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document2.authority"
+          value={section2.document2.authority}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
     </tr>
     <tr>
       <td className="border border-gray-800 p-1  bg-gray-200">Document Number (if any)</td>
-      <td className="border border-gray-800 p-1 h-8"></td>
-    
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document2.number"
+          value={section2.document2.number}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document2.number"
+          value={section2.document2.number}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
     </tr>
     <tr>
       <td className="border border-gray-800 p-1  bg-gray-200">Expiration Date (if any)</td>
-      <td className="border border-gray-800 p-1 h-8"></td>
-    
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document2.expiration"
+          value={section2.document2.expiration}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document2.expiration"
+          value={section2.document2.expiration}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
     </tr>
     
     {/* Document 3 */}
     <tr>
       <td className="border border-gray-800 p-1 font-bold  bg-gray-200">Document Title 3 (if any)</td>
-      <td className="border border-gray-800 p-1 h-8"></td>
-     
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document3.title"
+          value={section2.document3.title}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
     </tr>
     <tr>
       <td className="border border-gray-800 p-1  bg-gray-200">Issuing Authority</td>
-      <td className="border border-gray-800 p-1 h-8"></td>
-     
+      <td className="border border-gray-800 p-1 h-8">
+        <input 
+          name="document3.authority"
+          value={section2.document3.authority}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
+      </td>
     </tr>
     <tr>
       <td className="border border-gray-800 p-1  bg-gray-200">Document Number (if any)</td>
       
       <td className="border border-gray-800 p-1" rowSpan={2}>
-       
+        <input 
+          name="document3.number"
+          value={section2.document3.number}
+          onChange={handleSection2Change}
+          className="w-full bg-blue-100 p-1" 
+          type="text" 
+        />
       </td>
     </tr>
     <tr>
       <td className="border border-gray-800 p-1  bg-gray-200">Expiration Date (if any)</td>
-     
-      
+      <input 
+        name="document3.expiration"
+        value={section2.document3.expiration}
+        onChange={handleSection2Change}
+        className="w-full bg-blue-100 p-1" 
+        type="text" 
+      />
     </tr>
     
     {/* Certification Section */}
@@ -310,8 +825,14 @@ immigration status, is true and
       </p>
     </div>
     <div className="w-1/3">
-      <div className="text-xs mb-1">Today&#39s Date (mm/dd/yyyy)</div>
-      <div className="border border-gray-800 h-8"></div>
+      <div className="text-xs mb-1">Today&apos;s Date (mm/dd/yyyy)</div>
+      <input 
+        name="certificationDate"
+        value={section2.certificationDate}
+        onChange={handleSection2Change}
+        className="border border-gray-800 h-8 w-full bg-blue-100 p-1" 
+        type="text" 
+      />
     </div>
   </div>
 </td>
@@ -321,23 +842,58 @@ immigration status, is true and
     <tr>
       <td className="border border-gray-800 p-1 text-nowrap" colSpan={2}>
         <div>Last Name: First Name and Title of Employer or Authorized Representative</div>
-        <div className="  h-8 mt-1"></div>
+        <input 
+          name="employerName"
+          value={section2.employerName}
+          onChange={handleSection2Change}
+          className="border border-gray-800 h-8 mt-1 w-full bg-blue-100 p-1" 
+          type="text" 
+        />
       </td>
       <td className="border border-gray-800 p-1" colSpan={2}>
         <div>Signature of Employer or Authorized Representative</div>
-        <div className="h-8 mt-1"></div>
+        <div className="border-r p-2">
+          <div className="border border-gray-300 rounded">
+            <SignaturePad
+              ref={employerSignaturePadRef}
+              canvasProps={{
+                className: 'signature-canvas w-full h-32 bg-white',
+              }}
+              onEnd={handleEmployerSignatureChange}
+            />
+          </div>
+          <button
+            type="button"
+            onClick={clearEmployerSignature}
+            className="mt-2 text-sm text-red-600 hover:text-red-800"
+          >
+            Clear Signature
+          </button>
+        </div>
       </td>
     </tr>
     
     {/* Employer Information */}
     <tr>
       <td className="border border-gray-800 p-1" colSpan={2}>
-        <div>Employer&#39s Business or Organization Name</div>
-        <div className=" h-8 mt-1"></div>
+        <div>Employer&apos;s Business or Organization Name</div>
+        <input 
+          name="employerBusiness"
+          value={section2.employerBusiness}
+          onChange={handleSection2Change}
+          className="border border-gray-800 h-8 mt-1 w-full bg-blue-100 p-1" 
+          type="text" 
+        />
       </td>
       <td className="border border-gray-800 p-1" colSpan={2}>
-        <div>Employer&#39;s Business or Organization Address (Street Address, City, State, ZIP Code)</div>
-        <div className=" h-8 mt-1"></div>
+        <div>Employer&apos;s Business or Organization Address (Street Address, City, State, ZIP Code)</div>
+        <input 
+          name="employerAddress"
+          value={section2.employerAddress}
+          onChange={handleSection2Change}
+          className="border border-gray-800 h-8 mt-1 w-full bg-blue-100 p-1" 
+          type="text" 
+        />
       </td>
     </tr>
   </tbody>
@@ -425,15 +981,15 @@ immigration status, is true and
   <h4 className="font-bold text-center mb-4 pb-1 ">LIST B</h4>
   <p className="text-sm font-semibold mb-2 border-b">Documents that Establish Identity</p>
   <ol className="text-sm list-decimal pl-5 divide-y divide-black">
-    <li className="py-2 ">Driver&#39;s license or ID issued by a State  or outlying possession of the United States provided.It contains a photoraph or information such as name , date of birth, gender, height, eye color, and address.</li>
+    <li className="py-2 ">Driver&apos;s license or ID issued by a State  or outlying possession of the United States provided.It contains a photoraph or information such as name , date of birth, gender, height, eye color, and address.</li>
     <li className="py-2 ">ID card issued by federal, state, or local government agencies or entities, provided it conmtains a photograph or information such as name, date of birth, gender, height, eye color and address</li>
     <li className="py-2 ">School ID card with a photograph</li>
-    <li className="py-2 ">Voter&#39;s registration card</li>
+    <li className="py-2 ">Voter&apos;s registration card</li>
     <li className="py-2 ">U.S. Military card or draft record</li>
-    <li className="py-2" >Military dependent&#39;s ID card</li>
+    <li className="py-2" >Military dependent&apos;s ID card</li>
     <li className="py-2">U.S. Coast Guard Merchant Mariner Card</li>
     <li className="py-2 ">Native American tribal document</li>
-    <li className="py-2">Canadian driver&#39;s license</li>
+    <li className="py-2">Canadian driver&apos;s license</li>
     <p className='font-bold py-2 '>For persons under age 18 who are unable to present a document listed above:</p>
   <li className="py-2 ">School record or report card</li>
   <li className=" py-2 ">Clinic, doctor, or hospital record</li>
@@ -559,122 +1115,13 @@ immigration status, is true and
     <div className="flex items-center justify-between mb-2">
         {/* Logo Section */}
         <div className="w-30 h-30">
-          <Image src="/logouss.png" alt="USCIS Logo" className="w-full h-full object-contain" />
-        </div>
-
-        {/* Heading Section */}
-        <div className="text-center flex-1 ">
-          <h1 className="text-xl font-bold whitespace-nowrap">Supplement B, </h1>
-          <p className="text-xl font-bold whitespace-nowrap">Reverification and Rehire (formerly Section 3)
-            </p><br />
-          <p className="text-lg font-semibold whitespace-nowrap">
-            Department of Homeland Security<br />
-            <span className="text-gray-600 text-md font-medium">U.S. Citizenship and Immigration Services</span>
-          </p>
-        </div>
-
-        {/* Form Number Section */}
-        <div className="text-right text-[16px] font-semibold">
-          <span className="text-xl font-semibold">USCIS<br />Form I-9</span><br />
-          <span className="text-md font-medium whitespace-nowrap">OMB No. 1615-0047</span><br />
-          <span className="text-md font-medium whitespace-nowrap">Expires 07/31/2026</span>
-        </div>
-      </div>
-
-      <hr className='border-5 ' />
-      <hr className='border mt-2 ' />
-    
-
-      <div className="border border-black text-sm mb-4">
-        <div className="grid grid-cols-3 border-b border-black">
-          <div className="border-r border-black p-1 text-nowrap mt-4">
-            Last Name (Family Name) from <strong>Section 1.</strong>
-            <input type="text" placeholder="" className="block w-full mt-2  bg-blue-100 p-1 text-sm" />
-          </div>
-          <div className="border-r border-black p-1 text-nowrap mt-4">
-            First Name (Given Name) from <strong>Section 1.</strong>
-            <input type="text" placeholder="" className="block w-full mt-2   bg-blue-100 p-1 text-sm" />
-          </div>
-          <div className="p-4 text-nowrap">
-            Middle Initial (if any) from <strong>Section 1.</strong>
-            <input type="text" placeholder="" className="block bg-blue-100  w-full mt-2   p-1 text-sm" />
-          </div>
-        </div>
-      </div>
-
-      <p className="text-md  mb-6 font-serif ">
-        <strong>Instructions:</strong> This supplement must be completed by any preparer and/or translator who assists an employee in completing Section 1
-        of Form I-9. The preparer and/or translator must enter the employee&#39;s name in the spaces provided above. Each prepare or translator
-        must complete, sign, and date a separate certification area. Employers must retain completed supplement sheets with the employee’s
-        completed Form I-9.
-      </p>
-
-      {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="text-base mb-2 p-1">
-          <p className="mb-4 font-semibold bg-gray-200">
-            I attest, under penalty of perjury, that I have assisted in the completion of Section 1 of this form and that to the best of my knowledge the information is true and correct.
-          </p>
-          <div className="grid grid-cols-2 border ">
-            <div className="border-r p-2">
-              Signature of Preparer or Translator
-              <input type="text" placeholder="" className="block w-full   bg-blue-100 p-2 text-sm" />
-            </div>
-            <div className="p-2">
-              Date (mm/dd/yyyy)
-              <input type="date" className="block w-full mt-2 border   bg-blue-100 border-gray-300 p-1 text-sm" />
-            </div>
-          </div>
-          <div className="grid grid-cols-3 border-t ">
-            <div className="border-r border-l border-black p-2">
-              Last Name (Family Name)
-              <input type="text" placeholder="" className="block bg-blue-100 w-full mt-2 p-1 text-sm" />
-            </div>
-            <div className="border-r border-black p-2">
-              First Name (Given Name)
-              <input type="text" placeholder="" className="block  bg-blue-100 w-full mt-2  p-1 text-sm" />
-            </div>
-            <div className="p-2 border-r">
-              Middle Initial (if any)
-              <input type="text" placeholder="" className="block w-full  bg-blue-100 mt-2  p-1 text-sm" />
-            </div>
-          </div>
-          <div className="grid grid-cols-5 border-t border-black">
-            <div className="border-r border-black p-4 col-span-2 border-b border-l">
-              Address (Street Number and Name)
-              <input type="text" placeholder="" className="block w-full mt-2    bg-blue-100 p-1 text-sm" />
-            </div>
-            <div className="border-r border-black p-2 border-b">
-              City or Town
-              <input type="text" placeholder="" className="block w-full   bg-blue-100 mt-2 p-1 text-sm" />
-            </div>
-            <div className="border-r border-black p-2 border-b">
-              State
-              <input type="text" placeholder="" className="block w-full   bg-blue-100 mt-2  p-1 text-sm" />
-            </div>
-            <div className="p-2 border-b border-r">
-              ZIP Code
-              <input type="text" placeholder="" className="block w-full   bg-blue-100 mt-2  p-1 text-sm" />
-            </div>
-          </div>
-        </div>
-      ))}
-
-
-
-    </div>
-    
-    <div className="mt-6 border-t border-gray-800 pt-2 text-center">
-        <p className="text-md mt-6">
-          Form I-9  Edition: (IN/01/23) <span className='ml-114'> Page 3 of 4</span>
-        </p>
-      </div>
-
-
-      <div className="min-h-[1500px] w-[1030px]  mt-10 mx-auto p-4 bg-white text-black border border-gray-400">
-    <div className="flex items-center justify-between mb-2">
-        {/* Logo Section */}
-        <div className="w-30 h-30">
-          <Image src="/logouss.png" alt="USCIS Logo" className="w-full h-full object-contain" />
+          <Image 
+            src="/logouss.png" 
+            alt="USCIS Logo" 
+            width={120}
+            height={120}
+            className="w-full h-full object-contain" 
+          />
         </div>
 
         {/* Heading Section */}
@@ -775,12 +1222,27 @@ immigration status, is true and
               <input type="text" className="w-full bg-blue-100 h-12" />
             </div>
             <div>
-              <label className="block text-sm  text-nowrap">Signature of Employer or Authorized Representative</label>
-              <input type="text" className="w-full bg-blue-100 h-12" />
+              <label className="block text-sm text-nowrap">Signature of Employer or Authorized Representative</label>
+              <div className="border border-gray-300 rounded">
+                <SignaturePad
+                  ref={finalSignaturePadRef}
+                  canvasProps={{
+                    className: 'signature-canvas w-full h-32 bg-white',
+                  }}
+                  onEnd={handleFinalSignatureChange}
+                />
+              </div>
+              <button
+                type="button"
+                onClick={clearFinalSignature}
+                className="mt-2 text-sm text-red-600 hover:text-red-800"
+              >
+                Clear Signature
+              </button>
             </div>
             <div className='ml-6'>
-              <label className="block text-sm ml-6" >Today&#39s Date</label>
-              <input type="text" className="w-full  bg-blue-100 h-12" />
+              <label className="block text-sm ml-6">Today&apos;s Date</label>
+              <input type="text" className="w-full bg-blue-100 h-12" />
             </div>
           </div>
 
@@ -810,10 +1272,26 @@ immigration status, is true and
         <div className="text-center mt-8 pt-4  text-lg border-t-2 border-black">
         <p className="text-[16px] text-center text-gray-600 mb-20 ">Form I-9 Edition 08/01/23 • Page 1 of 4</p>
         </div>
+
+        {/* Submit Button */}
+        <div className="mt-8 text-center">
+          {submitError && (
+            <div className="text-red-600 mb-4">
+              Error: {submitError}
+            </div>
+          )}
+          <button 
+            type="submit"
+            disabled={isSubmitting}
+            className={`bg-blue-500 text-white px-6 py-2 rounded transition-colors ${
+              isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'
+            }`}
+          >
+            {isSubmitting ? 'Submitting...' : 'Submit Form'}
+          </button>
+        </div>
       </div>
-    </div>
-
-
-
+    
+    </form>
   );
 }

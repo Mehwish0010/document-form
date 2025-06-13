@@ -1,9 +1,65 @@
 // components/EmploymentApplication.jsx
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import SignaturePad from 'react-signature-canvas';
+
+// Add styles for signature pad
+const styles = {
+  signaturePad: {
+    width: '100%',
+    height: '200px',
+    backgroundColor: '#fff',
+    border: '1px solid #e2e8f0',
+    borderRadius: '4px',
+  },
+  signatureCanvas: {
+    width: '100%',
+    height: '100%',
+  }
+};
+
+// Define the form data type
+type FormData = {
+  lastName: string;
+  firstName: string;
+  middleInitial: string;
+  date: string;
+  streetAddress: string;
+  apartmentUnit: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  phone: string;
+  email: string;
+  driversLicense: string;
+  licenseState: string;
+  licenseExp: string;
+  dateAvailable: string;
+  socialSecurity: string;
+  positionApplied: string;
+  isCitizen: '' | 'YES' | 'NO';
+  isAuthorized: '' | 'YES' | 'NO';
+  previousEmployment: '' | 'YES' | 'NO';
+  previousEmploymentDate: string;
+  felonyConviction: '' | 'YES' | 'NO';
+  felonyExplanation: string;
+  canMeetAttendance: '' | 'YES' | 'NO';
+  highSchoolAddress: string;
+  highSchoolFrom: string;
+  highSchoolTo: string;
+  highSchoolGraduate: '' | 'YES' | 'NO';
+  highSchoolDiploma: string;
+  collegeAddress: string;
+  collegeFrom: string;
+  collegeTo: string;
+  collegeGraduate: '' | 'YES' | 'NO';
+  collegeDegree: string;
+  signature: string;
+};
 
 const EmploymentApplication = () => {
-  const [formData, setFormData] = useState({
+  const signaturePadRef = useRef<SignaturePad>(null);
+  const [formData, setFormData] = useState<FormData>({
     lastName: '',
     firstName: '',
     middleInitial: '',
@@ -21,26 +77,27 @@ const EmploymentApplication = () => {
     dateAvailable: '',
     socialSecurity: '',
     positionApplied: '',
-    isCitizen: '' as '' | 'YES' | 'NO',
-    isAuthorized: '' as '' | 'YES' | 'NO',
-    previousEmployment: '' as '' | 'YES' | 'NO',
+    isCitizen: '',
+    isAuthorized: '',
+    previousEmployment: '',
     previousEmploymentDate: '',
-    felonyConviction: '' as '' | 'YES' | 'NO',
+    felonyConviction: '',
     felonyExplanation: '',
-    canMeetAttendance: '' as '' | 'YES' | 'NO',
+    canMeetAttendance: '',
     highSchoolAddress: '',
     highSchoolFrom: '',
     highSchoolTo: '',
-    highSchoolGraduate: '' as '' | 'YES' | 'NO',
+    highSchoolGraduate: '',
     highSchoolDiploma: '',
     collegeAddress: '',
     collegeFrom: '',
     collegeTo: '',
-    collegeGraduate: '' as '' | 'YES' | 'NO',
-    collegeDegree: ''
-  } as const);
+    collegeGraduate: '',
+    collegeDegree: '',
+    signature: '',
+  });
 
-  type FormDataKey = keyof typeof formData;
+  type FormDataKey = keyof FormData;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -56,6 +113,26 @@ const EmploymentApplication = () => {
       ...prev,
       [name]: checked ? 'YES' : 'NO'
     }));
+  };
+
+  const handleSignatureChange = () => {
+    if (signaturePadRef.current) {
+      const signatureData = signaturePadRef.current.toDataURL();
+      setFormData(prev => ({
+        ...prev,
+        signature: signatureData
+      }));
+    }
+  };
+
+  const clearSignature = () => {
+    if (signaturePadRef.current) {
+      signaturePadRef.current.clear();
+      setFormData(prev => ({
+        ...prev,
+        signature: ''
+      }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -126,7 +203,8 @@ const EmploymentApplication = () => {
           collegeFrom: '',
           collegeTo: '',
           collegeGraduate: '',
-          collegeDegree: ''
+          collegeDegree: '',
+          signature: '',
         });
       } else {
         throw new Error(data.message || 'Failed to submit application');
@@ -825,22 +903,39 @@ const EmploymentApplication = () => {
 
         {/* Signature and Date */}
         <div className="grid grid-cols-2 gap-4 mt-10">
-          <div className="border-b border-black text-sm text-gray-700">
-            <label>Signature:</label>
-            <input
-              type="text"
-              className="w-full bg-transparent outline-none p-1 text-black"
-              placeholder="Sign here"
-            />
+          <div>
+            <label className="block text-sm text-gray-700 mb-2">Signature:</label>
+            <div style={styles.signaturePad}>
+              <SignaturePad
+                ref={signaturePadRef}
+                canvasProps={{
+                  className: 'signature-canvas',
+                  style: styles.signatureCanvas
+                }}
+                onEnd={handleSignatureChange}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={clearSignature}
+              className="mt-2 text-sm text-red-600 hover:text-red-800"
+            >
+              Clear Signature
+            </button>
           </div>
           <div className="border-b border-black text-sm text-gray-700">
             <label>Date:</label>
             <input
               type="text"
+              name="date"
+              value={formData.date}
+              onChange={handleInputChange}
               className="w-full bg-transparent outline-none p-1 text-black"
               placeholder="MM/DD/YYYY"
             />
           </div>
+        </div>
+
         <div className="flex justify-center mt-8">
           <button
             type="submit"
@@ -848,7 +943,6 @@ const EmploymentApplication = () => {
           >
             Submit Application
           </button>
-        </div>
         </div>
       </form>
     </div>

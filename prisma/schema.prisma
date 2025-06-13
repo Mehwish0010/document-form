@@ -1,0 +1,27 @@
+model W4Form {
+  id                    Int      @id @default(autoincrement())
+  firstName            String
+  middleInitial        String?
+  lastName             String
+  socialSecurityNumber String
+  address              String
+  cityStateZip         String
+  
+  // Filing Status
+  filingStatus         Json     // Stores the filing status object
+  
+  // Multiple Jobs
+  multipleJobs         Json     // Stores the multiple jobs object
+  
+  // Dependents
+  dependents           Json     // Stores the dependents object
+  
+  // Other Adjustments
+  otherAdjustments     Json     // Stores the other adjustments object
+  
+  // Employer Information
+  employerInfo         Json     // Stores the employer info object
+  
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+} 

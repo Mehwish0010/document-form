@@ -1,3 +1,15 @@
 @import "tailwindcss";
 
+/* Signature Pad Styles */
+.signature-canvas {
+  touch-action: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+}
+
+.signature-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 

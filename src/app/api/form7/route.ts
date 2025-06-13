@@ -52,23 +52,48 @@ export async function POST(req: Request) {
     });
 
     await browser.close();
-    // ✅ Define mailOptions before sending the email
+    // Create HTML content for the email
+    const htmlContent = `
+      <div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto;">
+        <h2 style="color: #333;">New Employment Application</h2>
+        
+        <div style="margin: 20px 0; padding: 20px; background-color: #f9f9f9; border-radius: 5px;">
+          <h3 style="color: #444;">Personal Information</h3>
+          <p><strong>Name:</strong> ${formData.firstName} ${formData.middleInitial} ${formData.lastName}</p>
+          <p><strong>Date:</strong> ${formData.date}</p>
+          <p><strong>Address:</strong> ${formData.streetAddress} ${formData.apartmentUnit}</p>
+          <p><strong>City:</strong> ${formData.city}, <strong>State:</strong> ${formData.state}, <strong>ZIP:</strong> ${formData.zipCode}</p>
+          <p><strong>Phone:</strong> ${formData.phone}</p>
+          <p><strong>Email:</strong> ${formData.email}</p>
+        </div>
+
+        <div style="margin: 20px 0; padding: 20px; background-color: #f9f9f9; border-radius: 5px;">
+          <h3 style="color: #444;">Employment Details</h3>
+          <p><strong>Position Applied:</strong> ${formData.positionApplied}</p>
+          <p><strong>Date Available:</strong> ${formData.dateAvailable}</p>
+          <p><strong>Driver's License:</strong> ${formData.driversLicense} (${formData.licenseState})</p>
+          <p><strong>Social Security:</strong> ${formData.socialSecurity}</p>
+        </div>
+
+        <div style="margin: 20px 0; padding: 20px; background-color: #f9f9f9; border-radius: 5px;">
+          <h3 style="color: #444;">Education</h3>
+          <p><strong>High School:</strong> ${formData.highSchoolAddress}</p>
+          <p><strong>College:</strong> ${formData.collegeAddress}</p>
+        </div>
+
+        <div style="margin: 20px 0; padding: 20px; background-color: #f9f9f9; border-radius: 5px;">
+          <h3 style="color: #444;">Signature</h3>
+          ${formData.signature ? `<img src="${formData.signature}" alt="Signature" style="max-width: 300px; border: 1px solid #ddd; padding: 10px; background: white;" />` : '<p>No signature provided</p>'}
+        </div>
+      </div>
+    `;
+
+    // Define mailOptions
     const mailOptions = {
       from: emailConfig.user,
       to: emailConfig.receiver,
       subject: 'New Employment Application Submission',
-      html: `
-        <div style="font-family: sans-serif;">
-          <h2>New Employment Application</h2>
-          <p>This is an auto-generated email with the submitted form attached as a PDF.</p>
-        </div>
-      `,
-      attachments: [
-        {
-          filename: 'employment_application.pdf',
-          content: Buffer.from(pdfBuffer) // ✅ Make sure to wrap with Buffer
-        }
-      ]
+      html: htmlContent
     };
 
     // Send email
