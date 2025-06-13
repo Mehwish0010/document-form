@@ -125,25 +125,9 @@ export default function Forms() {
           setTimeout(() => errorDiv.remove(), 300);
         }, 5000);
       }
-    } catch (error) {
-      // Show error message with Tailwind classes
-      const errorDiv = document.createElement('div');
-      errorDiv.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out translate-y-0 opacity-100';
-      errorDiv.innerHTML = `
-        <div class="flex items-center">
-          <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-          <span>Something went wrong. Please try again.</span>
-        </div>
-      `;
-      document.body.appendChild(errorDiv);
-      
-      // Remove the message after 5 seconds with fade out
-      setTimeout(() => {
-        errorDiv.classList.add('translate-y-4', 'opacity-0');
-        setTimeout(() => errorDiv.remove(), 300);
-      }, 5000);
+    } catch (err) {
+      console.error('Form submission error:', err);
+      alert('Failed to submit form. Please try again.');
     }
   };
   

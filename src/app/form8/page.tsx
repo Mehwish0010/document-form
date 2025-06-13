@@ -4,15 +4,9 @@ import React, { useState, useRef } from 'react';
 import SignaturePad from 'react-signature-canvas';
 
 export default function EmploymentForm() {
-  const signaturePadRef = useRef<SignaturePad>(null);
   const employeeSignaturePadRef = useRef<SignaturePad>(null);
   const employerSignaturePadRef = useRef<SignaturePad>(null);
-  const supplementBSignaturePadRef = useRef<SignaturePad>(null);
   const finalSignaturePadRef = useRef<SignaturePad>(null);
-
-  // Add loading state
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // State for Section 1
   const [section1, setSection1] = useState({
@@ -104,14 +98,6 @@ export default function EmploymentForm() {
     }));
   };
 
-  const handleSupplementBChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setSupplementB(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
   const handleEmployeeSignatureChange = () => {
     if (employeeSignaturePadRef.current) {
       const signatureData = employeeSignaturePadRef.current.toDataURL();
@@ -152,26 +138,6 @@ export default function EmploymentForm() {
     }
   };
 
-  const handleSupplementBSignatureChange = () => {
-    if (supplementBSignaturePadRef.current) {
-      const signatureData = supplementBSignaturePadRef.current.toDataURL();
-      setSupplementB(prev => ({
-        ...prev,
-        employerSignature: signatureData
-      }));
-    }
-  };
-
-  const clearSupplementBSignature = () => {
-    if (supplementBSignaturePadRef.current) {
-      supplementBSignaturePadRef.current.clear();
-      setSupplementB(prev => ({
-        ...prev,
-        employerSignature: ''
-      }));
-    }
-  };
-
   const handleFinalSignatureChange = () => {
     if (finalSignaturePadRef.current) {
       const signatureData = finalSignaturePadRef.current.toDataURL();
@@ -194,8 +160,6 @@ export default function EmploymentForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitError(null);
 
     try {
       // Collect all form data
@@ -284,12 +248,9 @@ export default function EmploymentForm() {
       }
 
       alert('Form submitted successfully! Check your email for the PDF.');
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setSubmitError(error instanceof Error ? error.message : 'Unknown error');
-      alert('Error submitting form: ' + (error instanceof Error ? error.message : 'Unknown error'));
-    } finally {
-      setIsSubmitting(false);
+    } catch (err) {
+      console.error('Form submission error:', err);
+      alert('Failed to submit form. Please try again.');
     }
   };
 
@@ -1275,19 +1236,13 @@ immigration status, is true and
 
         {/* Submit Button */}
         <div className="mt-8 text-center">
-          {submitError && (
-            <div className="text-red-600 mb-4">
-              Error: {submitError}
-            </div>
-          )}
+         npm run build
+         
           <button 
             type="submit"
-            disabled={isSubmitting}
-            className={`bg-blue-500 text-white px-6 py-2 rounded transition-colors ${
-              isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'
-            }`}
+            className={`bg-blue-500 text-white px-6 py-2 rounded transition-colors`}
           >
-            {isSubmitting ? 'Submitting...' : 'Submit Form'}
+            Submit Form
           </button>
         </div>
       </div>

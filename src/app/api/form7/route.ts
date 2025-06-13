@@ -93,14 +93,20 @@ export async function POST(req: Request) {
       from: emailConfig.user,
       to: emailConfig.receiver,
       subject: 'New Employment Application Submission',
-      html: htmlContent
+      html: htmlContent,
+      attachments: [
+        {
+          filename: 'application.pdf',
+          content: Buffer.from(pdfBuffer)
+        }
+      ]
     };
 
     // Send email
     try {
       console.log('Sending email...');
       const info = await transporter.sendMail(mailOptions);
-      console.log('Email sent successfully:', info.response);
+      console.log('Email sent successfully:', info.messageId);
 
       return NextResponse.json({
         success: true,

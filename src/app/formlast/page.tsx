@@ -102,7 +102,7 @@ export default function W4FormHeader() {
     // Handle nested object changes
     const handleNestedChange = (section: keyof W4FormData, field: string, value: string | number | boolean) => {
       setFormData(prev => {
-        const sectionData = prev[section] as Record<string, any>;
+        const sectionData = prev[section] as Record<string, unknown>;
         return {
           ...prev,
           [section]: {
@@ -161,7 +161,8 @@ export default function W4FormHeader() {
         });
         if (!response.ok) throw new Error('Failed to submit form');
         alert('Form submitted successfully!');
-      } catch (error) {
+      } catch (err) {
+        console.error('Form submission error:', err);
         alert('Failed to submit form. Please try again.');
       }
     };
@@ -182,7 +183,7 @@ export default function W4FormHeader() {
 
             {/* Center Title */}
             <div className="text-center px-4">
-              <div className="text-3xl font-bold">Employee's Withholding Certificate</div>
+              <div className="text-3xl font-bold">Employee&#39;s Withholding Certificate</div>
               <div className="text-[13px] font-bold mt-1">
                 Complete Form W-4 so that your employer can withhold the correct federal income tax from your pay.
                 <br />
@@ -311,7 +312,7 @@ export default function W4FormHeader() {
                 <span>
                   Head of household{' '}
                   <span className="italic">
-                    (Check only if you're unmarried and pay more than half the costs of keeping up a home for yourself and a qualifying individual.)
+                    (Check only if you&apos;re unmarried and pay more than half the costs of keeping up a home for yourself and a qualifying individual.)
                   </span>
                 </span>
               </div>
@@ -446,7 +447,7 @@ export default function W4FormHeader() {
             <div className="p-3 text-[16px]">
               <div className="text-[16px] mb-3">
                 a) Other income (not from jobs). If you want tax withheld for other income you 
-                expect this year that won't have withholding, enter the amount of other income here. 
+                expect this year that won&#39;t have withholding, enter the amount of other income here. 
                 This may include interest, dividends, and retirement income . . . . . . . .
               </div>
               <div className="flex items-center justify-between">
@@ -508,7 +509,7 @@ export default function W4FormHeader() {
             <div className="p-3">
               <div className="grid grid-cols-3 gap-8">
                 <div className="">
-                  <div className="text-[16px] mb-1">Employer's name and address</div>
+                  <div className="text-[16px] mb-1">Employer&#39;s name and address</div>
                   <div className="h-16 p-1">
                     <textarea
                       name="employerInfo.name"
