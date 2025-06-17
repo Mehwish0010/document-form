@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
+import SignatureCanvas from 'react-signature-canvas';
 
 export default function ConfidentialityAgreement() {
     const [formData, setFormData] = React.useState({
@@ -9,6 +10,8 @@ export default function ConfidentialityAgreement() {
       date: '',
       print: ''
     });
+
+    const signaturePadRef = useRef<SignatureCanvas>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData({
@@ -27,10 +30,12 @@ export default function ConfidentialityAgreement() {
           return;
         }
 
+        const signatureDataUrl = signaturePadRef.current?.toDataURL() || '';
+        
         // Prepare the data
         const formDataToSend = {
           name: formData.name.trim(),
-          signature: formData.signature.trim(),
+          signature: signatureDataUrl,
           date: formData.date,
           print: formData.print.trim()
         };
@@ -111,14 +116,23 @@ export default function ConfidentialityAgreement() {
         <div className="space-y-12 mt-32">
           <div className="flex justify-between">
             <div className="flex flex-col">
-              <input
-                type="text"
-                name="signature"
-                value={formData.signature}
-                onChange={handleChange}
-                className="border-b border-black w-60 focus:outline-none focus:border-blue-500"
-                required
-              />
+              <div className="border-b border-black w-60">
+                <SignatureCanvas
+                  ref={signaturePadRef}
+                  canvasProps={{
+                    className: 'signature-canvas',
+                    width: 240,
+                    height: 100
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => signaturePadRef.current?.clear()}
+                  className="mt-2 px-4 py-2 text-sm text-red-600 hover:text-gray-800 border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+                >
+                  Clear Signature
+                </button>
+              </div>
               <span className="text-sm mt-6">Signature</span>
             </div>
             <div className="flex flex-col">

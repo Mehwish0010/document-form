@@ -210,23 +210,18 @@ export default function FormsPage() {
   </div>
 
   <h1 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-4">
-    Behaviour Analysis and Therapy Partners (BAPT)
+  Employee Onboarding Forms
+
   </h1>
 
-  <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-  Behavior Analysis & Therapy Partners (BATP) is devoted to providing behavioral health care to those under 21 years of age. 
+  <p className="text-xl font-medium text-gray-600 max-w-4xl mx-auto leading-relaxed">
+  
+  
+
+By submitting these forms, I confirm that all information provided is accurate, complete, and submitted by me personally, and I understand that any false, misleading, or incomplete information may impact my eligibility for employment.
   </p>
 
-  <div className="mt-6 flex items-center justify-center space-x-4">
-    <div className="flex items-center space-x-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
-      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-      <span>{forms.length} Forms Available</span>
-    </div>
-    <div className="flex items-center space-x-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium">
-      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-      <span>100% Secure</span>
-    </div>
-  </div>
+
 </div>
 </div>
         </div>
@@ -346,81 +341,28 @@ export default function FormsPage() {
         </div>
 
         {/* Stats Section */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-xl">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-blue-100 text-sm font-medium">Total Forms</p>
-                <p className="text-3xl font-bold">{forms.length}</p>
-              </div>
-              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl p-6 text-white shadow-xl">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-emerald-100 text-sm font-medium">Categories</p>
-                <p className="text-3xl font-bold">{categories.length - 1}</p>
-              </div>
-              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-6 text-white shadow-xl">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-purple-100 text-sm font-medium">Availability</p>
-                <p className="text-3xl font-bold">100%</p>
-              </div>
-              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
+      
       </div>
 
       {/* Footer */}
-      <footer className="relative mt-20 bg-green-500 text-white">
+      <footer className="relative mt-20 bg-cyan-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center">
-            <div className="inline-flex items-center justify-center w-12 h-12  rounded-xl mb-4">
-            <Image src="/clientform.webp" alt="logo" height={42} width={58}/>
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-transparent rounded-xl mb-4">
+            <Image src="/clientform.webp" alt="logo" height={52} width={58}/>
             </div>
             <h3 className="text-2xl font-bold mb-2">Behaviour Analysis & Therapy Partners</h3>
             <p className="text-white-400 mb-6">Secure • Compliant • Professional</p>
             <div className="flex justify-center space-x-6 text-sm text-gray-white">
               <span>© 2025 All rights reserved</span>
               <span>•</span>
-              <span>Privacy Policy</span>
+              <Link href="/privacy-policy">
+  <span className="text-white hover:underline cursor-pointer">Privacy Policy</span>
+</Link>
               <span>•</span>
-              <span>Terms of Service</span>
+              <Link href="/terms-of-services">
+  <span className="text-white hover:underline cursor-pointer">Terms of Services</span>
+</Link>
             </div>
           </div>
         </div>

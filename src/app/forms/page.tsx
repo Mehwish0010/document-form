@@ -354,6 +354,13 @@ export default function Forms() {
                         height: 200
                       }}
                     />
+                    <button
+                      type="button"
+                      onClick={() => signaturePadRef.current?.clear()}
+                      className="mt-2 px-4 py-2  text-sm text-red-600 hover:text-gray-800 border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+                    >
+                      Clear Signature
+                    </button>
                   </div>
                   <div className="flex-1 ml-8 mb-10">
                     <input
