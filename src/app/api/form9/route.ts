@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PDFDocument, rgb } from 'pdf-lib';
+
 import nodemailer from 'nodemailer';
 
 const emailConfig = {
