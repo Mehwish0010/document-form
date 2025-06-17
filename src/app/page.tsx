@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { useState } from "react"
 
 const forms = [
@@ -26,7 +27,7 @@ const forms = [
   {
     id: "form2",
     title: "Arrest Convication and Certification Form",
-    description: "Documents an individual’s criminal history or certifies a clear record, ensuring compliance with legal and employment requirements.",
+    description: "Documents an individual's criminal history or certifies a clear record, ensuring compliance with legal and employment requirements.",
     category: "employment form 02",
     status: "Active",
     route: "/forms",
@@ -83,7 +84,7 @@ const forms = [
   {
     id: "form5",
     title: "Employment Eligibility Verification Form",
-    description: "A mandatory form used to verify an employee’s identity and authorization to work in the United States.",
+    description: "A mandatory form used to verify an employee's identity and authorization to work in the United States.",
     category: "employment form 05",
     status: "Active",
     route: "/form8",
@@ -102,7 +103,7 @@ const forms = [
   {
     id: "form6",
     title: "Residence Certification Form",
-    description: "Certifies an employee’s residence information for proper local earned income tax withholding.",
+    description: "Certifies an employee's residence information for proper local earned income tax withholding.",
     category: "employment form 06",
     status: "Active",
     route: "/form9",
@@ -121,7 +122,7 @@ const forms = [
   {
     id: "form7",
     title: "Employment Application /Provisional Employment",
-    description: "Discloses the applicant’s criminal history as required for positions involving contact with children under Pennsylvania law.",
+    description: "Discloses the applicant's criminal history as required for positions involving contact with children under Pennsylvania law.",
     category: "employment form 07",
     status: "Active",
     route: "/form6",
@@ -139,8 +140,8 @@ const forms = [
   },
   {
     id: "form8",
-    title: "Employee’s Withholding Certificate",
-    description: "Determines the amount of federal income tax to withhold from an employee’s paycheck.",
+    title: "Employee's Withholding Certificate",
+    description: "Determines the amount of federal income tax to withhold from an employee's paycheck.",
     category: "employment form 08",
     status: "Active",
     route: "/formlast",
@@ -158,7 +159,17 @@ const forms = [
   },
 ]
 
-const categories = ["All", "Tax Forms", "Tax Tables", "Employment", "Business", "Tax Reports", "Compliance", "Benefits"]
+const categories = [
+  { name: "Employment Application Form", link: "/form7" },
+  { name: "Arrest Convication Form", link: "/forms" },
+  { name: "Behaviour Analysis and Therapy Partner", link: "/form1" },
+  { name: "(BAPT)Confidentiality Agreement", link: "/form4" },
+  { name: "Employment Eligibility Form", link: "/form8" },
+  { name: "Residence Certification Form", link: "/form9" },
+  { name: "Employment/Provincional Application", link: "/form6" },
+  { name: "Employ's Withholding Certification", link: "/formlast" },
+];
+
 
 export default function FormsPage() {
   const [selectedCategory, setSelectedCategory] = useState("All")
@@ -184,36 +195,40 @@ export default function FormsPage() {
       <div className="relative bg-white/80 backdrop-blur-lg shadow-xl border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-8">
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl mb-4 shadow-lg">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-              </div>
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-4">
-                Professional Forms Suite
-              </h1>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Streamline your business operations with our comprehensive collection of professional forms and
-                documents
-              </p>
-              <div className="mt-6 flex items-center justify-center space-x-4">
-                <div className="flex items-center space-x-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span>{forms.length} Forms Available</span>
-                </div>
-                <div className="flex items-center space-x-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span>100% Secure</span>
-                </div>
-              </div>
-            </div>
-          </div>
+   
+          
+
+<div className="text-center">
+  <div className="inline-flex items-center justify-center w-28 h-24  rounded-2xl mb-4 shadow-lg">
+    <Image
+      src="/clientform.webp" // ✅ Your custom image path
+      alt="Form Icon"
+      width={60}
+      height={48}
+      className="w-24 h-20 object-contain"
+    />
+  </div>
+
+  <h1 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-4">
+    Behaviour Analysis and Therapy Partners (BAPT)
+  </h1>
+
+  <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+  Behavior Analysis & Therapy Partners (BATP) is devoted to providing behavioral health care to those under 21 years of age. 
+  </p>
+
+  <div className="mt-6 flex items-center justify-center space-x-4">
+    <div className="flex items-center space-x-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
+      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+      <span>{forms.length} Forms Available</span>
+    </div>
+    <div className="flex items-center space-x-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium">
+      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+      <span>100% Secure</span>
+    </div>
+  </div>
+</div>
+</div>
         </div>
       </div>
 
@@ -244,21 +259,25 @@ export default function FormsPage() {
           </div>
 
           {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-2">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 transform hover:scale-105 ${
-                  selectedCategory === category
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
-                    : "bg-white/80 text-gray-700 hover:bg-white hover:shadow-md border border-gray-200"
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
+       
+
+<div className="flex flex-wrap justify-center gap-2">
+  {categories.map((category) => (
+    <Link href={category.link} key={category.name}>
+      <button
+        onClick={() => setSelectedCategory(category.name)}
+        className={`px-6 py-2 rounded-full  border-gray-400-2 text-sm font-semibold transition-all duration-200 transform hover:scale-105 ${
+          selectedCategory === category.name
+            ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
+            : "bg-white/80 text-gray-700 hover:bg-white hover:shadow-md border border-gray-200"
+        }`}
+      >
+        {category.name}
+      </button>
+    </Link>
+  ))}
+</div>
+
         </div>
 
         {/* Forms Grid */}
@@ -388,22 +407,15 @@ export default function FormsPage() {
       </div>
 
       {/* Footer */}
-      <footer className="relative mt-20 bg-gradient-to-r from-gray-900 to-gray-800 text-white">
+      <footer className="relative mt-20 bg-green-500 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center">
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl mb-4">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
+            <div className="inline-flex items-center justify-center w-12 h-12  rounded-xl mb-4">
+            <Image src="/clientform.webp" alt="logo" height={42} width={58}/>
             </div>
-            <h3 className="text-2xl font-bold mb-2">Professional Forms Suite</h3>
-            <p className="text-gray-400 mb-6">Secure • Compliant • Professional</p>
-            <div className="flex justify-center space-x-6 text-sm text-gray-400">
+            <h3 className="text-2xl font-bold mb-2">Behaviour Analysis & Therapy Partners</h3>
+            <p className="text-white-400 mb-6">Secure • Compliant • Professional</p>
+            <div className="flex justify-center space-x-6 text-sm text-gray-white">
               <span>© 2025 All rights reserved</span>
               <span>•</span>
               <span>Privacy Policy</span>
