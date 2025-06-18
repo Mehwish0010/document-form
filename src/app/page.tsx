@@ -340,33 +340,33 @@ By submitting these forms, I confirm that all information provided is accurate, 
           ))}
         </div>
 
-        {/* Stats Section */}
-      
-      </div>
+        {/* Final Submit Button before Footer */}
+        
 
-      {/* Footer */}
-      <footer className="relative mt-20 bg-cyan-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-transparent rounded-xl mb-4">
-            <Image src="/clientform.webp" alt="logo" height={52} width={58}/>
-            </div>
-            <h3 className="text-2xl font-bold mb-2">Behaviour Analysis & Therapy Partners</h3>
-            <p className="text-white-400 mb-6">Secure • Compliant • Professional</p>
-            <div className="flex justify-center space-x-6 text-sm text-gray-white">
-              <span>© 2025 All rights reserved</span>
-              <span>•</span>
-              <Link href="/privacy-policy">
+        {/* Footer */}
+        <footer className="relative mt-20 bg-cyan-600 text-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-12 h-12 bg-transparent rounded-xl mb-4">
+              <Image src="/clientform.webp" alt="logo" height={52} width={58}/>
+              </div>
+              <h3 className="text-2xl font-bold mb-2">Behaviour Analysis & Therapy Partners</h3>
+              <p className="text-white-400 mb-6">Secure • Compliant • Professional</p>
+              <div className="flex justify-center space-x-6 text-sm text-gray-white">
+                <span>© 2025 All rights reserved</span>
+                <span>•</span>
+                <Link href="/privacy-policy">
   <span className="text-white hover:underline cursor-pointer">Privacy Policy</span>
 </Link>
-              <span>•</span>
-              <Link href="/terms-of-services">
+                <span>•</span>
+                <Link href="/terms-of-services">
   <span className="text-white hover:underline cursor-pointer">Terms of Services</span>
 </Link>
+              </div>
             </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
 
       <style jsx>{`
         @keyframes fade-in-up {

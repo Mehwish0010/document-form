@@ -87,9 +87,6 @@ export default function W4FormHeader() {
       }
     });
 
-    // Add this to your form state
-    const [pdfFile, setPdfFile] = useState<File | null>(null);
-
     // Handle text input changes
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.target;
@@ -146,24 +143,61 @@ export default function W4FormHeader() {
       data.append('employerFirstDate', formData.employerInfo.firstDateOfEmployment);
       data.append('employerEIN', formData.employerInfo.ein);
 
-      // Append the PDF file
-      if (pdfFile) {
-        data.append('pdf', pdfFile);
-      } else {
-        alert('Please upload a PDF file.');
-        return;
-      }
-
       try {
-        const response = await fetch('/api/submit-formlast', {
+        const response = await fetch('/api/formlast', {
           method: 'POST',
           body: data,
         });
-        if (!response.ok) throw new Error('Failed to submit form');
-        alert('Form submitted successfully!');
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to submit form');
+        }
+
+        const result = await response.json();
+        if (result.success) {
+          alert('Form submitted successfully!');
+          // Reset form after successful submission
+          setFormData({
+            firstName: '',
+            middleInitial: '',
+            lastName: '',
+            socialSecurityNumber: '',
+            address: '',
+            cityStateZip: '',
+            filingStatus: {
+              single: false,
+              marriedJointly: false,
+              headOfHousehold: false
+            },
+            multipleJobs: {
+              useEstimator: false,
+              useWorksheet: false,
+              twoJobsOnly: false
+            },
+            dependents: {
+              qualifyingChildren: 0,
+              otherDependents: 0,
+              totalCredits: 0
+            },
+            otherAdjustments: {
+              otherIncome: 0,
+              deductions: 0,
+              extraWithholding: 0
+            },
+            employerInfo: {
+              name: '',
+              address: '',
+              firstDateOfEmployment: '',
+              ein: ''
+            }
+          });
+        } else {
+          throw new Error(result.error || 'Failed to submit form');
+        }
       } catch (err) {
         console.error('Form submission error:', err);
-        alert('Failed to submit form. Please try again.');
+        alert(err instanceof Error ? err.message : 'Failed to submit form. Please try again.');
       }
     };
 
@@ -542,18 +576,6 @@ export default function W4FormHeader() {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Add this file input somewhere in your form (e.g., before the submit button) */}
-        <div className="mb-4">
-          <label className="block text-[14px] font-semibold mb-2">Upload Signed PDF</label>
-          <input
-            type="file"
-            accept="application/pdf"
-            onChange={e => setPdfFile(e.target.files?.[0] || null)}
-            required
-            className="block"
-          />
         </div>
 
         <div className="mt-6 border-gray-800 pt-2 text-center">

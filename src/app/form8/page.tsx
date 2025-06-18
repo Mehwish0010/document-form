@@ -1236,11 +1236,11 @@ immigration status, is true and
 
         {/* Submit Button */}
         <div className="mt-8 text-center">
-         npm run build
+        
          
           <button 
             type="submit"
-            className={`bg-blue-500 text-white px-6 py-2 rounded transition-colors`}
+            className={`bg-black text-white px-26 py-4 rounded transition-colors`}
           >
             Submit Form
           </button>

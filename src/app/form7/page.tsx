@@ -55,6 +55,7 @@ type FormData = {
   collegeGraduate: '' | 'YES' | 'NO';
   collegeDegree: string;
   signature: string;
+  signatureDate: string;
 };
 
 const EmploymentApplication = () => {
@@ -95,6 +96,7 @@ const EmploymentApplication = () => {
     collegeGraduate: '',
     collegeDegree: '',
     signature: '',
+    signatureDate: '',
   });
 
   type FormDataKey = keyof FormData;
@@ -205,6 +207,7 @@ const EmploymentApplication = () => {
           collegeGraduate: '',
           collegeDegree: '',
           signature: '',
+          signatureDate: '',
         });
       } else {
         throw new Error(data.message || 'Failed to submit application');
@@ -220,29 +223,29 @@ const EmploymentApplication = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 font-sans">
-      <form onSubmit={handleSubmit} className="max-w-4xl mx-auto bg-white shadow-md p-8">
+    <div className="min-h-screen bg-gray-50 py-4 sm:py-8 px-2 sm:px-4 font-sans">
+      <form onSubmit={handleSubmit} className="max-w-4xl mx-auto bg-white shadow-md p-4 sm:p-8">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold uppercase tracking-wide">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-xl sm:text-2xl font-bold uppercase tracking-wide">
             Behavior Analysis & Therapy Partners
           </h1>
-          <p className="text-sm mt-1">139 Montgomery Ave., Suite 110</p>
-          <p className="text-sm">Bala Cynwyd, PA 19004</p>
-          <p className="text-sm mt-1">Phone: 610-664-6200, -6201</p>
-          <p className="text-sm">Fax: 610-664-6202</p>
+          <p className="text-xs sm:text-sm mt-1">139 Montgomery Ave., Suite 110</p>
+          <p className="text-xs sm:text-sm">Bala Cynwyd, PA 19004</p>
+          <p className="text-xs sm:text-sm mt-1">Phone: 610-664-6200, -6201</p>
+          <p className="text-xs sm:text-sm">Fax: 610-664-6202</p>
         </div>
 
         {/* Title */}
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold border-b-2 border-black pb-2">
+        <div className="text-center mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold border-b-2 border-black pb-2">
             Employment Application
           </h2>
           <p className="text-xs italic mt-1">Please print</p>
         </div>
 
         {/* Equal Access Statement */}
-        <div className="text-xs mb-8 border-b border-gray-300 pb-4">
+        <div className="text-xs mb-6 sm:mb-8 border-b border-gray-300 pb-4">
           <p>
             Equal access to programs, services, and employment is available to all persons. 
             Those applicants requiring reasonable access to accommodations for the application 
@@ -251,14 +254,14 @@ const EmploymentApplication = () => {
         </div>
 
         {/* Applicant Information */}
-        <div className="mb-8">
-          <h3 className="text-xl bg-gray-600 text-white font-bold border-b border-black text-center pb-1 p-4 mb-4">Applicant Information</h3>
+        <div className="mb-6 sm:mb-8">
+          <h3 className="text-lg sm:text-xl bg-gray-600 text-white font-bold border-b border-black text-center pb-1 p-3 sm:p-4 mb-4">Applicant Information</h3>
           
           {/* Full Name and Date */}
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex items-center flex-1">
-              <span className="w-24 shrink-0">Full Name:</span>
-              <div className="flex space-x-2 flex-grow">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 space-y-4 sm:space-y-0">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center w-full sm:flex-1">
+              <span className="w-24 shrink-0 mb-2 sm:mb-0">Full Name:</span>
+              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full">
                 <input 
                   type="text" 
                   name="lastName"
@@ -266,7 +269,7 @@ const EmploymentApplication = () => {
                   onChange={handleInputChange}
                   placeholder="Last" 
                   required
-                  className="flex-1 border-b border-black py-1 px-2 focus:outline-none" 
+                  className="w-full sm:flex-1 border-b border-black py-1 px-2 focus:outline-none" 
                 />
                 <input 
                   type="text" 
@@ -275,7 +278,7 @@ const EmploymentApplication = () => {
                   onChange={handleInputChange}
                   placeholder="First" 
                   required
-                  className="flex-1 border-b border-black py-1 px-2 focus:outline-none" 
+                  className="w-full sm:flex-1 border-b border-black py-1 px-2 focus:outline-none" 
                 />
                 <input 
                   type="text" 
@@ -283,26 +286,26 @@ const EmploymentApplication = () => {
                   value={formData.middleInitial}
                   onChange={handleInputChange}
                   placeholder="M.I." 
-                  className="w-16 border-b border-black py-1 px-2 focus:outline-none" 
+                  className="w-full sm:w-16 border-b border-black py-1 px-2 focus:outline-none" 
                 />
               </div>
             </div>
-            <div className="flex items-center ml-4">
-              <span className="shrink-0">Date:</span>
+            <div className="flex items-center w-full sm:w-auto">
+              <span className="w-16 sm:w-auto shrink-0">Date:</span>
               <input 
                 type="date" 
                 name="date"
                 value={formData.date}
                 onChange={handleInputChange}
                 required
-                className="w-36 ml-2 border-b border-black py-1 px-1 focus:outline-none" 
+                className="w-full sm:w-36 ml-2 border-b border-black py-1 px-1 focus:outline-none" 
               />
             </div>
           </div>
           
           {/* Address */}
           <div className="mb-4">
-            <div className="flex items-center mb-2">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center mb-2 space-y-2 sm:space-y-0">
               <span className="w-24 shrink-0">Address:</span>
               <input 
                 type="text" 
@@ -311,18 +314,18 @@ const EmploymentApplication = () => {
                 onChange={handleInputChange}
                 placeholder="Street Address" 
                 required
-                className="flex-1 border-b border-black py-1 px-2 focus:outline-none mr-4" 
+                className="w-full sm:flex-1 border-b border-black py-1 px-2 focus:outline-none sm:mr-4" 
               />
-              <span className="w-24 shrink-0">Apartment/Unit #:</span>
+              <span className="w-24 shrink-0 mt-2 sm:mt-0">Apartment/Unit #:</span>
               <input 
                 type="text" 
                 name="apartmentUnit"
                 value={formData.apartmentUnit}
                 onChange={handleInputChange}
-                className="flex-1 border-b border-black py-1 px-2 focus:outline-none" 
+                className="w-full sm:flex-1 border-b border-black py-1 px-2 focus:outline-none" 
               />
             </div>
-            <div className="flex space-x-2 mb-4 ml-24"> {/* Align with Address label */}
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 mb-4 ml-0 sm:ml-24">
               <input 
                 type="text" 
                 name="city"
@@ -330,7 +333,7 @@ const EmploymentApplication = () => {
                 onChange={handleInputChange}
                 placeholder="City" 
                 required
-                className="flex-1 border-b border-black py-1 px-2 focus:outline-none" 
+                className="w-full sm:flex-1 border-b border-black py-1 px-2 focus:outline-none" 
               />
               <input 
                 type="text" 
@@ -339,7 +342,7 @@ const EmploymentApplication = () => {
                 onChange={handleInputChange}
                 placeholder="State" 
                 required
-                className="w-20 border-b border-black py-1 px-2 focus:outline-none" 
+                className="w-full sm:w-20 border-b border-black py-1 px-2 focus:outline-none" 
               />
               <input 
                 type="text" 
@@ -348,114 +351,114 @@ const EmploymentApplication = () => {
                 onChange={handleInputChange}
                 placeholder="ZIP Code" 
                 required
-                className="w-24 border-b border-black py-1 px-2 focus:outline-none" 
+                className="w-full sm:w-24 border-b border-black py-1 px-2 focus:outline-none" 
               />
             </div>
           </div>
           
           {/* Phone and Email */}
-          <div className="flex space-x-4 mb-4">
-            <div className="flex-1 flex items-center">
-              <span className="w-24 shrink-0">Phone:</span>
+          <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mb-4">
+            <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center">
+              <span className="w-24 shrink-0 mb-2 sm:mb-0">Phone:</span>
               <input 
                 type="tel" 
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
                 required
-                className="flex-1 border-b border-black py-1 px-2 focus:outline-none" 
+                className="w-full border-b border-black py-1 px-2 focus:outline-none" 
               />
             </div>
-            <div className="flex-1 flex items-center">
-              <span className="w-24 shrink-0">Email:</span>
+            <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center">
+              <span className="w-24 shrink-0 mb-2 sm:mb-0">Email:</span>
               <input 
                 type="email" 
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className="flex-1 border-b border-black py-1 px-2 focus:outline-none" 
+                className="w-full border-b border-black py-1 px-2 focus:outline-none" 
               />
             </div>
           </div>
 
           {/* Driver's License */}
-          <div className="flex items-center mb-4">
-            <span className="w-36 shrink-0">Driver&#39;s License Number:</span>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center mb-4 space-y-2 sm:space-y-0">
+            <span className="w-36 shrink-0 mb-2 sm:mb-0">Driver&#39;s License Number:</span>
             <input 
               type="text" 
               name="driversLicense"
               value={formData.driversLicense}
               onChange={handleInputChange}
               required
-              className="flex-1 border-b border-black py-1 px-2 focus:outline-none mr-4" 
+              className="w-full sm:flex-1 border-b border-black py-1 px-2 focus:outline-none sm:mr-4" 
             />
-            <span className="w-16 shrink-0">State:</span>
+            <span className="w-16 shrink-0 mt-2 sm:mt-0">State:</span>
             <input 
               type="text" 
               name="licenseState"
               value={formData.licenseState}
               onChange={handleInputChange}
               required
-              className="w-16 border-b border-black py-1 px-2 focus:outline-none mr-4" 
+              className="w-full sm:w-16 border-b border-black py-1 px-2 focus:outline-none sm:mr-4" 
             />
-            <span className="w-16 shrink-0">Exp.:</span>
+            <span className="w-16 shrink-0 mt-2 sm:mt-0">Exp.:</span>
             <input 
               type="date" 
               name="licenseExp"
               value={formData.licenseExp}
               onChange={handleInputChange}
               required
-              className="w-20 border-b border-black py-1 px-2 focus:outline-none" 
+              className="w-full sm:w-20 border-b border-black py-1 px-2 focus:outline-none" 
             />
           </div>
           
-          <div className=" font-bold uppercase text-md mb-4">
+          <div className="font-bold uppercase text-sm sm:text-md mb-4">
             DRIVING IS AN ESSENTIAL JOB FUNCTION
           </div>
           
           {/* Date Available and Social Security No. */}
-          <div className="flex space-x-4 mb-4">
-            <div className="flex-1 flex items-center">
-              <span className="w-36 shrink-0">Date Available:</span>
+          <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mb-4">
+            <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center">
+              <span className="w-36 shrink-0 mb-2 sm:mb-0">Date Available:</span>
               <input 
                 type="date" 
                 name="dateAvailable"
                 value={formData.dateAvailable}
                 onChange={handleInputChange}
                 required
-                className="flex-1 border-b border-black py-1 px-2 focus:outline-none" 
+                className="w-full border-b border-black py-1 px-2 focus:outline-none" 
               />
             </div>
-            <div className="flex-1 flex items-center">
-              <span className="w-36 shrink-0">Social Security No.:</span>
+            <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center">
+              <span className="w-36 shrink-0 mb-2 sm:mb-0">Social Security No.:</span>
               <input 
                 type="text" 
                 name="socialSecurity"
                 value={formData.socialSecurity}
                 onChange={handleInputChange}
                 required
-                className="flex-1 border-b border-black py-1 px-2 focus:outline-none" 
+                className="w-full border-b border-black py-1 px-2 focus:outline-none" 
               />
             </div>
           </div>
           
           {/* Position Applied for */}
-          <div className="flex items-center mb-4">
-            <span className="w-36 shrink-0">Position Applied for:</span>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center mb-4">
+            <span className="w-36 shrink-0 mb-2 sm:mb-0">Position Applied for:</span>
             <input 
               type="text" 
               name="positionApplied"
               value={formData.positionApplied}
               onChange={handleInputChange}
               required
-              className="flex-1 border-b border-black py-1 px-2 focus:outline-none" 
+              className="w-full border-b border-black py-1 px-2 focus:outline-none" 
             />
           </div>
           
           {/* Citizenship Section */}
           <div className="grid grid-cols-1 gap-4 mt-6">
-            <div className="flex items-center">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0">
               <span className="w-64 shrink-0">Are you a citizen of the United States?</span>
               <div className="flex space-x-4">
                 <label className="flex items-center">
@@ -477,8 +480,8 @@ const EmploymentApplication = () => {
                   /> NO
                 </label>
               </div>
-              <span className="ml-8 shrink-0">If no, are you authorized to work in the U.S.?</span>
-              <div className="flex space-x-4 ml-4">
+              <span className="mt-2 sm:mt-0 sm:ml-8 shrink-0">If no, are you authorized to work in the U.S.?</span>
+              <div className="flex space-x-4 sm:ml-4">
                 <label className="flex items-center">
                   <input 
                     type="checkbox" 
@@ -501,153 +504,158 @@ const EmploymentApplication = () => {
             </div>
             
             {/* Previous Employment */}
-            <div className="flex items-center">
-              <span className="w-64 shrink-0">Have you ever worked for this company?</span>
-              <div className="flex space-x-4">
-                <label className="flex items-center">
-                  <input 
-                    type="checkbox" 
-                    name="previousEmployment"
-                    checked={formData.previousEmployment === 'YES'}
-                    onChange={handleCheckboxChange}
-                    className="mr-1" 
-                  /> YES
-                </label>
-                <label className="flex items-center">
-                  <input 
-                    type="checkbox" 
-                    name="previousEmployment"
-                    checked={formData.previousEmployment === 'NO'}
-                    onChange={handleCheckboxChange}
-                    className="mr-1" 
-                  /> NO
-                </label>
-              </div>
-              <span className="ml-8 shrink-0">If yes, when?</span>
-              <input 
-                type="text" 
-                name="previousEmploymentDate"
-                value={formData.previousEmploymentDate}
-                onChange={handleInputChange}
-                className="w-40 ml-4 border-b border-black py-1 px-2 focus:outline-none" 
-              />
-            </div>
-
-            {/* Conviction Section */}
-            <div className="flex items-start">
-              <span className="w-64 shrink-0">Have you ever been convicted of a felony?</span>
-              <div className="flex space-x-4">
-                <label className="flex items-center">
-                  <input 
-                    type="checkbox" 
-                    name="felonyConviction"
-                    checked={formData.felonyConviction === 'YES'}
-                    onChange={handleCheckboxChange}
-                    className="mr-1" 
-                  /> YES
-                </label>
-                <label className="flex items-center">
-                  <input 
-                    type="checkbox" 
-                    name="felonyConviction"
-                    checked={formData.felonyConviction === 'NO'}
-                    onChange={handleCheckboxChange}
-                    className="mr-1" 
-                  /> NO
-                </label>
+            <div className="mt-8">
+              <h3 className="text-lg sm:text-xl bg-gray-600 text-white font-bold border-b border-black text-center pb-1 p-3 sm:p-4 mb-4">Previous Employment</h3>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0">
+                <span className="w-64 shrink-0">Have you ever been employed by this company?</span>
+                <div className="flex space-x-4">
+                  <label className="flex items-center">
+                    <input 
+                      type="checkbox" 
+                      name="previousEmployment"
+                      checked={formData.previousEmployment === 'YES'}
+                      onChange={handleCheckboxChange}
+                      className="mr-1" 
+                    /> YES
+                  </label>
+                  <label className="flex items-center">
+                    <input 
+                      type="checkbox" 
+                      name="previousEmployment"
+                      checked={formData.previousEmployment === 'NO'}
+                      onChange={handleCheckboxChange}
+                      className="mr-1" 
+                    /> NO
+                  </label>
+                </div>
+                {formData.previousEmployment === 'YES' && (
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center w-full sm:w-auto mt-2 sm:mt-0 sm:ml-4">
+                    <span className="w-36 shrink-0 mb-2 sm:mb-0">If yes, when?</span>
+                    <input 
+                      type="date" 
+                      name="previousEmploymentDate"
+                      value={formData.previousEmploymentDate}
+                      onChange={handleInputChange}
+                      className="w-full sm:w-36 border-b border-black py-1 px-2 focus:outline-none" 
+                    />
+                  </div>
+                )}
               </div>
             </div>
-          </div>
 
-          {/* Explanation Section */}
-          <div className="mt-2">
-            <p className="text-md font-semibold text-black">
-              If yes, explain: Conviction will NOT necessarily be a bar to employment. 
-              Each instance and explanation will be considered in relation to the position 
-              for which you are applying.
-            </p>
-            <textarea
-              name="felonyExplanation"
-              value={formData.felonyExplanation}
-              onChange={handleInputChange}
-              className="w-full mt-2 border border-gray-300 rounded p-2 focus:outline-none focus:border-blue-500"
-              rows={3}
-              placeholder="Please provide details if applicable..."
-            />
-          </div>
+            {/* Felony Conviction */}
+            <div className="mt-8">
+              <h3 className="text-lg sm:text-xl bg-gray-600 text-white font-bold border-b border-black text-center pb-1 p-3 sm:p-4 mb-4">Felony Conviction</h3>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0">
+                <span className="w-64 shrink-0">Have you ever been convicted of a felony?</span>
+                <div className="flex space-x-4">
+                  <label className="flex items-center">
+                    <input 
+                      type="checkbox" 
+                      name="felonyConviction"
+                      checked={formData.felonyConviction === 'YES'}
+                      onChange={handleCheckboxChange}
+                      className="mr-1" 
+                    /> YES
+                  </label>
+                  <label className="flex items-center">
+                    <input 
+                      type="checkbox" 
+                      name="felonyConviction"
+                      checked={formData.felonyConviction === 'NO'}
+                      onChange={handleCheckboxChange}
+                      className="mr-1" 
+                    /> NO
+                  </label>
+                </div>
+                {formData.felonyConviction === 'YES' && (
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center w-full mt-2 sm:mt-0 sm:ml-4">
+                    <span className="w-36 shrink-0 mb-2 sm:mb-0">If yes, explain:</span>
+                    <textarea 
+                      name="felonyExplanation"
+                      value={formData.felonyExplanation}
+                      onChange={handleInputChange}
+                      className="w-full border-b border-black py-1 px-2 focus:outline-none" 
+                      rows={3}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
 
-          {/* Attendance Section */}
-          <div className="mt-6">
-            <div className="flex items-center">
-              <span className="w-64 shrink-0">Are you able to meet the attendance requirements of the position?</span>
-              <div className="flex space-x-4">
-                <label className="flex items-center">
-                  <input 
-                    type="checkbox" 
-                    name="canMeetAttendance"
-                    checked={formData.canMeetAttendance === 'YES'}
-                    onChange={handleCheckboxChange}
-                    className="mr-1" 
-                  /> YES
-                </label>
-                <label className="flex items-center">
-                  <input 
-                    type="checkbox" 
-                    name="canMeetAttendance"
-                    checked={formData.canMeetAttendance === 'NO'}
-                    onChange={handleCheckboxChange}
-                    className="mr-1" 
-                  /> NO
-                </label>
+            {/* Attendance */}
+            <div className="mt-8">
+              <h3 className="text-lg sm:text-xl bg-gray-600 text-white font-bold border-b border-black text-center pb-1 p-3 sm:p-4 mb-4">Attendance</h3>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0">
+                <span className="w-64 shrink-0">Can you meet the attendance requirements?</span>
+                <div className="flex space-x-4">
+                  <label className="flex items-center">
+                    <input 
+                      type="checkbox" 
+                      name="canMeetAttendance"
+                      checked={formData.canMeetAttendance === 'YES'}
+                      onChange={handleCheckboxChange}
+                      className="mr-1" 
+                    /> YES
+                  </label>
+                  <label className="flex items-center">
+                    <input 
+                      type="checkbox" 
+                      name="canMeetAttendance"
+                      checked={formData.canMeetAttendance === 'NO'}
+                      onChange={handleCheckboxChange}
+                      className="mr-1" 
+                    /> NO
+                  </label>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Education Section */}
-        <div>
-          <h3 className="text-xl font-bold bg-gray-600 text-center text-white border-black pb-1 mb-4">Education</h3>
+        <div className="mt-8">
+          <h3 className="text-lg sm:text-xl bg-gray-600 text-white font-bold border-b border-black text-center pb-1 p-3 sm:p-4 mb-4">Education</h3>
           
           {/* High School */}
           <div className="mb-6">
-            <div className="flex items-center mb-2">
-              <span className="w-24 shrink-0">High School:</span>
-              <span className="ml-4 shrink-0">Address:</span>
-              <input 
-                type="text" 
-                name="highSchoolAddress"
-                value={formData.highSchoolAddress}
-                onChange={handleInputChange}
-                className="flex-1 ml-4 border-b border-black py-1 px-2 focus:outline-none" 
-              />
-            </div>
-            
-            <div className="flex items-center space-x-4 ml-24"> {/* Align with High School label */}
-              <div className="flex items-center">
-                <span>From:</span>
+            <h4 className="text-md font-bold mb-4">High School</h4>
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center">
+                <span className="w-36 shrink-0 mb-2 sm:mb-0">Address:</span>
                 <input 
-                  type="date" 
-                  name="highSchoolFrom"
-                  value={formData.highSchoolFrom}
+                  type="text" 
+                  name="highSchoolAddress"
+                  value={formData.highSchoolAddress}
                   onChange={handleInputChange}
-                  className="w-20 ml-2 border-b border-black py-1 px-2 focus:outline-none" 
+                  className="w-full border-b border-black py-1 px-2 focus:outline-none" 
                 />
               </div>
-              
-              <div className="flex items-center">
-                <span>To:</span>
-                <input 
-                  type="date" 
-                  name="highSchoolTo"
-                  value={formData.highSchoolTo}
-                  onChange={handleInputChange}
-                  className="w-20 ml-2 border-b border-black py-1 px-2 focus:outline-none" 
-                />
+              <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center">
+                  <span className="w-24 shrink-0 mb-2 sm:mb-0">From:</span>
+                  <input 
+                    type="date" 
+                    name="highSchoolFrom"
+                    value={formData.highSchoolFrom}
+                    onChange={handleInputChange}
+                    className="w-full border-b border-black py-1 px-2 focus:outline-none" 
+                  />
+                </div>
+                <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center">
+                  <span className="w-24 shrink-0 mb-2 sm:mb-0">To:</span>
+                  <input 
+                    type="date" 
+                    name="highSchoolTo"
+                    value={formData.highSchoolTo}
+                    onChange={handleInputChange}
+                    className="w-full border-b border-black py-1 px-2 focus:outline-none" 
+                  />
+                </div>
               </div>
-              
-              <div className="flex items-center">
-                <span>Did you graduate?</span>
-                <div className="flex space-x-2 ml-2">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0">
+                <span className="w-36 shrink-0">Did you graduate?</span>
+                <div className="flex space-x-4">
                   <label className="flex items-center">
                     <input 
                       type="checkbox" 
@@ -667,61 +675,61 @@ const EmploymentApplication = () => {
                     /> NO
                   </label>
                 </div>
-              </div>
-              
-              <div className="flex items-center">
-                <span>Diploma:</span>
-                <input 
-                  type="text" 
-                  name="highSchoolDiploma"
-                  value={formData.highSchoolDiploma}
-                  onChange={handleInputChange}
-                  className="w-32 ml-2 border-b border-black py-1 px-2 focus:outline-none" 
-                />
+                {formData.highSchoolGraduate === 'YES' && (
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center w-full sm:w-auto mt-2 sm:mt-0 sm:ml-4">
+                    <span className="w-24 shrink-0 mb-2 sm:mb-0">Diploma:</span>
+                    <input 
+                      type="text" 
+                      name="highSchoolDiploma"
+                      value={formData.highSchoolDiploma}
+                      onChange={handleInputChange}
+                      className="w-full sm:w-48 border-b border-black py-1 px-2 focus:outline-none" 
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
           
           {/* College */}
-          <div>
-            <div className="flex items-center mb-2">
-              <span className="w-24 shrink-0">College:</span>
-              <span className="ml-4 shrink-0">Address:</span>
-              <input 
-                type="text" 
-                name="collegeAddress"
-                value={formData.collegeAddress}
-                onChange={handleInputChange}
-                className="flex-1 ml-4 border-b border-black py-1 px-2 focus:outline-none" 
-              />
-            </div>
-            
-            <div className="flex items-center space-x-4 ml-24"> {/* Align with College label */}
-              <div className="flex items-center">
-                <span>From:</span>
+          <div className="mb-6">
+            <h4 className="text-md font-bold mb-4">College</h4>
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center">
+                <span className="w-36 shrink-0 mb-2 sm:mb-0">Address:</span>
                 <input 
-                  type="date" 
-                  name="collegeFrom"
-                  value={formData.collegeFrom}
+                  type="text" 
+                  name="collegeAddress"
+                  value={formData.collegeAddress}
                   onChange={handleInputChange}
-                  className="w-20 ml-2 border-b border-black py-1 px-2 focus:outline-none" 
+                  className="w-full border-b border-black py-1 px-2 focus:outline-none" 
                 />
               </div>
-              
-              <div className="flex items-center">
-                <span>To:</span>
-                <input 
-                  type="date" 
-                  name="collegeTo"
-                  value={formData.collegeTo}
-                  onChange={handleInputChange}
-                  className="w-20 ml-2 border-b border-black py-1 px-2 focus:outline-none" 
-                />
+              <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center">
+                  <span className="w-24 shrink-0 mb-2 sm:mb-0">From:</span>
+                  <input 
+                    type="date" 
+                    name="collegeFrom"
+                    value={formData.collegeFrom}
+                    onChange={handleInputChange}
+                    className="w-full border-b border-black py-1 px-2 focus:outline-none" 
+                  />
+                </div>
+                <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center">
+                  <span className="w-24 shrink-0 mb-2 sm:mb-0">To:</span>
+                  <input 
+                    type="date" 
+                    name="collegeTo"
+                    value={formData.collegeTo}
+                    onChange={handleInputChange}
+                    className="w-full border-b border-black py-1 px-2 focus:outline-none" 
+                  />
+                </div>
               </div>
-              
-              <div className="flex items-center">
-                <span>Did you graduate?</span>
-                <div className="flex space-x-2 ml-2">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0">
+                <span className="w-36 shrink-0">Did you graduate?</span>
+                <div className="flex space-x-4">
                   <label className="flex items-center">
                     <input 
                       type="checkbox" 
@@ -741,133 +749,88 @@ const EmploymentApplication = () => {
                     /> NO
                   </label>
                 </div>
-              </div>
-              
-              <div className="flex items-center">
-                <span>Degree:</span>
-                <input 
-                  type="text" 
-                  name="collegeDegree"
-                  value={formData.collegeDegree}
-                  onChange={handleInputChange}
-                  className="w-32 ml-2 border-b border-black py-1 px-2 focus:outline-none" 
-                />
+                {formData.collegeGraduate === 'YES' && (
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center w-full sm:w-auto mt-2 sm:mt-0 sm:ml-4">
+                    <span className="w-24 shrink-0 mb-2 sm:mb-0">Degree:</span>
+                    <input 
+                      type="text" 
+                      name="collegeDegree"
+                      value={formData.collegeDegree}
+                      onChange={handleInputChange}
+                      className="w-full sm:w-48 border-b border-black py-1 px-2 focus:outline-none" 
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
         
-        {/* Submit Button */}
-         {/* References Section */}
-         <div>
+        {/* References Section */}
+        <div className="mt-8">
           <h2 className="text-lg font-bold bg-gray-600 text-white text-center px-4 py-1">References</h2>
           <p className="text-sm text-gray-800 mt-2">Please list three professional references.</p>
 
           {[1, 2, 3].map(i => (
             <div key={i} className="mt-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <input type="text" placeholder="Full Name" className="border-b border-black w-full p-1" />
-                <input type="text" placeholder="Relationship" className="border-b border-black w-full p-1" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <input type="text" placeholder="Company" className="border-b border-black w-full p-1" />
-                <input type="text" placeholder="Phone" className="border-b border-black w-full p-1" />
-              </div>
-              <input type="text" placeholder="Address" className="border-b border-black w-full p-1" />
-            </div>
-          ))}
-        </div>
-
-        {/* Previous Employment Section */}
-        <div>
-          <h2 className="text-lg font-bold bg-gray-600 text-center text-white px-4 py-1">Previous Employment</h2>
-
-          {[1, 2].map(i => (
-            <div key={i} className="mt-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <input type="text" placeholder="Company" className="border-b border-black w-full p-1" />
-                <input type="text" placeholder="Phone" className="border-b border-black w-full p-1" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <input type="text" placeholder="Address" className="border-b border-black w-full p-1" />
-                <input type="text" placeholder="Supervisor" className="border-b border-black w-full p-1" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <input type="text" placeholder="Job Title" className="border-b border-black w-full p-1" />
-                <div className="flex gap-2 items-center">
-                  <input type="text" placeholder="Starting Salary $" className="border-b border-black w-full p-1" />
-                  <span>-</span>
-                  <input type="text" placeholder="Ending Salary $" className="border-b border-black w-full p-1" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                  <input type="text" className="border-b border-black w-full p-1" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Relationship</label>
+                  <input type="text" className="border-b border-black w-full p-1" />
                 </div>
               </div>
-              <textarea placeholder="Responsibilities" className="border-b border-black w-full p-1" rows={2}></textarea>
-              <div className="grid grid-cols-3 gap-4 items-center">
-                <input type="text" placeholder="From" className="border-b border-black w-full p-1" />
-                <input type="text" placeholder="To" className="border-b border-black w-full p-1" />
-                <input type="text" placeholder="Reason for Leaving" className="border-b border-black w-full p-1" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Company</label>
+                  <input type="text" className="border-b border-black w-full p-1" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                  <input type="text" className="border-b border-black w-full p-1" />
+                </div>
               </div>
-              <div className="flex items-center gap-4 mt-2">
-                <label className="text-sm">May we contact your previous supervisor for a reference?</label>
-                <label className="flex items-center gap-1 text-sm"><input type="checkbox" /> Yes</label>
-                <label className="flex items-center gap-1 text-sm"><input type="checkbox" /> No</label>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                <input type="text" className="border-b border-black w-full p-1" />
               </div>
-              <hr className="border-gray-600" />
             </div>
           ))}
-        </div>
-
-        {/* Optional: Add more fields if needed */}
-        <div className="flex gap-4 mt-10">
-          <input type="text" placeholder="Company" className="border-b border-black w-full p-1" />
-          <input type="text" placeholder="Phone" className="border-b border-black w-full p-1" />
-        </div>
-
-        {/* Final Employment Entry */}
-        <div>
-          <div className="grid grid-cols-2 gap-4 mb-2">
-            <input type="text" placeholder="Company" className="border-b border-black w-full p-1" />
-            <input type="text" placeholder="Phone" className="border-b border-black w-full p-1" />
-          </div>
-          <div className="grid grid-cols-2 gap-4 mb-2">
-            <input type="text" placeholder="Address" className="border-b border-black w-full p-1" />
-            <input type="text" placeholder="Supervisor" className="border-b border-black w-full p-1" />
-          </div>
-          <div className="grid grid-cols-2 gap-4 mb-2">
-            <input type="text" placeholder="Job Title" className="border-b border-black w-full p-1" />
-            <div className="flex gap-2 items-center">
-              <input type="text" placeholder="Starting Salary $" className="border-b border-black w-full p-1" />
-              <span>-</span>
-              <input type="text" placeholder="Ending Salary $" className="border-b border-black w-full p-1" />
-            </div>
-          </div>
-          <textarea placeholder="Responsibilities" className="border-b border-black w-full p-1" rows={2}></textarea>
-          <div className="grid grid-cols-3 gap-4 items-center mt-2">
-            <input type="text" placeholder="From" className="border-b border-black w-full p-1" />
-            <input type="text" placeholder="To" className="border-b border-black w-full p-1" />
-            <input type="text" placeholder="Reason for Leaving" className="border-b border-black w-full p-1" />
-          </div>
-          <div className="flex items-center gap-4 mt-2">
-            <label className="text-sm mb-4">May we contact your previous supervisor for a reference?</label>
-            <label className="flex items-center gap-1 text-sm"><input type="checkbox" /> Yes</label>
-            <label className="flex items-center gap-1 text-sm"><input type="checkbox" /> No</label>
-          </div>
         </div>
 
         {/* Military Service */}
-        <div>
+        <div className="mt-8">
           <h2 className="text-lg font-bold bg-gray-600 text-center text-white px-4 py-1">Military Service</h2>
-          <div className="grid grid-cols-2 gap-4 mt-4 mb-2">
-            <input type="text" placeholder="Branch" className="border-b border-black w-full p-1" />
-            <div className="flex gap-2">
-              <input type="text" placeholder="From" className="border-b border-black w-full p-1" />
-              <input type="text" placeholder="To" className="border-b border-black w-full p-1" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 mb-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Branch</label>
+              <input type="text" className="border-b border-black w-full p-1" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Service Period</label>
+              <div className="flex gap-2">
+                <input type="text" placeholder="From" className="border-b border-black w-full p-1" />
+                <input type="text" placeholder="To" className="border-b border-black w-full p-1" />
+              </div>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4 mb-2">
-            <input type="text" placeholder="Rank at Discharge" className="border-b border-black w-full p-1" />
-            <input type="text" placeholder="Type of Discharge" className="border-b border-black w-full p-1" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Rank at Discharge</label>
+              <input type="text" className="border-b border-black w-full p-1" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Type of Discharge</label>
+              <input type="text" className="border-b border-black w-full p-1" />
+            </div>
           </div>
-          <textarea placeholder="If other than honorable, explain" className="border-b mt-4 border-black w-full p-1" rows={2}></textarea>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">If other than honorable, explain</label>
+            <textarea className="border-b mt-4 border-black w-full p-1" rows={2}></textarea>
+          </div>
         </div>
 
         {/* Disclaimer and Signature */}
@@ -901,45 +864,57 @@ const EmploymentApplication = () => {
           </div>
         </div>
 
-        {/* Signature and Date */}
-        <div className="grid grid-cols-2 gap-4 mt-10">
-          <div>
-            <label className="block text-sm text-gray-700 mb-2">Signature:</label>
-            <div style={styles.signaturePad}>
-              <SignaturePad
-                ref={signaturePadRef}
-                canvasProps={{
-                  className: 'signature-canvas',
-                  style: styles.signatureCanvas
-                }}
-                onEnd={handleSignatureChange}
-              />
+        {/* Signature and Date Section */}
+        <div className="mt-8">
+          <h3 className="text-lg sm:text-xl bg-gray-600 text-white font-bold border-b border-black text-center pb-1 p-3 mb-4">Signature and Date</h3>
+          <div className="flex flex-col sm:flex-row gap-8">
+            {/* Signature */}
+            <div className="flex-1">
+              <div className="mb-4">
+                <div style={{...styles.signaturePad, height: '150px'}}>
+                  <SignaturePad
+                    ref={signaturePadRef}
+                    canvasProps={{
+                      className: 'signature-canvas',
+                      style: styles.signatureCanvas
+                    }}
+                    onEnd={handleSignatureChange}
+                  />
+                </div>
+                <div className="flex justify-end mt-2">
+                  <button
+                    type="button"
+                    onClick={clearSignature}
+                    className="text-sm text-red-600 hover:text-red-800"
+                  >
+                    Clear Signature
+                  </button>
+                </div>
+              </div>
             </div>
-            <button
-              type="button"
-              onClick={clearSignature}
-              className="mt-2 text-sm text-red-600 hover:text-red-800"
-            >
-              Clear Signature
-            </button>
-          </div>
-          <div className="border-b border-black text-sm text-gray-700">
-            <label>Date:</label>
-            <input
-              type="text"
-              name="date"
-              value={formData.date}
-              onChange={handleInputChange}
-              className="w-full bg-transparent outline-none p-1 text-black"
-              placeholder="MM/DD/YYYY"
-            />
+
+            {/* Date */}
+            <div className="flex-1">
+              <div className="flex flex-col space-y-2">
+                <span className="font-medium">Date:</span>
+                <input 
+                  type="date" 
+                  name="signatureDate"
+                  value={formData.signatureDate}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full border-b border-black py-1 px-2 focus:outline-none" 
+                />
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="flex justify-center mt-8">
+        {/* Submit Button */}
+        <div className="mt-8 text-center">
           <button
             type="submit"
-            className="bg-black ml-68 text-nowrap text-white px-8 py-2 rounded-md hover:bg-gray-800 transition-colors"
+            className="bg-black text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors w-full sm:w-auto"
           >
             Submit Application
           </button>
