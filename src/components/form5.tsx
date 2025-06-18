@@ -86,37 +86,37 @@ export default function ConfidentialityAgreement() {
     };
 
     return (
-      <form onSubmit={handleSubmit} className="max-w-2xl mx-auto px-16 py-16 font-serif text-[15px] text-black leading-relaxed tracking-wide shadow-lg rounded-lg">
-        <h1 className="text-center text-lg font-bold mb-6 uppercase">
+      <form onSubmit={handleSubmit} className="max-w-2xl mx-auto px-4 sm:px-16 py-8 sm:py-16 font-serif text-[14px] sm:text-[15px] text-black leading-relaxed tracking-wide shadow-lg rounded-lg">
+        <h1 className="text-center text-base sm:text-lg font-bold mb-4 sm:mb-6 uppercase">
           Behavior Analysis & Therapy Partners
         </h1>
-        <h2 className="text-center font-semibold mb-10 uppercase">Confidentiality Agreement</h2>
+        <h2 className="text-center font-semibold mb-6 sm:mb-10 uppercase">Confidentiality Agreement</h2>
   
-        <p className="mb-8">
+        <p className="mb-6 sm:mb-8">
           I, <input 
               type="text" 
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="border-b border-black w-64 focus:outline-none focus:border-blue-500 px-2"
+              className="border-b border-black w-48 sm:w-64 focus:outline-none focus:border-blue-500 px-1 sm:px-2"
               required
             />, agree with the following statements:
         </p>
   
-        <p className="mb-8 font-semibold">I have read and understood BATP&#39;s Privacy Policy.</p>
+        <p className="mb-6 sm:mb-8 font-semibold">I have read and understood BATP&#39;s Privacy Policy.</p>
   
-        <p className="mb-8">
+        <p className="mb-6 sm:mb-8">
           I understand that I may encounter confidential information during my time at BATP. As part of the condition of my work with BATP I will keep in strict confidence any information regarding any client, employee, consultant, or business of BATP or any other organization that comes to my attention while at BATP. I will do this in accordance with the BATP privacy policy and applicable laws, including those that require mandatory reporting. If I am unsure of whether or not to disclose, I will bring it up in supervision.
         </p>
   
-        <p className="mb-10">
+        <p className="mb-8 sm:mb-10">
           I also agree to never remove any confidential material of any kind from the premises of BATP unless authorized as part of my duties, or with the express permission or direction to do so from BATP.
         </p>
   
-        <div className="space-y-12 mt-32">
-          <div className="flex justify-between">
+        <div className="space-y-8 sm:space-y-12 mt-24 sm:mt-32">
+          <div className="flex flex-col sm:flex-row justify-between gap-6 sm:gap-0">
             <div className="flex flex-col">
-              <div className="border-b border-black w-60">
+              <div className="border-b border-black w-full sm:w-60">
                 <SignatureCanvas
                   ref={signaturePadRef}
                   canvasProps={{
@@ -128,12 +128,12 @@ export default function ConfidentialityAgreement() {
                 <button
                   type="button"
                   onClick={() => signaturePadRef.current?.clear()}
-                  className="mt-2 px-4 py-2 text-sm text-red-600 hover:text-gray-800 border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+                  className="mt-2 px-3 sm:px-4 py-1 sm:py-2 text-sm text-red-600 hover:text-gray-800 border border-gray-300 rounded hover:bg-gray-50 transition-colors"
                 >
                   Clear Signature
                 </button>
               </div>
-              <span className="text-sm mt-6">Signature</span>
+              <span className="text-xs sm:text-sm mt-4 sm:mt-6">Signature</span>
             </div>
             <div className="flex flex-col">
               <input
@@ -141,10 +141,10 @@ export default function ConfidentialityAgreement() {
                 name="date"
                 value={formData.date}
                 onChange={handleChange}
-                className="border-b border-black w-40 focus:outline-none focus:border-blue-500"
+                className="border-b border-black w-32 sm:w-40 focus:outline-none focus:border-blue-500"
                 required
               />
-              <span className="text-sm mt-6">Date</span>
+              <span className="text-xs sm:text-sm mt-4 sm:mt-6">Date</span>
             </div>
           </div>
   
@@ -154,16 +154,16 @@ export default function ConfidentialityAgreement() {
               name="print"
               value={formData.print}
               onChange={handleChange}
-              className="border-b border-black w-60 focus:outline-none focus:border-blue-500"
+              className="border-b border-black w-48 sm:w-60 focus:outline-none focus:border-blue-500"
               required
             />
-            <span className="text-sm mt-6">Print</span>
+            <span className="text-xs sm:text-sm mt-4 sm:mt-6">Print</span>
           </div>
 
-          <div className="flex justify-center mt-12">
+          <div className="flex justify-center mt-8 sm:mt-12">
             <button
               type="submit"
-              className="bg-black l w-full text-white px-8 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="bg-black w-full text-white px-6 sm:px-8 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               Submit Agreement
             </button>

@@ -508,36 +508,36 @@ const EmploymentApplication = () => {
               <h3 className="text-lg sm:text-xl bg-gray-600 text-white font-bold border-b border-black text-center pb-1 p-3 sm:p-4 mb-4">Previous Employment</h3>
               <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0">
                 <span className="w-64 shrink-0">Have you ever been employed by this company?</span>
-                <div className="flex space-x-4">
-                  <label className="flex items-center">
-                    <input 
-                      type="checkbox" 
-                      name="previousEmployment"
-                      checked={formData.previousEmployment === 'YES'}
-                      onChange={handleCheckboxChange}
-                      className="mr-1" 
-                    /> YES
-                  </label>
-                  <label className="flex items-center">
-                    <input 
-                      type="checkbox" 
-                      name="previousEmployment"
-                      checked={formData.previousEmployment === 'NO'}
-                      onChange={handleCheckboxChange}
-                      className="mr-1" 
-                    /> NO
-                  </label>
-                </div>
+              <div className="flex space-x-4">
+                <label className="flex items-center">
+                  <input 
+                    type="checkbox" 
+                    name="previousEmployment"
+                    checked={formData.previousEmployment === 'YES'}
+                    onChange={handleCheckboxChange}
+                    className="mr-1" 
+                  /> YES
+                </label>
+                <label className="flex items-center">
+                  <input 
+                    type="checkbox" 
+                    name="previousEmployment"
+                    checked={formData.previousEmployment === 'NO'}
+                    onChange={handleCheckboxChange}
+                    className="mr-1" 
+                  /> NO
+                </label>
+              </div>
                 {formData.previousEmployment === 'YES' && (
                   <div className="flex flex-col sm:flex-row items-start sm:items-center w-full sm:w-auto mt-2 sm:mt-0 sm:ml-4">
                     <span className="w-36 shrink-0 mb-2 sm:mb-0">If yes, when?</span>
-                    <input 
+              <input 
                       type="date" 
-                      name="previousEmploymentDate"
-                      value={formData.previousEmploymentDate}
-                      onChange={handleInputChange}
+                name="previousEmploymentDate"
+                value={formData.previousEmploymentDate}
+                onChange={handleInputChange}
                       className="w-full sm:w-36 border-b border-black py-1 px-2 focus:outline-none" 
-                    />
+              />
                   </div>
                 )}
               </div>
@@ -547,66 +547,66 @@ const EmploymentApplication = () => {
             <div className="mt-8">
               <h3 className="text-lg sm:text-xl bg-gray-600 text-white font-bold border-b border-black text-center pb-1 p-3 sm:p-4 mb-4">Felony Conviction</h3>
               <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0">
-                <span className="w-64 shrink-0">Have you ever been convicted of a felony?</span>
-                <div className="flex space-x-4">
-                  <label className="flex items-center">
-                    <input 
-                      type="checkbox" 
-                      name="felonyConviction"
-                      checked={formData.felonyConviction === 'YES'}
-                      onChange={handleCheckboxChange}
-                      className="mr-1" 
-                    /> YES
-                  </label>
-                  <label className="flex items-center">
-                    <input 
-                      type="checkbox" 
-                      name="felonyConviction"
-                      checked={formData.felonyConviction === 'NO'}
-                      onChange={handleCheckboxChange}
-                      className="mr-1" 
-                    /> NO
-                  </label>
-                </div>
+              <span className="w-64 shrink-0">Have you ever been convicted of a felony?</span>
+              <div className="flex space-x-4">
+                <label className="flex items-center">
+                  <input 
+                    type="checkbox" 
+                    name="felonyConviction"
+                    checked={formData.felonyConviction === 'YES'}
+                    onChange={handleCheckboxChange}
+                    className="mr-1" 
+                  /> YES
+                </label>
+                <label className="flex items-center">
+                  <input 
+                    type="checkbox" 
+                    name="felonyConviction"
+                    checked={formData.felonyConviction === 'NO'}
+                    onChange={handleCheckboxChange}
+                    className="mr-1" 
+                  /> NO
+                </label>
+              </div>
                 {formData.felonyConviction === 'YES' && (
                   <div className="flex flex-col sm:flex-row items-start sm:items-center w-full mt-2 sm:mt-0 sm:ml-4">
                     <span className="w-36 shrink-0 mb-2 sm:mb-0">If yes, explain:</span>
-                    <textarea 
-                      name="felonyExplanation"
-                      value={formData.felonyExplanation}
-                      onChange={handleInputChange}
+            <textarea
+              name="felonyExplanation"
+              value={formData.felonyExplanation}
+              onChange={handleInputChange}
                       className="w-full border-b border-black py-1 px-2 focus:outline-none" 
-                      rows={3}
-                    />
+              rows={3}
+            />
                   </div>
                 )}
               </div>
-            </div>
+          </div>
 
             {/* Attendance */}
             <div className="mt-8">
               <h3 className="text-lg sm:text-xl bg-gray-600 text-white font-bold border-b border-black text-center pb-1 p-3 sm:p-4 mb-4">Attendance</h3>
               <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0">
                 <span className="w-64 shrink-0">Can you meet the attendance requirements?</span>
-                <div className="flex space-x-4">
-                  <label className="flex items-center">
-                    <input 
-                      type="checkbox" 
-                      name="canMeetAttendance"
-                      checked={formData.canMeetAttendance === 'YES'}
-                      onChange={handleCheckboxChange}
-                      className="mr-1" 
-                    /> YES
-                  </label>
-                  <label className="flex items-center">
-                    <input 
-                      type="checkbox" 
-                      name="canMeetAttendance"
-                      checked={formData.canMeetAttendance === 'NO'}
-                      onChange={handleCheckboxChange}
-                      className="mr-1" 
-                    /> NO
-                  </label>
+              <div className="flex space-x-4">
+                <label className="flex items-center">
+                  <input 
+                    type="checkbox" 
+                    name="canMeetAttendance"
+                    checked={formData.canMeetAttendance === 'YES'}
+                    onChange={handleCheckboxChange}
+                    className="mr-1" 
+                  /> YES
+                </label>
+                <label className="flex items-center">
+                  <input 
+                    type="checkbox" 
+                    name="canMeetAttendance"
+                    checked={formData.canMeetAttendance === 'NO'}
+                    onChange={handleCheckboxChange}
+                    className="mr-1" 
+                  /> NO
+                </label>
                 </div>
               </div>
             </div>
@@ -623,35 +623,35 @@ const EmploymentApplication = () => {
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center">
                 <span className="w-36 shrink-0 mb-2 sm:mb-0">Address:</span>
-                <input 
-                  type="text" 
-                  name="highSchoolAddress"
-                  value={formData.highSchoolAddress}
-                  onChange={handleInputChange}
+              <input 
+                type="text" 
+                name="highSchoolAddress"
+                value={formData.highSchoolAddress}
+                onChange={handleInputChange}
                   className="w-full border-b border-black py-1 px-2 focus:outline-none" 
-                />
-              </div>
+              />
+            </div>
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                 <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center">
                   <span className="w-24 shrink-0 mb-2 sm:mb-0">From:</span>
-                  <input 
-                    type="date" 
-                    name="highSchoolFrom"
-                    value={formData.highSchoolFrom}
-                    onChange={handleInputChange}
+                <input 
+                  type="date" 
+                  name="highSchoolFrom"
+                  value={formData.highSchoolFrom}
+                  onChange={handleInputChange}
                     className="w-full border-b border-black py-1 px-2 focus:outline-none" 
-                  />
-                </div>
+                />
+              </div>
                 <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center">
                   <span className="w-24 shrink-0 mb-2 sm:mb-0">To:</span>
-                  <input 
-                    type="date" 
-                    name="highSchoolTo"
-                    value={formData.highSchoolTo}
-                    onChange={handleInputChange}
+                <input 
+                  type="date" 
+                  name="highSchoolTo"
+                  value={formData.highSchoolTo}
+                  onChange={handleInputChange}
                     className="w-full border-b border-black py-1 px-2 focus:outline-none" 
-                  />
-                </div>
+                />
+              </div>
               </div>
               <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0">
                 <span className="w-36 shrink-0">Did you graduate?</span>
@@ -678,13 +678,13 @@ const EmploymentApplication = () => {
                 {formData.highSchoolGraduate === 'YES' && (
                   <div className="flex flex-col sm:flex-row items-start sm:items-center w-full sm:w-auto mt-2 sm:mt-0 sm:ml-4">
                     <span className="w-24 shrink-0 mb-2 sm:mb-0">Diploma:</span>
-                    <input 
-                      type="text" 
-                      name="highSchoolDiploma"
-                      value={formData.highSchoolDiploma}
-                      onChange={handleInputChange}
+                <input 
+                  type="text" 
+                  name="highSchoolDiploma"
+                  value={formData.highSchoolDiploma}
+                  onChange={handleInputChange}
                       className="w-full sm:w-48 border-b border-black py-1 px-2 focus:outline-none" 
-                    />
+                />
                   </div>
                 )}
               </div>
@@ -697,35 +697,35 @@ const EmploymentApplication = () => {
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row items-start sm:items-center">
                 <span className="w-36 shrink-0 mb-2 sm:mb-0">Address:</span>
-                <input 
-                  type="text" 
-                  name="collegeAddress"
-                  value={formData.collegeAddress}
-                  onChange={handleInputChange}
+              <input 
+                type="text" 
+                name="collegeAddress"
+                value={formData.collegeAddress}
+                onChange={handleInputChange}
                   className="w-full border-b border-black py-1 px-2 focus:outline-none" 
-                />
-              </div>
+              />
+            </div>
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                 <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center">
                   <span className="w-24 shrink-0 mb-2 sm:mb-0">From:</span>
-                  <input 
-                    type="date" 
-                    name="collegeFrom"
-                    value={formData.collegeFrom}
-                    onChange={handleInputChange}
+                <input 
+                  type="date" 
+                  name="collegeFrom"
+                  value={formData.collegeFrom}
+                  onChange={handleInputChange}
                     className="w-full border-b border-black py-1 px-2 focus:outline-none" 
-                  />
-                </div>
+                />
+              </div>
                 <div className="flex-1 flex flex-col sm:flex-row items-start sm:items-center">
                   <span className="w-24 shrink-0 mb-2 sm:mb-0">To:</span>
-                  <input 
-                    type="date" 
-                    name="collegeTo"
-                    value={formData.collegeTo}
-                    onChange={handleInputChange}
+                <input 
+                  type="date" 
+                  name="collegeTo"
+                  value={formData.collegeTo}
+                  onChange={handleInputChange}
                     className="w-full border-b border-black py-1 px-2 focus:outline-none" 
-                  />
-                </div>
+                />
+              </div>
               </div>
               <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0">
                 <span className="w-36 shrink-0">Did you graduate?</span>
@@ -752,13 +752,13 @@ const EmploymentApplication = () => {
                 {formData.collegeGraduate === 'YES' && (
                   <div className="flex flex-col sm:flex-row items-start sm:items-center w-full sm:w-auto mt-2 sm:mt-0 sm:ml-4">
                     <span className="w-24 shrink-0 mb-2 sm:mb-0">Degree:</span>
-                    <input 
-                      type="text" 
-                      name="collegeDegree"
-                      value={formData.collegeDegree}
-                      onChange={handleInputChange}
+                <input 
+                  type="text" 
+                  name="collegeDegree"
+                  value={formData.collegeDegree}
+                  onChange={handleInputChange}
                       className="w-full sm:w-48 border-b border-black py-1 px-2 focus:outline-none" 
-                    />
+                />
                   </div>
                 )}
               </div>
@@ -766,7 +766,7 @@ const EmploymentApplication = () => {
           </div>
         </div>
         
-        {/* References Section */}
+         {/* References Section */}
         <div className="mt-8">
           <h2 className="text-lg font-bold bg-gray-600 text-white text-center px-4 py-1">References</h2>
           <p className="text-sm text-gray-800 mt-2">Please list three professional references.</p>
@@ -777,26 +777,26 @@ const EmploymentApplication = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                   <input type="text" className="border-b border-black w-full p-1" />
-                </div>
+              </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Relationship</label>
                   <input type="text" className="border-b border-black w-full p-1" />
-                </div>
               </div>
+            </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Company</label>
                   <input type="text" className="border-b border-black w-full p-1" />
-                </div>
-                <div>
+        </div>
+        <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
                   <input type="text" className="border-b border-black w-full p-1" />
-                </div>
+              </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
                 <input type="text" className="border-b border-black w-full p-1" />
-              </div>
+                </div>
             </div>
           ))}
         </div>
@@ -805,27 +805,27 @@ const EmploymentApplication = () => {
         <div className="mt-8">
           <h2 className="text-lg font-bold bg-gray-600 text-center text-white px-4 py-1">Military Service</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 mb-2">
-            <div>
+        <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Branch</label>
               <input type="text" className="border-b border-black w-full p-1" />
-            </div>
+          </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Service Period</label>
               <div className="flex gap-2">
-                <input type="text" placeholder="From" className="border-b border-black w-full p-1" />
-                <input type="text" placeholder="To" className="border-b border-black w-full p-1" />
-              </div>
-            </div>
+            <input type="text" placeholder="From" className="border-b border-black w-full p-1" />
+            <input type="text" placeholder="To" className="border-b border-black w-full p-1" />
           </div>
+          </div>
+        </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
-            <div>
+        <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Rank at Discharge</label>
               <input type="text" className="border-b border-black w-full p-1" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Type of Discharge</label>
               <input type="text" className="border-b border-black w-full p-1" />
-            </div>
+          </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">If other than honorable, explain</label>
@@ -872,24 +872,24 @@ const EmploymentApplication = () => {
             <div className="flex-1">
               <div className="mb-4">
                 <div style={{...styles.signaturePad, height: '150px'}}>
-                  <SignaturePad
-                    ref={signaturePadRef}
-                    canvasProps={{
-                      className: 'signature-canvas',
-                      style: styles.signatureCanvas
-                    }}
-                    onEnd={handleSignatureChange}
-                  />
-                </div>
+              <SignaturePad
+                ref={signaturePadRef}
+                canvasProps={{
+                  className: 'signature-canvas',
+                  style: styles.signatureCanvas
+                }}
+                onEnd={handleSignatureChange}
+              />
+            </div>
                 <div className="flex justify-end mt-2">
-                  <button
-                    type="button"
-                    onClick={clearSignature}
+            <button
+              type="button"
+              onClick={clearSignature}
                     className="text-sm text-red-600 hover:text-red-800"
-                  >
-                    Clear Signature
-                  </button>
-                </div>
+            >
+              Clear Signature
+            </button>
+          </div>
               </div>
             </div>
 
@@ -897,14 +897,14 @@ const EmploymentApplication = () => {
             <div className="flex-1">
               <div className="flex flex-col space-y-2">
                 <span className="font-medium">Date:</span>
-                <input 
+            <input
                   type="date" 
                   name="signatureDate"
                   value={formData.signatureDate}
-                  onChange={handleInputChange}
+              onChange={handleInputChange}
                   required
                   className="w-full border-b border-black py-1 px-2 focus:outline-none" 
-                />
+            />
               </div>
             </div>
           </div>
