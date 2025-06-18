@@ -1,6 +1,6 @@
 "use client"
 import Image from 'next/image';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import SignaturePad from 'react-signature-canvas';
 
 export default function EmploymentForm() {
@@ -55,6 +55,15 @@ export default function EmploymentForm() {
     employerBusiness: '',
     employerAddress: ''
   });
+
+  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => setNotification(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification]);
 
   const handleSection1Change = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -167,10 +176,10 @@ export default function EmploymentForm() {
         throw new Error(result.error || 'Failed to submit form');
       }
 
-      alert('Form submitted successfully! Check your email for the PDF.');
+      setNotification({ message: '✅ Form submitted successfully! Check your email for the PDF.', type: 'success' });
     } catch (err) {
       console.error('Form submission error:', err);
-      alert('Failed to submit form. Please try again.');
+      setNotification({ message: '❌ Failed to submit form. Please try again.', type: 'error' });
     }
   };
 
@@ -486,8 +495,15 @@ export default function EmploymentForm() {
         </div>
       </div>
 
-      {/* Submit Button */}
+      {/* Submit Button and Notification */}
       <div className="mt-8 text-center">
+        {/* Notification ABOVE the button */}
+        {notification && (
+          <div className={`mb-4 p-4 rounded border flex items-center justify-between shadow-lg transition-all duration-300 ${notification.type === 'success' ? 'border-green-400 bg-green-50 text-green-800' : 'border-red-400 bg-red-50 text-red-800'}`}>
+            <span className="text-base sm:text-lg font-semibold">{notification.message}</span>
+            <button type="button" className="ml-4 font-bold text-xl focus:outline-none" onClick={() => setNotification(null)} aria-label="Close">&times;</button>
+          </div>
+        )}
         <button 
           type="submit"
           className="bg-black text-white px-4 sm:px-26 py-2 sm:py-4 rounded transition-colors w-full sm:w-auto text-sm sm:text-base"

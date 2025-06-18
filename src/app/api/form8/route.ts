@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     }
 
     // Validate required sections
-    if (!data.section1 || !data.section2 || !data.supplementB) {
+    if (!data.section1 || !data.section2) {
       return NextResponse.json(
         { error: 'Missing required form sections' },
         { status: 400 }
@@ -101,6 +101,7 @@ export async function POST(request: Request) {
         <img src="${data.section2.employerSignature}" alt="Employer Signature" style="max-width: 300px; border: 1px solid #ccc; padding: 10px; margin: 10px 0;" />
         <p><strong>Certification Date:</strong> ${data.section2.certificationDate}</p>
 
+        ${data.supplementB ? `
         <h3>Supplement B - Reverification</h3>
         <p><strong>Name:</strong> ${data.supplementB.firstName} ${data.supplementB.middleInitial} ${data.supplementB.lastName}</p>
         <p><strong>Rehire Date:</strong> ${data.supplementB.rehireDate}</p>
@@ -113,6 +114,7 @@ export async function POST(request: Request) {
         <img src="${data.supplementB.employerSignature}" alt="Supplement B Employer Signature" style="max-width: 300px; border: 1px solid #ccc; padding: 10px; margin: 10px 0;" />
         <p><strong>Final Signature:</strong></p>
         <img src="${data.supplementB.finalSignature}" alt="Final Signature" style="max-width: 300px; border: 1px solid #ccc; padding: 10px; margin: 10px 0;" />
+        ` : ''}
       `,
       attachments: [
         {
@@ -125,16 +127,16 @@ export async function POST(request: Request) {
           content: data.section2.employerSignature.split('base64,')[1],
           encoding: 'base64'
         },
-        {
+        ...(data.supplementB && data.supplementB.employerSignature ? [{
           filename: 'supplement_employer_signature.png',
           content: data.supplementB.employerSignature.split('base64,')[1],
           encoding: 'base64'
-        },
-        {
+        }] : []),
+        ...(data.supplementB && data.supplementB.finalSignature ? [{
           filename: 'final_signature.png',
           content: data.supplementB.finalSignature.split('base64,')[1],
           encoding: 'base64'
-        }
+        }] : [])
       ]
     };
 
