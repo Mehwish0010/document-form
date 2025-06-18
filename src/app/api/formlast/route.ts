@@ -18,11 +18,6 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-interface EmailError {
-  code: string;
-  command: string;
-}
-
 async function generateW4PDF(data) {
   const pdfDoc = await PDFDocument.create();
   const page = pdfDoc.addPage([600, 900]);

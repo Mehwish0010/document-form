@@ -91,7 +91,7 @@ export async function POST(req) {
     };
     // Send email
     try {
-      const info = await transporter.sendMail(mailOptions);
+      await transporter.sendMail(mailOptions);
       return NextResponse.json({
         success: true,
         message: 'Form submitted successfully'
@@ -106,7 +106,7 @@ export async function POST(req) {
         { status: 200 }
       );
     }
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Failed to process compliance form' },
       { status: 500 }
