@@ -20,18 +20,39 @@ export default function ConfidentialityAgreement() {
       });
     };
 
+    const showNotification = (type: 'success' | 'error', message: string) => {
+      const div = document.createElement('div');
+      div.className = `fixed bottom-4 left-1/2 transform -translate-x-1/2 ${
+        type === 'success'
+          ? 'bg-green-500 text-white'
+          : 'bg-red-500 text-white'
+      } px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out translate-y-0 opacity-100`;
+      div.innerHTML = `
+        <div class="flex items-center">
+          <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            ${type === 'success'
+              ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>'
+              : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>'}
+          </svg>
+          <span>${message}</span>
+        </div>
+      `;
+      document.body.appendChild(div);
+      setTimeout(() => {
+        div.classList.add('translate-y-4', 'opacity-0');
+        setTimeout(() => div.remove(), 300);
+      }, 5000);
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      
       try {
+        const signatureDataUrl = signaturePadRef.current?.toDataURL() || '';
         // Ensure all required fields are filled
-        if (!formData.name || !formData.signature || !formData.date || !formData.print) {
-          alert('Please fill in all required fields');
+        if (!formData.name || !formData.date || !formData.print || !signaturePadRef.current || signaturePadRef.current.isEmpty()) {
+          showNotification('error', 'Please fill in all required fields');
           return;
         }
-
-        const signatureDataUrl = signaturePadRef.current?.toDataURL() || '';
-        
         // Prepare the data
         const formDataToSend = {
           name: formData.name.trim(),
@@ -39,10 +60,6 @@ export default function ConfidentialityAgreement() {
           date: formData.date,
           print: formData.print.trim()
         };
-
-        // Log the data being sent
-        console.log('Sending data:', JSON.stringify(formDataToSend, null, 2));
-
         const response = await fetch('/api/confidentiality-agreement', {
           method: 'POST',
           headers: {
@@ -50,38 +67,21 @@ export default function ConfidentialityAgreement() {
           },
           body: JSON.stringify(formDataToSend)
         });
-
-        // Log the response status
-        console.log('Response status:', response.status);
-
-        // Get the response text first
-        const responseText = await response.text();
-        console.log('Raw response:', responseText);
-
-        // Try to parse the response
-        let result;
-        try {
-          result = JSON.parse(responseText);
-        } catch (parseError) {
-          console.error('Error parsing response:', parseError);
-          throw new Error('Invalid response from server');
-        }
-
+        const result = await response.json();
         if (response.ok && result.success) {
-          alert('Form submitted successfully!');
-          // Reset form
+          showNotification('success', 'Form submitted successfully!');
           setFormData({
             name: '',
             signature: '',
             date: '',
             print: ''
           });
+          signaturePadRef.current?.clear();
         } else {
-          throw new Error(result.error || 'Failed to submit form');
+          showNotification('error', result.error || 'Failed to submit form');
         }
       } catch (error) {
-        console.error('Form submission error:', error);
-        alert(error instanceof Error ? error.message : 'Error submitting form. Please try again.');
+        showNotification('error', error instanceof Error ? error.message : 'Error submitting form. Please try again.');
       }
     };
 
