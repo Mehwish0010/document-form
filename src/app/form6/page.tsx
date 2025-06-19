@@ -18,22 +18,72 @@ export default function DisclosureForm() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // You can access the signature data using sigCanvas.current.toDataURL()
-    console.log('Submitted Data:', formData);
-    if (sigCanvas.current) {
-      console.log('Applicant Signature Data URL:', sigCanvas.current.toDataURL());
-    }
-    // Add console logs for other signatures if needed
-    if (witnessSigCanvas.current) {
-      console.log('Witness Signature Data URL:', witnessSigCanvas.current.toDataURL());
-    }
-    if (guardianSigCanvas.current) {
-      console.log('Guardian Signature Data URL:', guardianSigCanvas.current.toDataURL());
-    }
 
-    alert('Form submitted successfully!');
+    // Collect signature Data URLs
+    const applicantSignature = sigCanvas.current?.toDataURL() || '';
+    const witnessSignature = witnessSigCanvas.current?.toDataURL() || '';
+    const guardianSignature = guardianSigCanvas.current?.toDataURL() || '';
+
+    const payload = {
+      ...formData,
+      signature: applicantSignature,
+      witnessSignature,
+      guardianSignature,
+    };
+
+    try {
+      const response = await fetch('/api/form6', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json();
+      if (result.success) {
+        showNotification('success', 'Your form has been submitted successfully! Thank you.');
+        setFormData({
+          witness: '',
+          name: '',
+          signature: '',
+          date: '',
+          guardianName: '',
+          guardianSignature: '',
+          guardianDate: '',
+        });
+        sigCanvas.current?.clear();
+        witnessSigCanvas.current?.clear();
+        guardianSigCanvas.current?.clear();
+      } else {
+        showNotification('error', result.error || 'Failed to submit form. Please try again.');
+      }
+    } catch {
+      showNotification('error', 'Failed to submit form. Please try again.');
+    }
+  };
+
+  const showNotification = (type: 'success' | 'error', message: string) => {
+    const div = document.createElement('div');
+    div.className = `fixed bottom-4 left-1/2 transform -translate-x-1/2 ${
+      type === 'success'
+        ? 'bg-green-500 text-white'
+        : 'bg-red-500 text-white'
+    } px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out translate-y-0 opacity-100`;
+    div.innerHTML = `
+      <div class="flex items-center">
+        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          ${type === 'success'
+            ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>'
+            : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>'}
+        </svg>
+        <span>${message}</span>
+      </div>
+    `;
+    document.body.appendChild(div);
+    setTimeout(() => {
+      div.classList.add('translate-y-4', 'opacity-0');
+      setTimeout(() => div.remove(), 300);
+    }, 5000);
   };
 
   const sigCanvas = useRef<SignatureCanvas>(null);

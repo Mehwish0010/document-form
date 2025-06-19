@@ -1,6 +1,6 @@
 "use client"
 import W4WithholdingTables from "../../components/ui/tables";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 // Define the interface for form data
 interface W4FormData {
@@ -87,16 +87,6 @@ export default function W4FormHeader() {
       }
     });
 
-    const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
-
-    // Auto-hide notification after 5 seconds
-    useEffect(() => {
-      if (notification) {
-        const timer = setTimeout(() => setNotification(null), 5000);
-        return () => clearTimeout(timer);
-      }
-    }, [notification]);
-
     // Handle text input changes
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.target;
@@ -132,42 +122,50 @@ export default function W4FormHeader() {
       }));
     };
 
-    // Update handleSubmit
+    // Add showNotification function
+    const showNotification = (type: 'success' | 'error', message: string) => {
+      const div = document.createElement('div');
+      div.className = `fixed bottom-4 left-1/2 transform -translate-x-1/2 ${
+        type === 'success'
+          ? 'bg-green-500 text-white'
+          : 'bg-red-500 text-white'
+      } px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out translate-y-0 opacity-100`;
+      div.innerHTML = `
+        <div class="flex items-center">
+          <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            ${type === 'success'
+              ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>'
+              : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>'}
+          </svg>
+          <span>${message}</span>
+        </div>
+      `;
+      document.body.appendChild(div);
+      setTimeout(() => {
+        div.classList.add('translate-y-4', 'opacity-0');
+        setTimeout(() => div.remove(), 300);
+      }, 5000);
+    };
+
+    // Update handleSubmit to use showNotification
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      const data = new FormData();
-
-      // Append all fields
-      data.append('firstName', formData.firstName);
-      data.append('middleInitial', formData.middleInitial);
-      data.append('lastName', formData.lastName);
-      data.append('socialSecurityNumber', formData.socialSecurityNumber);
-      data.append('address', formData.address);
-      data.append('cityStateZip', formData.cityStateZip);
-      data.append('filingStatus', JSON.stringify(formData.filingStatus));
-      data.append('multipleJobs', JSON.stringify(formData.multipleJobs));
-      data.append('dependents', JSON.stringify(formData.dependents));
-      data.append('otherAdjustments', JSON.stringify(formData.otherAdjustments));
-      data.append('employerName', formData.employerInfo.name);
-      data.append('employerAddress', formData.employerInfo.address);
-      data.append('employerFirstDate', formData.employerInfo.firstDateOfEmployment);
-      data.append('employerEIN', formData.employerInfo.ein);
-
       try {
         const response = await fetch('/api/formlast', {
           method: 'POST',
-          body: data,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
         });
 
         if (!response.ok) {
           const errorData = await response.json();
-          setNotification({ message: errorData.error || 'Failed to submit form', type: 'error' });
+          showNotification('error', errorData.error || 'Failed to submit form');
           return;
         }
 
         const result = await response.json();
         if (result.success) {
-          setNotification({ message: '✅ Your W-4 form has been submitted successfully! Thank you for completing your Employee\'s Withholding Certificate. If you have any questions, please contact your HR department.', type: 'success' });
+          showNotification('success', 'Your W-4 form has been submitted successfully! Thank you for completing your Employee\'s Withholding Certificate. If you have any questions, please contact your HR department.');
           // Reset form after successful submission
           setFormData({
             firstName: '',
@@ -204,11 +202,11 @@ export default function W4FormHeader() {
             }
           });
         } else {
-          setNotification({ message: result.error || 'Failed to submit form', type: 'error' });
+          showNotification('error', result.error || 'Failed to submit form');
         }
       } catch (err) {
         console.error('Form submission error:', err);
-        setNotification({ message: err instanceof Error ? err.message : 'Failed to submit form. Please try again or contact support.', type: 'error' });
+        showNotification('error', err instanceof Error ? err.message : 'Failed to submit form. Please try again or contact support.');
       }
     };
 
@@ -598,13 +596,6 @@ export default function W4FormHeader() {
         </div>
 
         <W4WithholdingTables />
-        {/* Notification ABOVE the button */}
-        {notification && (
-          <div className={`mt-4 mb-4 p-4 rounded border flex items-center justify-between shadow-lg transition-all duration-300 ${notification.type === 'success' ? 'border-green-400 bg-green-50 text-green-800' : 'border-red-400 bg-red-50 text-red-800'}`}>
-            <span className="text-base sm:text-lg font-semibold">{notification.message}</span>
-            <button type="button" className="ml-4 font-bold text-xl focus:outline-none" onClick={() => setNotification(null)} aria-label="Close">&times;</button>
-          </div>
-        )}
         <div className="mt-4 sm:mt-6 flex justify-center">
           <button
             type="submit"

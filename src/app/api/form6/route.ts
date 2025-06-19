@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 // Email configuration
 const emailConfig = {
@@ -28,94 +29,87 @@ transporter.verify((error) => {
   }
 });
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const formData = await request.formData();
-    console.log('📝 Form data received');
+    const body = await req.json();
+    const {
+      witness,
+      name,
+      signature,
+      date,
+      guardianName,
+      guardianSignature,
+      guardianDate
+    } = body;
 
-    // Extract form fields
-    const name = formData.get('name') as string;
-    const signature = formData.get('signature') as string;
-    const date = formData.get('date') as string;
-    const print = formData.get('print') as string;
-    const pdfFile = formData.get('pdf') as File | null;
+    // Generate PDF
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage([612, 792]); // A4 size
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    let y = 750;
+    const drawText = (text: string, x: number, y: number, isBold: boolean = false, size: number = 12) => {
+      page.drawText(text, {
+        x,
+        y,
+        size,
+        font: isBold ? boldFont : font,
+        color: rgb(0, 0, 0),
+      });
+    };
 
-    console.log('📋 Extracted fields:', { name, date, print });
+    drawText('DISCLOSURE STATEMENT', 50, y, true, 18); y -= 30;
+    drawText('Application for Employment, Including Provisional Employment', 50, y, false, 12); y -= 30;
+    drawText('Required by the Child Protective Service Law', 50, y, false, 12); y -= 20;
+    drawText('23 Pa. C.S. Section 6344', 50, y, false, 12); y -= 30;
 
-    // Validate fields
-    if (!name || !signature || !date || !print || !pdfFile) {
-      console.error('❌ Missing required fields');
-      return NextResponse.json(
-        { error: 'Missing required fields or PDF file' },
-        { status: 400 }
-      );
+    drawText('Witness:', 50, y, true); drawText(witness || '', 150, y); y -= 30;
+    drawText('Applicant Name:', 50, y, true); drawText(name || '', 200, y); y -= 30;
+    drawText('Date:', 50, y, true); drawText(date || '', 120, y); y -= 30;
+
+    // Witness Signature
+    drawText('Witness Signature:', 50, y, true); y -= 60;
+    if (body.witnessSignature) {
+      try {
+        const witnessSigImg = await pdfDoc.embedPng(body.witnessSignature.split(',')[1]);
+        page.drawImage(witnessSigImg, { x: 50, y: y, width: 150, height: 50 });
+      } catch { /* ignore */ }
+    }
+    y -= 60;
+    // Applicant Signature
+    drawText('Applicant Signature:', 50, y, true); y -= 60;
+    if (signature) {
+      try {
+        const sigImg = await pdfDoc.embedPng(signature.split(',')[1]);
+        page.drawImage(sigImg, { x: 50, y: y, width: 150, height: 50 });
+      } catch { /* ignore */ }
+    }
+    y -= 60;
+    // Guardian Section
+    drawText('Guardian Name:', 50, y, true); drawText(guardianName || '', 180, y); y -= 30;
+    drawText('Guardian Date:', 50, y, true); drawText(guardianDate || '', 180, y); y -= 30;
+    drawText('Guardian Signature:', 50, y, true); y -= 60;
+    if (guardianSignature) {
+      try {
+        const guardianSigImg = await pdfDoc.embedPng(guardianSignature.split(',')[1]);
+        page.drawImage(guardianSigImg, { x: 50, y: y, width: 150, height: 50 });
+      } catch { /* ignore */ }
     }
 
-    // Read PDF into buffer
-    const arrayBuffer = await pdfFile.arrayBuffer();
-    const pdfBuffer = Buffer.from(arrayBuffer);
-
-    console.log('📄 PDF buffer size:', pdfBuffer.length, 'bytes');
-    if (pdfBuffer.length === 0) {
-      console.error('❌ Uploaded PDF is empty');
-      return NextResponse.json(
-        { error: 'Uploaded PDF is empty' },
-        { status: 400 }
-      );
-    }
+    const pdfBytes = await pdfDoc.save();
 
     // Email options
     const mailOptions = {
       from: emailConfig.user,
       to: emailConfig.receiver,
-      subject: 'New Caregiver Disclosure Form Submission',
-      html: `
-        <div style="font-family: sans-serif; padding: 20px; background-color: #ffffff;">
-          <h2 style="text-align: center; color: #333; margin-bottom: 5px;">RESIDENCY CERTIFICATION FORM</h2>
-          <h3 style="text-align: center; color: #555; margin-top: 0; margin-bottom: 5px;">Local Earned Income Tax Withholding</h3>
-          
-          <hr style="border: none; height: 1px; background-color: #333; margin: 5px auto 2px auto; ">
-          <hr style="border: none; height: 1px; background-color: #333; margin: 2px auto 20px auto; ">
-          
-          <p style="font-size: 12px; color: #666; margin-top: 20px; margin-bottom: 20px;">
-            <strong>TO EMPLOYERS/TAXPAYERS:</strong> This form is to be used by employers and taxpayers to report essential information for the collection and distribution of Local Earned Income Taxes
-            to the local EIT collector. This form must be used by employers when a new employee is hired or when a current employee notifies employer
-            of a name or address change. Use the Address Search Application at dced.pa.gov/Act32 to determine PSD codes, EIT rates,
-            and tax collector contact information.
-          </p>
-          
-          <div style="background-color: #f4f4f4; padding: 10px; margin-top: 20px; margin-bottom: 10px;">
-            <h4 style="margin: 0; color: #333;">EMPLOYEE INFORMATION – RESIDENCE LOCATION</h4>
-          </div>
-          
-          <p style="margin-top: 0; margin-bottom: 5px;"><strong>Name (Last Name, First Name, Middle Initial):</strong> ${name}</p>
-          <p style="margin-top: 5px; margin-bottom: 5px;"><strong>Date:</strong> ${date}</p>
-          <p style="margin-top: 5px; margin-bottom: 5px;"><strong>Print Name:</strong> ${print}</p>
-          <p style="margin-top: 5px; margin-bottom: 20px;"><strong>Signature:</strong> ${signature}</p>
-          
-          <div style="background-color: #f4f4f4; padding: 10px; margin-top: 20px; margin-bottom: 10px;">
-            <h4 style="margin: 0; color: #333;">EMPLOYER INFORMATION – EMPLOYMENT LOCATION</h4>
-          </div>
-          
-          <!-- Add placeholders for employer info if needed -->
-
-          <div style="background-color: #f4f4f4; padding: 10px; margin-top: 20px; margin-bottom: 10px;">
-            <h4 style="margin: 0; color: #333;">CERTIFICATION</h4>
-          </div>
-          
-          <p style="font-size: 12px; color: #666; margin-top: 20px; margin-bottom: 20px;">Under penalties of perjury, I (we) declare that I (we) have examined this information, including all accompanying
-          schedules and statements and to the best of my (our) belief, they are true, correct and complete.</p>
-
-          <p style="margin-top: 20px;"><em>PDF is attached below.</em></p>
-        </div>
-      `,
+      subject: 'Disclosure Statement Form Submission',
+      text: `Disclosure Statement submitted by ${name}.`,
       attachments: [
         {
-          filename: 'CaregiverDisclosureForm.pdf',
-          content: pdfBuffer,
-          contentType: 'application/pdf'
-        }
-      ]
+          filename: 'Disclosure-Statement.pdf',
+          content: Buffer.from(pdfBytes),
+        },
+      ],
     };
 
     // Send email

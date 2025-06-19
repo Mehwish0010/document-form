@@ -2,21 +2,12 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 
-// Email configuration (replace with your real credentials)
+// Use a working email config (update with your real credentials)
 const emailConfig = {
-  user: 'your-email@gmail.com',
-  pass: 'your-app-specific-password',
-  receiver: 'receiver-email@example.com'
+  user: 'mehwishsheikh0010sheikh@gmail.com',
+  pass: 'flbw wrtr rwgo grlu',
+  receiver: 'mehwishsheikh0010sheikh@gmail.com'
 };
-
-// Create transporter
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: emailConfig.user,
-    pass: emailConfig.pass
-  }
-});
 
 async function generateW4PDF(data) {
   const pdfDoc = await PDFDocument.create();
@@ -102,6 +93,13 @@ export async function POST(req) {
       ],
     };
     // Send email
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: emailConfig.user,
+        pass: emailConfig.pass
+      }
+    });
     try {
       console.log('Sending email...');
       const info = await transporter.sendMail(mailOptions);
@@ -114,17 +112,17 @@ export async function POST(req) {
       console.error('Error sending email:', emailError);
       return NextResponse.json(
         { 
-          success: true,
-          error: 'Form submitted but email notification failed',
+          success: false,
+          error: 'Failed to send email notification',
           details: emailError
         },
-        { status: 200 }
+        { status: 500 }
       );
     }
   } catch (error) {
     console.error('Server error:', error);
     return NextResponse.json(
-      { error: 'Failed to process form submission' },
+      { success: false, error: 'Failed to process form submission' },
       { status: 500 }
     );
   }

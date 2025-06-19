@@ -42,7 +42,6 @@ const ResidencyCertificationForm = () => {
     employeePhone: '',
     email: '',
   });
-
   const signatureRef = useRef<SignatureCanvas>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +50,7 @@ const ResidencyCertificationForm = () => {
     setFormData(prev => {
       const newData = { ...prev, [name]: value };
       console.log('New form data:', newData); // Debug log
+      // Clear message on change
       return newData;
     });
   };
@@ -104,14 +104,14 @@ const ResidencyCertificationForm = () => {
     if (missingFields.length > 0) {
       console.log('Missing fields:', missingFields);
       console.log('Form data state:', formData);
-      alert(`Please fill in the following required fields:\n${missingFields.join('\n')}`);
+      showNotification('error', `Please fill in the following required fields: ${missingFields.join(', ')}`);
       return;
     }
 
     try {
       console.log('Attempting to submit form data:', formData);
       
-      const response = await fetch('/api/submit-form9', {
+      const response = await fetch('/api/form9', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,8 +124,7 @@ const ResidencyCertificationForm = () => {
       console.log('API Response:', data);
 
       if (data.success) {
-        alert('Form submitted successfully!');
-        // Reset form after successful submission
+        showNotification('success', 'Your form has been submitted successfully! Thank you.');
         setFormData({
           name: '',
           ssn1: '',
@@ -168,15 +167,11 @@ const ResidencyCertificationForm = () => {
           signatureRef.current.clear();
         }
       } else {
-        throw new Error(data.message || 'Failed to submit form');
+        showNotification('error', data.error || 'Failed to submit form. Please try again.');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      if (error instanceof Error) {
-        alert(`Failed to submit form: ${error.message}`);
-      } else {
-        alert('Failed to submit form. Please try again.');
-      }
+      showNotification('error', 'Failed to submit form. Please try again.');
     }
   };
 
@@ -192,6 +187,30 @@ const ResidencyCertificationForm = () => {
       signatureRef.current.clear();
       setFormData({ ...formData, employeeSignature: '' });
     }
+  };
+
+  const showNotification = (type: 'success' | 'error', message: string) => {
+    const div = document.createElement('div');
+    div.className = `fixed bottom-4 left-1/2 transform -translate-x-1/2 ${
+      type === 'success'
+        ? 'bg-green-500 text-white'
+        : 'bg-red-500 text-white'
+    } px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 ease-in-out translate-y-0 opacity-100`;
+    div.innerHTML = `
+      <div class="flex items-center">
+        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          ${type === 'success'
+            ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>'
+            : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>'}
+        </svg>
+        <span>${message}</span>
+      </div>
+    `;
+    document.body.appendChild(div);
+    setTimeout(() => {
+      div.classList.add('translate-y-4', 'opacity-0');
+      setTimeout(() => div.remove(), 300);
+    }, 5000);
   };
 
   return (
@@ -682,7 +701,7 @@ const ResidencyCertificationForm = () => {
         For information on obtaining the appropriate MUNICIPALITY, PSD CODES, and EIT RATES visit:<br />
         <a href="https://dced.pa.gov/Act32" target="_blank" className="text-blue-700 underline">dced.pa.gov/Act32</a>
       </p>
-      <div className="mt-4 sm:mt-8 flex justify-center">
+      <div className="mt-4 sm:mt-8 flex flex-col items-center">
         <button
           type="submit"
           className="bg-black text-white px-4 sm:px-8 py-2 sm:py-3 rounded-md hover:bg-gray-800 transition-colors duration-200 uppercase font-semibold text-xs sm:text-sm w-full sm:w-auto"
