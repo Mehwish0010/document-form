@@ -23,7 +23,6 @@ export async function POST(req: Request) {
     // Extract all fields from the JSON body
     const {
       name,
-      ssn1, ssn2, ssn3, ssn4, ssn5, ssn6, ssn7, ssn8, ssn9,
       streetAddress, address2, city, state, zip, phone,
       municipality, county, residentPsd, residentRate,
       employerName, ein, employerStreet, employerAddress2,
