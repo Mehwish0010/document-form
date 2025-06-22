@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 const emailConfig = {
   user: 'mehwishsheikh0010sheikh@gmail.com',
@@ -47,10 +48,78 @@ export async function POST(req: Request) {
       }, { status: 400 });
     }
 
-    // Compose SSN and EIN as strings
-    const ssn = [ssn1, ssn2, ssn3, ssn4, ssn5, ssn6, ssn7, ssn8, ssn9].join('');
-    // EIN is not split in the form, but if it is, join as above
-    // const einFull = [ein1, ein2, ein3, ein4, ein5, ein6, ein7, ein8, ein9].join('');
+    const ssn = [body.ssn1, body.ssn2, body.ssn3, body.ssn4, body.ssn5, body.ssn6, body.ssn7, body.ssn8, body.ssn9].join('');
+
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage([842, 1191]); // A4 size landscape
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+    const drawText = (text: string, x: number, y: number, size: number, isBold: boolean = false) => {
+      page.drawText(text, {
+        x,
+        y,
+        size,
+        font: isBold ? boldFont : font,
+        color: rgb(0, 0, 0),
+      });
+    };
+
+    // Title
+    drawText("RESIDENCY CERTIFICATION FORM", 250, 1140, 20, true);
+    drawText("Local Earned Income Tax Withholding", 280, 1120, 16, true);
+
+    // EMPLOYEE INFORMATION
+    drawText("EMPLOYEE INFORMATION – RESIDENCE LOCATION", 200, 1080, 16, true);
+    drawText(`Name: ${body.name}`, 50, 1050, 12);
+    drawText(`Social Security Number: ${ssn}`, 450, 1050, 12);
+    drawText(`Street Address: ${body.streetAddress}`, 50, 1030, 12);
+    drawText(`Address Line 2: ${body.address2}`, 50, 1010, 12);
+    drawText(`City: ${body.city}`, 50, 990, 12);
+    drawText(`State: ${body.state}`, 250, 990, 12);
+    drawText(`Zip Code: ${body.zip}`, 450, 990, 12);
+    drawText(`Daytime Phone Number: ${body.phone}`, 50, 970, 12);
+    drawText(`MUNICIPALITY: ${body.municipality}`, 50, 950, 12);
+    drawText(`COUNTY: ${body.county}`, 50, 930, 12);
+    drawText(`RESIDENT PSD CODE: ${body.residentPsd}`, 450, 930, 12);
+    drawText(`TOTAL RESIDENT EIT RATE: ${body.residentRate}`, 450, 910, 12);
+
+    // EMPLOYER INFORMATION
+    drawText("EMPLOYER INFORMATION – EMPLOYMENT LOCATION", 200, 870, 16, true);
+    drawText(`Employer Business Name: ${body.employerName}`, 50, 840, 12);
+    drawText(`Employer FEIN: ${body.ein}`, 450, 840, 12);
+    drawText(`Employer Street Address: ${body.employerStreet}`, 50, 820, 12);
+    drawText(`Address Line 2: ${body.employerAddress2}`, 50, 800, 12);
+    drawText(`City: ${body.employerCity}`, 50, 780, 12);
+    drawText(`State: ${body.employerState}`, 250, 780, 12);
+    drawText(`Zip Code: ${body.employerZip}`, 450, 780, 12);
+    drawText(`Daytime Phone Number: ${body.employerPhone}`, 50, 760, 12);
+    drawText(`MUNICIPALITY: ${body.employerMunicipality}`, 50, 740, 12);
+    drawText(`COUNTY: ${body.employerCounty}`, 50, 720, 12);
+    drawText(`WORK LOCATION PSD CODE: ${body.workPsd}`, 450, 720, 12);
+    drawText(`WORK LOCATION NON-RESIDENT EIT RATE: ${body.nonResRate}`, 450, 700, 12);
+    
+    // CERTIFICATION
+    drawText("CERTIFICATION", 350, 660, 16, true);
+    drawText(`Date: ${body.date}`, 50, 630, 12);
+    drawText(`Phone Number: ${body.employeePhone}`, 50, 610, 12);
+    drawText(`Email Address: ${body.email}`, 50, 590, 12);
+    
+    if (body.employeeSignature) {
+        try {
+            const signatureImage = await pdfDoc.embedPng(body.employeeSignature.split(',')[1]);
+            page.drawImage(signatureImage, {
+                x: 50,
+                y: 500,
+                width: 200,
+                height: 50,
+            });
+        } catch (error) {
+            console.error('Error embedding signature:', error);
+        }
+    }
+
+    const pdfBytes = await pdfDoc.save();
 
     // Create HTML content for the email
     const htmlContent = `
@@ -102,7 +171,14 @@ export async function POST(req: Request) {
       from: emailConfig.user,
       to: emailConfig.receiver,
       subject: 'Residency Certification Form Submission',
-      html: htmlContent
+      html: htmlContent,
+      attachments: [
+        {
+          filename: 'residency_certification_form.pdf',
+          content: Buffer.from(pdfBytes),
+          contentType: 'application/pdf',
+        },
+      ],
     };
 
     // Send email
@@ -112,13 +188,15 @@ export async function POST(req: Request) {
         success: true,
         message: 'Form submitted successfully and email notification sent'
       });
-    } catch {
+    } catch (error) {
+      console.error(error)
       return NextResponse.json(
         { success: false, error: 'Failed to send email notification' },
         { status: 500 }
       );
     }
-  } catch {
+  } catch (error) {
+    console.error(error)
     return NextResponse.json(
       { success: false, error: 'Server error' },
       { status: 500 }

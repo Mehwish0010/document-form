@@ -26,7 +26,15 @@ const ResidencyCertificationForm = () => {
     residentPsd: '',
     residentRate: '',
     employerName: '',
-    ein: '',
+    ein1: '',
+    ein2: '',
+    ein3: '',
+    ein4: '',
+    ein5: '',
+    ein6: '',
+    ein7: '',
+    ein8: '',
+    ein9: '',
     employerStreet: '',
     employerAddress2: '',
     employerCity: '',
@@ -110,13 +118,19 @@ const ResidencyCertificationForm = () => {
 
     try {
       console.log('Attempting to submit form data:', formData);
+
+      const { ein1, ein2, ein3, ein4, ein5, ein6, ein7, ein8, ein9, ...rest } = formData;
+      const submissionData = {
+        ...rest,
+        ein: [ein1, ein2, ein3, ein4, ein5, ein6, ein7, ein8, ein9].join(''),
+      };
       
       const response = await fetch('/api/form9', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(submissionData),
       });
 
       console.log('Response status:', response.status);
@@ -147,7 +161,15 @@ const ResidencyCertificationForm = () => {
           residentPsd: '',
           residentRate: '',
           employerName: '',
-          ein: '',
+          ein1: '',
+          ein2: '',
+          ein3: '',
+          ein4: '',
+          ein5: '',
+          ein6: '',
+          ein7: '',
+          ein8: '',
+          ein9: '',
           employerStreet: '',
           employerAddress2: '',
           employerCity: '',
@@ -243,6 +265,7 @@ const ResidencyCertificationForm = () => {
             <div className="flex items-center">
               <input
                 name="ssn1"
+                value={formData.ssn1}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -255,6 +278,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ssn2"
+                value={formData.ssn2}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -267,6 +291,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ssn3"
+                value={formData.ssn3}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -279,6 +304,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ssn4"
+                value={formData.ssn4}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -291,6 +317,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ssn5"
+                value={formData.ssn5}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -303,6 +330,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ssn6"
+                value={formData.ssn6}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -315,6 +343,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ssn7"
+                value={formData.ssn7}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -327,6 +356,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ssn8"
+                value={formData.ssn8}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -339,6 +369,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ssn9"
+                value={formData.ssn9}
                 maxLength={1}
                 onChange={handleChange}
                 className="w-5 sm:w-6 border p-1 text-center uppercase border-r text-[11px] sm:text-[13px]"
@@ -454,13 +485,14 @@ const ResidencyCertificationForm = () => {
         <div className="grid grid-cols-3 gap-2 mt-2 border">
           <div className="col-span-2 flex items-start border-r pr-2 relative">
             <div className="absolute left-2 top-1 uppercase text-black pointer-events-none text-[0.6rem] sm:text-[0.7rem]">Employer Business Name (Use Federal ID Name)</div>
-            <input name="employerName" onChange={handleChange} className="w-full p-2 sm:p-3 pt-5 sm:pt-6 uppercase text-[11px] sm:text-[13px]" />
+            <input name="employerName" value={formData.employerName} onChange={handleChange} className="w-full p-2 sm:p-3 pt-5 sm:pt-6 uppercase text-[11px] sm:text-[13px]" />
           </div>
           <div className="flex flex-col pl-0.5 ">
             <div className="text-[0.6rem] uppercase text-black">EMPLOYER FEIN</div>
             <div className="flex items-center">
               <input
                 name="ein1"
+                value={formData.ein1}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -473,6 +505,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ein2"
+                value={formData.ein2}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -485,6 +518,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ein3"
+                value={formData.ein3}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -497,6 +531,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ein4"
+                value={formData.ein4}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -509,6 +544,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ein5"
+                value={formData.ein5}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -521,6 +557,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ein6"
+                value={formData.ein6}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -533,6 +570,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ein7"
+                value={formData.ein7}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -545,6 +583,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ein8"
+                value={formData.ein8}
                 maxLength={1}
                 onChange={(e) => {
                   if (e.target.value.length === 1) {
@@ -557,6 +596,7 @@ const ResidencyCertificationForm = () => {
               />
               <input
                 name="ein9"
+                value={formData.ein9}
                 maxLength={1}
                 onChange={handleChange}
                 className="w-5 sm:w-6 border border-t border-b border-r p-1 text-[11px] sm:text-[13px]"
@@ -566,11 +606,11 @@ const ResidencyCertificationForm = () => {
         </div>
         <div className="relative">
           <div className="absolute left-2 top-1 uppercase mt-1 text-black pointer-events-none text-[0.6rem] sm:text-[0.7rem]">Employer Street Address (No PO Box, RD or RR)</div>
-          <input name="employerStreet" onChange={handleChange} className="w-full border p-2 sm:p-3 pt-5 sm:pt-6 mt-2 uppercase text-[11px] sm:text-[13px]" />
+          <input name="employerStreet" value={formData.employerStreet} onChange={handleChange} className="w-full border p-2 sm:p-3 pt-5 sm:pt-6 mt-2 uppercase text-[11px] sm:text-[13px]" />
         </div>
         <div className="relative">
           <div className="absolute left-2 top-1 mt-1 text-black pointer-events-none text-[0.6rem] sm:text-[0.7rem]">Address Line 2</div>
-          <input name="employerAddress2" onChange={handleChange} className="w-full border p-2 sm:p-3 pt-5 sm:pt-6 mt-2 uppercase text-[11px] sm:text-[13px]" />
+          <input name="employerAddress2" value={formData.employerAddress2} onChange={handleChange} className="w-full border p-2 sm:p-3 pt-5 sm:pt-6 mt-2 uppercase text-[11px] sm:text-[13px]" />
         </div>
 
         <div className="grid grid-cols-4 gap-2 mt-2 align-text-top border">
@@ -626,16 +666,16 @@ const ResidencyCertificationForm = () => {
           <div className="grid grid-cols-2 gap-2 border">
             <div className="flex flex-col border-r">
               <div className="text-[0.6rem] uppercase text-black">COUNTY</div>
-              <input name="employerCounty" onChange={handleChange} className="w-full p-2 sm:p-3 uppercase text-[11px] sm:text-[13px]" />
+              <input name="employerCounty" value={formData.employerCounty} onChange={handleChange} className="w-full p-2 sm:p-3 uppercase text-[11px] sm:text-[13px]" />
             </div>
             <div className="grid grid-cols-2 bg-gray-200">
               <div className="flex flex-col bg-gray-200 border-r">
                 <div className="text-[0.6rem] uppercase text-black">WORK LOCATION PSD CODE</div>
-                <input name="workPsd" onChange={handleChange} className="w-full p-2 sm:p-3 bg-gray-200 uppercase text-[11px] sm:text-[13px]" />
+                <input name="workPsd" value={formData.workPsd} onChange={handleChange} className="w-full p-2 sm:p-3 bg-gray-200 uppercase text-[11px] sm:text-[13px]" />
               </div>
               <div className="flex flex-col bg-gray-200 border-r">
                 <div className="text-[0.6rem] uppercase text-black">WORK LOCATION NON-RESIDENT EIT RATE</div>
-                <input name="nonResRate" onChange={handleChange} className="w-full p-2 sm:p-3 uppercase text-[11px] sm:text-[13px]" />
+                <input name="nonResRate" value={formData.nonResRate} onChange={handleChange} className="w-full p-2 sm:p-3 uppercase text-[11px] sm:text-[13px]" />
               </div>
             </div>
           </div>
@@ -688,11 +728,11 @@ const ResidencyCertificationForm = () => {
         <div className="grid grid-cols-2 gap-2 mt-2 border">
           <div className="relative">
             <div className="absolute left-2 top-1 uppercase text-black pointer-events-none text-[0.6rem] sm:text-[0.7rem]">Phone Number</div>
-            <input name="employeePhone" onChange={handleChange} className="border-r p-2 sm:p-3 pt-5 sm:pt-6 uppercase w-full text-[11px] sm:text-[13px]" />
+            <input name="employeePhone" value={formData.employeePhone} onChange={handleChange} className="border-r p-2 sm:p-3 pt-5 sm:pt-6 uppercase w-full text-[11px] sm:text-[13px]" />
           </div>
           <div className="relative">
             <div className="absolute left-2 top-1 uppercase text-black pointer-events-none text-[0.6rem] sm:text-[0.7rem]">Email Address</div>
-            <input name="email" onChange={handleChange} className="p-2 sm:p-3 pt-5 sm:pt-6 uppercase w-full text-[11px] sm:text-[13px]" />
+            <input name="email" value={formData.email} onChange={handleChange} className="p-2 sm:p-3 pt-5 sm:pt-6 uppercase w-full text-[11px] sm:text-[13px]" />
           </div>
         </div>
       </div>

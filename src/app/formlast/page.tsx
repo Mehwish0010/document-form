@@ -552,13 +552,13 @@ export default function W4FormHeader() {
             <div className="p-2 sm:p-3">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
                 <div className="">
-                  <div className="text-[14px] sm:text-[16px] mb-1">Employer&#39;s name and address</div>
+                  <div className="text-[14px] sm:text-[16px] mb-1">Employer's name and address</div>
                   <div className="h-12 sm:h-16 p-1">
                     <textarea
                       name="employerInfo.name"
                       value={formData.employerInfo.name}
-                      onChange={handleInputChange}
-                      className="w-full h-full mt-6 sm:mt-8 focus:outline-none bg-blue-100 text-[10px] sm:text-xs"
+                      onChange={(e) => handleNestedChange('employerInfo', 'name', e.target.value)}
+                      className="w-full h-full mt-6 sm:mt-8 focus:outline-none bg-blue-100 text-[10px] sm:text-xs p-2"
                     />
                   </div>
                 </div>
@@ -568,8 +568,8 @@ export default function W4FormHeader() {
                     type="text"
                     name="employerInfo.firstDateOfEmployment"
                     value={formData.employerInfo.firstDateOfEmployment}
-                    onChange={handleInputChange}
-                    className="w-full border-0 border-b mt-6 sm:mt-8 bg-blue-100 focus:outline-none h-12 sm:h-16 text-xs sm:text-sm"
+                    onChange={(e) => handleNestedChange('employerInfo', 'firstDateOfEmployment', e.target.value)}
+                    className="w-full border-0 border-b mt-6 sm:mt-8 bg-blue-100 focus:outline-none h-12 sm:h-16 text-xs sm:text-sm p-2"
                   />
                 </div>
                 <div>
@@ -578,8 +578,8 @@ export default function W4FormHeader() {
                     type="text"
                     name="employerInfo.ein"
                     value={formData.employerInfo.ein}
-                    onChange={handleInputChange}
-                    className="w-full border-0 border-b mt-6 sm:mt-8 h-12 sm:h-16 border-black bg-blue-100 focus:outline-none text-xs sm:text-sm"
+                    onChange={(e) => handleNestedChange('employerInfo', 'ein', e.target.value)}
+                    className="w-full border-0 border-b mt-6 sm:mt-8 h-12 sm:h-16 border-black bg-blue-100 focus:outline-none text-xs sm:text-sm p-2"
                   />
                 </div>
               </div>
