@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
+import { PDFDocument, StandardFonts, rgb, PDFFont } from 'pdf-lib';
 
 // Define the form data type
 interface FormData {
@@ -76,7 +76,7 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   const contentWidth = width - (padding * 2);
   let y = page.getHeight() - padding;
 
-  const drawText = (text: string, x: number, yPos: number, fontToUse: any, size: number, color = black) => {
+  const drawText = (text: string, x: number, yPos: number, fontToUse: PDFFont, size: number, color = black) => {
     page.drawText(text, { x, y: yPos, font: fontToUse, size, color, lineHeight: size + 4 });
   };
 

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-interface JobApplicationData {
+export interface JobApplicationData {
   fullName: string;
   jobRole: string;
   location: string;

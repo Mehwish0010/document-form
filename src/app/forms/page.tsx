@@ -60,7 +60,7 @@ export default function Forms() {
           location: parsed.location || ''
         };
       }
-    } catch (err) {
+    } catch {
       // ignore
     }
 
@@ -142,8 +142,8 @@ export default function Forms() {
           setTimeout(() => errorDiv.remove(), 300);
         }, 5000);
       }
-    } catch (err) {
-      console.error('Form submission error:', err);
+    } catch {
+      console.error('Form submission error');
       alert('Failed to submit form. Please try again.');
     }
   };

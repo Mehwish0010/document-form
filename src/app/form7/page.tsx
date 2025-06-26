@@ -189,7 +189,7 @@ const EmploymentApplication = () => {
           location: parsed.location || ''
         };
       }
-    } catch (err) {
+    } catch {
       // ignore
     }
 

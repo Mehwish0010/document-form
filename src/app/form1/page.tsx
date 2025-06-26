@@ -32,7 +32,7 @@ export default function ConfidentialityAgreement() {
       }
     }, []);
 
-    const handleJobDataLoad = (jobData: any) => {
+    const handleJobDataLoad = (jobData: import('../../components/JobApplicationFields').JobApplicationData) => {
       setFormData(prev => ({
         ...prev,
         fullName: jobData.fullName || '',
