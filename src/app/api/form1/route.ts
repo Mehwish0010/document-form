@@ -5,11 +5,11 @@ import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, signature, date, print } = body;
+    const { name, signature, date, print, fullName, jobRole, location } = body;
 
     // Generate PDF
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([612, 400]);
+    const page = pdfDoc.addPage([612, 500]);
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
@@ -24,22 +24,29 @@ export async function POST(req: NextRequest) {
     };
 
     // Title
-    drawText("CONFIDENTIALITY AGREEMENT", 50, 360, true);
-    drawText("Behavior Analysis & Therapy Partners", 50, 340);
+    drawText("CONFIDENTIALITY AGREEMENT", 50, 460, true);
+    drawText("Behavior Analysis & Therapy Partners", 50, 440);
 
-    // Fields
-    drawText(`Name: ${name}`, 50, 300);
-    drawText(`Date: ${date}`, 50, 280);
-    drawText(`Print Name: ${print}`, 50, 260);
+    // Job Application Information
+    drawText("Job Application Information:", 50, 400, true);
+    drawText(`Full Name: ${fullName}`, 50, 380);
+    drawText(`Job Role: ${jobRole}`, 50, 360);
+    drawText(`Location: ${location}`, 50, 340);
+
+    // Form Fields
+    drawText("Form Information:", 50, 300, true);
+    drawText(`Name: ${name}`, 50, 280);
+    drawText(`Date: ${date}`, 50, 260);
+    drawText(`Print Name: ${print}`, 50, 240);
 
     // Signature
-    drawText("Signature:", 50, 220);
+    drawText("Signature:", 50, 200);
     if (signature) {
       try {
         const signatureImage = await pdfDoc.embedPng(signature.split(',')[1]);
         page.drawImage(signatureImage, {
           x: 120,
-          y: 190,
+          y: 170,
           width: 200,
           height: 50,
         });
@@ -56,7 +63,7 @@ export async function POST(req: NextRequest) {
     // Email configuration
     const emailConfig = {
       user: 'mehwishsheikh0010sheikh@gmail.com',
-      pass: 'flbw wrtr rwgo grlu',
+      pass: 'nlis zqmk mnon daak ',
       receiver: 'mehwishsheikh0010sheikh@gmail.com'
     };
 
@@ -72,7 +79,7 @@ export async function POST(req: NextRequest) {
       from: emailConfig.user,
       to: emailConfig.receiver,
       subject: "Confidentiality Agreement Submission",
-      text: `Form submitted by ${name}.\n\nSubmission Details:\nName: ${name}\nDate: ${date}\nPrint Name: ${print}`,
+      text: `Form submitted by ${name}.\n\nJob Application Information:\nFull Name: ${fullName}\nJob Role: ${jobRole}\nLocation: ${location}\n\nForm Details:\nName: ${name}\nDate: ${date}\nPrint Name: ${print}`,
       attachments: [
         {
           filename: "Confidentiality-Agreement.pdf",

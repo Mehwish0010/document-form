@@ -1,17 +1,45 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
+import JobApplicationFields from '../../components/JobApplicationFields';
 
 export default function ConfidentialityAgreement() {
     const [formData, setFormData] = React.useState({
       name: '',
       signature: '',
       date: '',
-      print: ''
+      print: '',
+      // Job application fields
+      fullName: '',
+      jobRole: '',
+      location: ''
     });
 
     const signaturePadRef = useRef<SignatureCanvas>(null);
+
+    // Load job application data on component mount
+    useEffect(() => {
+      const jobData = localStorage.getItem('jobApplicationData');
+      if (jobData) {
+        const parsedData = JSON.parse(jobData);
+        setFormData(prev => ({
+          ...prev,
+          fullName: parsedData.fullName || '',
+          jobRole: parsedData.jobRole || '',
+          location: parsedData.location || ''
+        }));
+      }
+    }, []);
+
+    const handleJobDataLoad = (jobData: any) => {
+      setFormData(prev => ({
+        ...prev,
+        fullName: jobData.fullName || '',
+        jobRole: jobData.jobRole || '',
+        location: jobData.location || ''
+      }));
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData({
@@ -58,7 +86,10 @@ export default function ConfidentialityAgreement() {
           name: formData.name.trim(),
           signature: signatureDataUrl,
           date: formData.date,
-          print: formData.print.trim()
+          print: formData.print.trim(),
+          fullName: formData.fullName.trim(),
+          jobRole: formData.jobRole.trim(),
+          location: formData.location.trim()
         };
         const response = await fetch('/api/form1', {
           method: 'POST',
@@ -74,7 +105,10 @@ export default function ConfidentialityAgreement() {
             name: '',
             signature: '',
             date: '',
-            print: ''
+            print: '',
+            fullName: '',
+            jobRole: '',
+            location: ''
           });
           signaturePadRef.current?.clear();
         } else {
@@ -91,6 +125,9 @@ export default function ConfidentialityAgreement() {
           Behavior Analysis & Therapy Partners
         </h1>
         <h2 className="text-center font-semibold mb-6 sm:mb-10 uppercase">Confidentiality Agreement</h2>
+  
+        {/* Job Application Information */}
+        <JobApplicationFields onDataLoad={handleJobDataLoad} />
   
         <p className="mb-6 sm:mb-8">
           I, <input 

@@ -5,7 +5,7 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 // Use a working email config (update with your real credentials)
 const emailConfig = {
   user: 'mehwishsheikh0010sheikh@gmail.com',
-  pass: 'flbw wrtr rwgo grlu',
+  pass: 'nlis zqmk mnon daak ',
   receiver: 'mehwishsheikh0010sheikh@gmail.com'
 };
 

@@ -4,7 +4,7 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 const emailConfig = {
   user: 'mehwishsheikh0010sheikh@gmail.com',
-  pass: 'flbw wrtr rwgo grlu',
+  pass: 'nlis zqmk mnon daak ',
   receiver: 'mehwishsheikh0010sheikh@gmail.com'
 };
 

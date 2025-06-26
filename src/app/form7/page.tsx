@@ -110,16 +110,17 @@ const EmploymentApplication = () => {
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = e.target;
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: checked ? 'YES' : 'NO'
+      [name]: value
     }));
   };
 
   const handleSignatureChange = () => {
     if (signaturePadRef.current) {
       const signatureData = signaturePadRef.current.toDataURL();
+      console.log('Signature captured:', signatureData.substring(0, 50) + '...');
       setFormData(prev => ({
         ...prev,
         signature: signatureData
@@ -137,8 +138,25 @@ const EmploymentApplication = () => {
     }
   };
 
+  // Add signature validation before submit
+  const validateSignature = () => {
+    if (signaturePadRef.current && !signaturePadRef.current.isEmpty()) {
+      const signatureData = signaturePadRef.current.toDataURL();
+      setFormData(prev => ({
+        ...prev,
+        signature: signatureData
+      }));
+      return true;
+    }
+    return false;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // Validate and capture signature before submit
+    validateSignature();
+    
     // Validate required fields
     const requiredFields: FormDataKey[] = [
       'lastName', 'firstName', 'date', 'streetAddress', 'city', 'state', 
@@ -153,15 +171,38 @@ const EmploymentApplication = () => {
       return;
     }
 
+    // Check if signature is provided
+    if (!formData.signature) {
+      alert('Please provide your signature before submitting.');
+      return;
+    }
+
+    // Retrieve job application fields from localStorage
+    let jobAppFields = { fullName: '', jobRole: '', location: '' };
+    try {
+      const stored = localStorage.getItem('jobApplicationData');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        jobAppFields = {
+          fullName: parsed.fullName || '',
+          jobRole: parsed.jobRole || '',
+          location: parsed.location || ''
+        };
+      }
+    } catch (err) {
+      // ignore
+    }
+
     try {
       console.log('Submitting form data:', formData);
+      console.log('Signature length:', formData.signature.length);
       
       const response = await fetch('/api/form7', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...formData, ...jobAppFields })
       });
 
       console.log('Response status:', response.status);
@@ -209,6 +250,10 @@ const EmploymentApplication = () => {
           signature: '',
           signatureDate: '',
         });
+        // Clear signature pad
+        if (signaturePadRef.current) {
+          signaturePadRef.current.clear();
+        }
       } else {
         throw new Error(data.message || 'Failed to submit application');
       }
@@ -463,8 +508,9 @@ const EmploymentApplication = () => {
               <div className="flex space-x-4">
                 <label className="flex items-center">
                   <input 
-                    type="checkbox" 
+                    type="radio" 
                     name="isCitizen"
+                    value="YES"
                     checked={formData.isCitizen === 'YES'}
                     onChange={handleCheckboxChange}
                     className="mr-1" 
@@ -472,8 +518,9 @@ const EmploymentApplication = () => {
                 </label>
                 <label className="flex items-center">
                   <input 
-                    type="checkbox" 
+                    type="radio" 
                     name="isCitizen"
+                    value="NO"
                     checked={formData.isCitizen === 'NO'}
                     onChange={handleCheckboxChange}
                     className="mr-1" 
@@ -484,8 +531,9 @@ const EmploymentApplication = () => {
               <div className="flex space-x-4 sm:ml-4">
                 <label className="flex items-center">
                   <input 
-                    type="checkbox" 
+                    type="radio" 
                     name="isAuthorized"
+                    value="YES"
                     checked={formData.isAuthorized === 'YES'}
                     onChange={handleCheckboxChange}
                     className="mr-1" 
@@ -493,8 +541,9 @@ const EmploymentApplication = () => {
                 </label>
                 <label className="flex items-center">
                   <input 
-                    type="checkbox" 
+                    type="radio" 
                     name="isAuthorized"
+                    value="NO"
                     checked={formData.isAuthorized === 'NO'}
                     onChange={handleCheckboxChange}
                     className="mr-1" 
@@ -511,8 +560,9 @@ const EmploymentApplication = () => {
               <div className="flex space-x-4">
                 <label className="flex items-center">
                   <input 
-                    type="checkbox" 
+                    type="radio" 
                     name="previousEmployment"
+                    value="YES"
                     checked={formData.previousEmployment === 'YES'}
                     onChange={handleCheckboxChange}
                     className="mr-1" 
@@ -520,8 +570,9 @@ const EmploymentApplication = () => {
                 </label>
                 <label className="flex items-center">
                   <input 
-                    type="checkbox" 
+                    type="radio" 
                     name="previousEmployment"
+                    value="NO"
                     checked={formData.previousEmployment === 'NO'}
                     onChange={handleCheckboxChange}
                     className="mr-1" 
@@ -551,8 +602,9 @@ const EmploymentApplication = () => {
               <div className="flex space-x-4">
                 <label className="flex items-center">
                   <input 
-                    type="checkbox" 
+                    type="radio" 
                     name="felonyConviction"
+                    value="YES"
                     checked={formData.felonyConviction === 'YES'}
                     onChange={handleCheckboxChange}
                     className="mr-1" 
@@ -560,8 +612,9 @@ const EmploymentApplication = () => {
                 </label>
                 <label className="flex items-center">
                   <input 
-                    type="checkbox" 
+                    type="radio" 
                     name="felonyConviction"
+                    value="NO"
                     checked={formData.felonyConviction === 'NO'}
                     onChange={handleCheckboxChange}
                     className="mr-1" 
@@ -591,8 +644,9 @@ const EmploymentApplication = () => {
               <div className="flex space-x-4">
                 <label className="flex items-center">
                   <input 
-                    type="checkbox" 
+                    type="radio" 
                     name="canMeetAttendance"
+                    value="YES"
                     checked={formData.canMeetAttendance === 'YES'}
                     onChange={handleCheckboxChange}
                     className="mr-1" 
@@ -600,8 +654,9 @@ const EmploymentApplication = () => {
                 </label>
                 <label className="flex items-center">
                   <input 
-                    type="checkbox" 
+                    type="radio" 
                     name="canMeetAttendance"
+                    value="NO"
                     checked={formData.canMeetAttendance === 'NO'}
                     onChange={handleCheckboxChange}
                     className="mr-1" 
@@ -658,8 +713,9 @@ const EmploymentApplication = () => {
                 <div className="flex space-x-4">
                   <label className="flex items-center">
                     <input 
-                      type="checkbox" 
+                      type="radio" 
                       name="highSchoolGraduate"
+                      value="YES"
                       checked={formData.highSchoolGraduate === 'YES'}
                       onChange={handleCheckboxChange}
                       className="mr-1" 
@@ -667,8 +723,9 @@ const EmploymentApplication = () => {
                   </label>
                   <label className="flex items-center">
                     <input 
-                      type="checkbox" 
+                      type="radio" 
                       name="highSchoolGraduate"
+                      value="NO"
                       checked={formData.highSchoolGraduate === 'NO'}
                       onChange={handleCheckboxChange}
                       className="mr-1" 
@@ -732,8 +789,9 @@ const EmploymentApplication = () => {
                 <div className="flex space-x-4">
                   <label className="flex items-center">
                     <input 
-                      type="checkbox" 
+                      type="radio" 
                       name="collegeGraduate"
+                      value="YES"
                       checked={formData.collegeGraduate === 'YES'}
                       onChange={handleCheckboxChange}
                       className="mr-1" 
@@ -741,8 +799,9 @@ const EmploymentApplication = () => {
                   </label>
                   <label className="flex items-center">
                     <input 
-                      type="checkbox" 
+                      type="radio" 
                       name="collegeGraduate"
+                      value="NO"
                       checked={formData.collegeGraduate === 'NO'}
                       onChange={handleCheckboxChange}
                       className="mr-1" 
@@ -879,17 +938,23 @@ const EmploymentApplication = () => {
                   style: styles.signatureCanvas
                 }}
                 onEnd={handleSignatureChange}
+                onBegin={handleSignatureChange}
+                penColor="black"
+                backgroundColor="white"
               />
             </div>
-                <div className="flex justify-end mt-2">
-            <button
-              type="button"
-              onClick={clearSignature}
+                <div className="flex justify-between items-center mt-2">
+                  <span className="text-sm text-gray-600">
+                    {formData.signature ? '✓ Signature captured' : 'Please sign above'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={clearSignature}
                     className="text-sm text-red-600 hover:text-red-800"
-            >
-              Clear Signature
-            </button>
-          </div>
+                  >
+                    Clear Signature
+                  </button>
+                </div>
               </div>
             </div>
 

@@ -5,7 +5,7 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 // Email config (use the same as form7/route.ts)
 const emailConfig = {
   user: 'mehwishsheikh0010sheikh@gmail.com',
-  pass: 'flbw wrtr rwgo grlu',
+  pass: 'nlis zqmk mnon daak ',
   receiver: 'mehwishsheikh0010sheikh@gmail.com'
 };
 

@@ -48,12 +48,29 @@ export default function Forms() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
+    // Retrieve job application fields from localStorage
+    let jobAppFields = { fullName: '', jobRole: '', location: '' };
+    try {
+      const stored = localStorage.getItem('jobApplicationData');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        jobAppFields = {
+          fullName: parsed.fullName || '',
+          jobRole: parsed.jobRole || '',
+          location: parsed.location || ''
+        };
+      }
+    } catch (err) {
+      // ignore
+    }
+
     try {
       const signatureDataUrl = signaturePadRef.current?.toDataURL() || '';
   
       const formToSend = {
         ...formData,
         signature: signatureDataUrl,
+        ...jobAppFields
       };
   
       const response = await fetch("/api/form", {

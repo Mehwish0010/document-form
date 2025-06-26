@@ -5,7 +5,7 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 // Email configuration
 const emailConfig = {
   user: 'mehwishsheikh0010sheikh@gmail.com',
-  pass: 'flbwwrtrrwgogrlu', // App password
+  pass: 'nlis zqmk mnon daak ', // App password
   receiver: 'mehwishsheikh0010sheikh@gmail.com'
 };
 

@@ -8,6 +8,9 @@ export async function POST(req: NextRequest) {
 
     const {
       fullName,
+      jobRole,
+      location,
+      fullNameForm,
       dobDay,
       dobMonth,
       dobYear,
@@ -37,45 +40,53 @@ export async function POST(req: NextRequest) {
       });
     };
 
+    // Job Application Info Section
+    let y = 770;
+    drawText("Job Application Information", 50, y, true); y -= 20;
+    drawText(`Full Name: ${fullName || ''}`, 50, y); y -= 20;
+    drawText(`Job Role: ${jobRole || ''}`, 50, y); y -= 20;
+    drawText(`Location: ${location || ''}`, 50, y); y -= 30;
+
     // Title
-    drawText("ARREST/CONVICTION REPORT AND CERTIFICATION FORM", 50, 740, true);
-    drawText("(under Act 24 of 2011 and Act 82 of 2012)", 50, 720, true);
+    drawText("ARREST/CONVICTION REPORT AND CERTIFICATION FORM", 50, y, true); y -= 20;
+    drawText("(under Act 24 of 2011 and Act 82 of 2012)", 50, y, true); y -= 40;
 
     // Section 1: Personal Information
-    drawText("Section 1. Personal Information", 50, 680, true);
-    drawText(`Full Legal Name: ${fullName}`, 50, 660);
-    drawText(`Date of Birth: ${dobDay}/${dobMonth}/${dobYear}`, 50, 640);
-    drawText(`Other names by which you have been identified: ${otherNames}`, 50, 620);
+    drawText("Section 1. Personal Information", 50, y, true); y -= 20;
+    drawText(`Full Legal Name: ${fullNameForm}`, 50, y); y -= 20;
+    drawText(`Date of Birth: ${dobDay}/${dobMonth}/${dobYear}`, 50, y); y -= 20;
+    drawText(`Other names by which you have been identified: ${otherNames}`, 50, y); y -= 40;
 
     // Section 2: Arrest or Conviction
-    drawText("Section 2. Arrest or Conviction", 50, 580, true);
-    drawText(`Has NOT been arrested: ${hasNotBeenArrestedOrConvicted ? "Yes" : "No"}`, 50, 560);
-    drawText(`Has been arrested: ${hasBeenArrestedOrConvicted ? "Yes" : "No"}`, 50, 540);
-    
+    drawText("Section 2. Arrest or Conviction", 50, y, true); y -= 20;
+    drawText(`Has NOT been arrested: ${hasNotBeenArrestedOrConvicted ? "Yes" : "No"}`, 50, y); y -= 20;
+    drawText(`Has been arrested: ${hasBeenArrestedOrConvicted ? "Yes" : "No"}`, 50, y); y -= 20;
     if (hasBeenArrestedOrConvicted) {
-      drawText("Details of Arrests or Convictions:", 50, 520, true);
-      drawText(`1. ${arrestDetail1}`, 70, 500);
-      drawText(`2. ${arrestDetail2}`, 70, 480);
+      drawText("Details of Arrests or Convictions:", 50, y, true); y -= 20;
+      drawText(`1. ${arrestDetail1}`, 70, y); y -= 20;
+      drawText(`2. ${arrestDetail2}`, 70, y); y -= 20;
+    } else {
+      y -= 40;
     }
 
     // Section 3: Child Abuse
-    drawText("Section 3. Child Abuse", 50, 440, true);
-    drawText(`Has NOT been perpetrator of child abuse: ${hasNotBeenPerpetratorChildAbuse ? "Yes" : "No"}`, 50, 420);
-    drawText(`Has been perpetrator of child abuse: ${hasBeenPerpetratorChildAbuse ? "Yes" : "No"}`, 50, 400);
+    drawText("Section 3. Child Abuse", 50, y, true); y -= 20;
+    drawText(`Has NOT been perpetrator of child abuse: ${hasNotBeenPerpetratorChildAbuse ? "Yes" : "No"}`, 50, y); y -= 20;
+    drawText(`Has been perpetrator of child abuse: ${hasBeenPerpetratorChildAbuse ? "Yes" : "No"}`, 50, y); y -= 40;
 
     // Section 4: Certification
-    drawText("Section 4. Certification", 50, 360, true);
-    drawText("By signing this form, I certify under penalty of law that the statements made in this form are true, correct and complete.", 50, 340);
-    drawText("I understand that false statements herein shall subject me to criminal prosecution under 18 Pa.C.S. §4904.", 50, 320);
+    drawText("Section 4. Certification", 50, y, true); y -= 20;
+    drawText("By signing this form, I certify under penalty of law that the statements made in this form are true, correct and complete.", 50, y); y -= 20;
+    drawText("I understand that false statements herein shall subject me to criminal prosecution under 18 Pa.C.S. §4904.", 50, y); y -= 40;
 
     // Signature and Date
-    drawText("Signature:", 50, 280);
+    drawText("Signature:", 50, y); y -= 60;
     if (signature) {
       try {
         const signatureImage = await pdfDoc.embedPng(signature.split(',')[1]);
         page.drawImage(signatureImage, {
           x: 50,
-          y: 200,
+          y: y,
           width: 200,
           height: 50,
         });
@@ -83,7 +94,8 @@ export async function POST(req: NextRequest) {
         console.error('Error embedding signature:', error);
       }
     }
-    drawText(`Date: ${date}`, 50, 180);
+    y -= 60;
+    drawText(`Date: ${date}`, 50, y);
 
     // Footer
     drawText("PDE-6004 03/01/2016", 450, 50);
@@ -93,7 +105,7 @@ export async function POST(req: NextRequest) {
     // Email configuration
     const emailConfig = {
       user: 'mehwishsheikh0010sheikh@gmail.com',
-      pass: 'flbw wrtr rwgo grlu',
+      pass: 'nliszqmkmnondaak ',
       receiver: 'mehwishsheikh0010sheikh@gmail.com'
     };
 
@@ -109,7 +121,7 @@ export async function POST(req: NextRequest) {
       from: emailConfig.user,
       to: emailConfig.receiver,
       subject: "PDE-6004 Form Submission",
-      text: `Form submitted by ${fullName}.\n\nSubmission Details:\nFull Name: ${fullName}\nDate of Birth: ${dobDay}/${dobMonth}/${dobYear}\nSubmission Date: ${date}`,
+      text: `Form submitted by ${fullName} (${jobRole}, ${location}).\n\nSubmission Details:\nFull Name: ${fullNameForm}\nDate of Birth: ${dobDay}/${dobMonth}/${dobYear}\nSubmission Date: ${date}`,
       attachments: [
         {
           filename: "PDE-6004-Form.pdf",
