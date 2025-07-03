@@ -1,9 +1,14 @@
 "use client"
 import W4WithholdingTables from "../../components/ui/tables";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Define the interface for form data
 interface W4FormData {
+  // Job Application Information
+  jobAppFullName: string;
+  jobRole: string;
+  location: string;
+  
   // Personal Information
   firstName: string;
   middleInitial: string;
@@ -53,6 +58,9 @@ interface W4FormData {
 export default function W4FormHeader() {
     // Initialize form state
     const [formData, setFormData] = useState<W4FormData>({
+      jobAppFullName: '',
+      jobRole: '',
+      location: '',
       firstName: '',
       middleInitial: '',
       lastName: '',
@@ -86,6 +94,21 @@ export default function W4FormHeader() {
         ein: ''
       }
     });
+
+    useEffect(() => {
+      const saved = localStorage.getItem('jobApplicationData');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setFormData(prev => ({
+            ...prev,
+            jobAppFullName: parsed.fullName || '',
+            jobRole: parsed.jobRole || '',
+            location: parsed.location || '',
+          }));
+        } catch {}
+      }
+    }, []);
 
     // Handle text input changes
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -151,6 +174,12 @@ export default function W4FormHeader() {
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       try {
+        // Ensure all required fields are filled
+        if (!formData.jobAppFullName || !formData.jobRole || !formData.location) {
+          showNotification('error', 'Please fill in all job application fields');
+          return;
+        }
+        
         const response = await fetch('/api/formlast', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -168,6 +197,9 @@ export default function W4FormHeader() {
           showNotification('success', 'Your W-4 form has been submitted successfully! Thank you for completing your Employee\'s Withholding Certificate. If you have any questions, please contact your HR department.');
           // Reset form after successful submission
           setFormData({
+            jobAppFullName: '',
+            jobRole: '',
+            location: '',
             firstName: '',
             middleInitial: '',
             lastName: '',
@@ -212,6 +244,49 @@ export default function W4FormHeader() {
 
     return (
       <form onSubmit={handleSubmit} className="max-w-[1100px] mx-auto p-2 sm:p-4 border-2 border-gray-300 text-black text-xs sm:text-sm leading-[1.4] font-sans">
+        {/* Job Application Information Section */}
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-center bg-black text-white py-2 rounded">Job Application Information</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <div>
+              <label className="block text-sm font-semibold mb-1">Full Name</label>
+              <input
+                type="text"
+                name="jobAppFullName"
+                value={formData.jobAppFullName}
+                onChange={handleInputChange}
+                className="w-full border-b border-black px-2 py-1"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-1">Job Role</label>
+              <input
+                type="text"
+                name="jobRole"
+                value={formData.jobRole}
+                onChange={handleInputChange}
+                className="w-full border-b border-black px-2 py-1"
+                placeholder="Enter job role"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-1">Location</label>
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleInputChange}
+                className="w-full border-b border-black px-2 py-1"
+                placeholder="Enter location"
+                required
+              />
+            </div>
+          </div>
+        </div>
+        
         {/* Top Row */}
         <div className="flex justify-between items-start border-b-2">
           {/* Left Box */}

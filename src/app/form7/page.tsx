@@ -1,6 +1,6 @@
 // components/EmploymentApplication.jsx
 "use client"
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import SignaturePad from 'react-signature-canvas';
 
 // Add styles for signature pad
@@ -98,6 +98,21 @@ const EmploymentApplication = () => {
     signature: '',
     signatureDate: '',
   });
+  const [jobAppFullName, setJobAppFullName] = useState('');
+  const [jobRole, setJobRole] = useState('');
+  const [location, setLocation] = useState('');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('jobApplicationData');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setJobAppFullName(parsed.fullName || '');
+        setJobRole(parsed.jobRole || '');
+        setLocation(parsed.location || '');
+      } catch {}
+    }
+  }, []);
 
   type FormDataKey = keyof FormData;
 
@@ -177,22 +192,6 @@ const EmploymentApplication = () => {
       return;
     }
 
-    // Retrieve job application fields from localStorage
-    let jobAppFields = { fullName: '', jobRole: '', location: '' };
-    try {
-      const stored = localStorage.getItem('jobApplicationData');
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        jobAppFields = {
-          fullName: parsed.fullName || '',
-          jobRole: parsed.jobRole || '',
-          location: parsed.location || ''
-        };
-      }
-    } catch {
-      // ignore
-    }
-
     try {
       console.log('Submitting form data:', formData);
       console.log('Signature length:', formData.signature.length);
@@ -202,7 +201,12 @@ const EmploymentApplication = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ...formData, ...jobAppFields })
+        body: JSON.stringify({
+          ...formData,
+          fullName: jobAppFullName,
+          jobRole,
+          location
+        })
       });
 
       console.log('Response status:', response.status);
@@ -297,6 +301,49 @@ const EmploymentApplication = () => {
             and/or interview process should notify a representative of the Human Resources Department.
           </p>
         </div>
+
+        {/* Job Application Information */}
+        <section className="mb-8">
+          <h2 className="text-lg font-semibold text-center bg-black text-white py-2 rounded">Job Application Information</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <div>
+              <label className="block text-sm font-semibold mb-1">Full Name</label>
+              <input
+                type="text"
+                name="jobAppFullName"
+                value={jobAppFullName}
+                onChange={e => setJobAppFullName(e.target.value)}
+                className="w-full border-b border-black px-2 py-1"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-1">Job Role</label>
+              <input
+                type="text"
+                name="jobRole"
+                value={jobRole}
+                onChange={e => setJobRole(e.target.value)}
+                className="w-full border-b border-black px-2 py-1"
+                placeholder="Enter job role"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-1">Location</label>
+              <input
+                type="text"
+                name="location"
+                value={location}
+                onChange={e => setLocation(e.target.value)}
+                className="w-full border-b border-black px-2 py-1"
+                placeholder="Enter location"
+                required
+              />
+            </div>
+          </div>
+        </section>
 
         {/* Applicant Information */}
         <div className="mb-6 sm:mb-8">

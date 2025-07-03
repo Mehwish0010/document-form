@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 
 export default function ArrestConvictionForm() {
@@ -26,6 +26,21 @@ export default function ArrestConvictionForm() {
   });
 
   const signaturePadRef = useRef<SignatureCanvas>(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('jobApplicationData');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setFormData(prev => ({
+          ...prev,
+          fullName: parsed.fullName || '',
+          jobRole: parsed.jobRole || '',
+          location: parsed.location || '',
+        }));
+      } catch {}
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;

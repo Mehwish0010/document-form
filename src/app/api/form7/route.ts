@@ -103,20 +103,24 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
     }
   };
 
-  // Print job application fields at the top if present
-  if (formData.fullName || formData.jobRole || formData.location) {
-    drawText("Job Application Information", padding, y, fontBold, 14, black); y -= 20;
-    if (formData.fullName) {
-      drawText(`Full Name: ${formData.fullName}`, padding, y, font, 12, black); y -= 18;
-    }
-    if (formData.jobRole) {
-      drawText(`Job Role: ${formData.jobRole}`, padding, y, font, 12, black); y -= 18;
-    }
-    if (formData.location) {
-      drawText(`Location: ${formData.location}`, padding, y, font, 12, black); y -= 18;
-    }
-    y -= 10;
-  }
+  // --- Job Application Fields at the top ---
+  // Black background heading
+  page.drawRectangle({ x: padding, y: y - 30, width: contentWidth, height: 30, color: black });
+  drawText("Job Application Information", padding + 10, y - 12, fontBold, 14, white);
+  y -= 40;
+  // Inputs in a grouped block
+  drawText("Full Name:", padding, y, font, 11, black);
+  drawInputBox(padding + 90, y - 10, 180, 18, !!formData.fullName);
+  drawText(formData.fullName || '', padding + 95, y - 5, font, 11, black);
+  y -= 22;
+  drawText("Job Role:", padding, y, font, 11, black);
+  drawInputBox(padding + 90, y - 10, 180, 18, !!formData.jobRole);
+  drawText(formData.jobRole || '', padding + 95, y - 5, font, 11, black);
+  y -= 22;
+  drawText("Location:", padding, y, font, 11, black);
+  drawInputBox(padding + 90, y - 10, 180, 18, !!formData.location);
+  drawText(formData.location || '', padding + 95, y - 5, font, 11, black);
+  y -= 30;
 
   // Company Header - Same as UI
   drawText("Behavior Analysis & Therapy Partners", padding + 100, y, fontBold, 16); y -= 20;

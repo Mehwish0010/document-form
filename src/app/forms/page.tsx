@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent } from "../../components/ui/card";
 
 import { Label } from "../../components/ui/label";
@@ -23,6 +23,9 @@ interface FormData {
   dobMonth: string;
   dobYear: string;
   otherNames: string;
+  jobAppFullName: string;
+  jobRole: string;
+  location: string;
 }
 
 export default function Forms() {
@@ -41,38 +44,40 @@ export default function Forms() {
     dobMonth: '',
     dobYear: '',
     otherNames: '',
+    jobAppFullName: '',
+    jobRole: '',
+    location: '',
   });
 
   const signaturePadRef = useRef<SignatureCanvas>(null);
 
+  useEffect(() => {
+    const saved = localStorage.getItem('jobApplicationData');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setFormData(prev => ({
+          ...prev,
+          jobAppFullName: parsed.fullName || '',
+          jobRole: parsed.jobRole || '',
+          location: parsed.location || '',
+        }));
+      } catch {}
+    }
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
-    // Retrieve job application fields from localStorage
-    let jobAppFields = { fullName: '', jobRole: '', location: '' };
-    try {
-      const stored = localStorage.getItem('jobApplicationData');
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        jobAppFields = {
-          fullName: parsed.fullName || '',
-          jobRole: parsed.jobRole || '',
-          location: parsed.location || ''
-        };
-      }
-    } catch {
-      // ignore
-    }
 
     try {
       const signatureDataUrl = signaturePadRef.current?.toDataURL() || '';
-  
+
       const formToSend = {
         ...formData,
         signature: signatureDataUrl,
-        ...jobAppFields
+        name: formData.jobAppFullName
       };
-  
+
       const response = await fetch("/api/form", {
         method: "POST",
         headers: {
@@ -118,6 +123,9 @@ export default function Forms() {
           dobMonth: '',
           dobYear: '',
           otherNames: '',
+          jobAppFullName: '',
+          jobRole: '',
+          location: '',
         });
         if (signaturePadRef.current) {
           signaturePadRef.current.clear();
@@ -177,6 +185,48 @@ export default function Forms() {
                 <p className="text-base sm:text-lg text-black font-semibold">(under Act 24 of 2011 and Act 82 of 2012)</p>
               </div>
               
+              <div className="mb-6 sm:mb-8">
+                <h2 className="text-lg sm:text-xl text-center font-semibold text-white bg-black">Job Application Information</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8 mt-4 sm:mt-6 items-center">
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="jobAppFullName" className="text-sm sm:text-base font-semibold text-gray-700">Full Name:</Label>
+                    <input
+                      type="text"
+                      id="jobAppFullName"
+                      name="jobAppFullName"
+                      value={formData.jobAppFullName}
+                      onChange={handleChange}
+                      className="w-full outline-none placeholder:text-gray-400 text-black bg-transparent focus:ring-0 border-b border-black p-0"
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="jobRole" className="text-sm sm:text-base font-semibold text-gray-700">Job Role:</Label>
+                    <input
+                      type="text"
+                      id="jobRole"
+                      name="jobRole"
+                      value={formData.jobRole}
+                      onChange={handleChange}
+                      className="w-full outline-none placeholder:text-gray-400 text-black bg-transparent focus:ring-0 border-b border-black p-0"
+                      placeholder="Enter job role"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="location" className="text-sm sm:text-base font-semibold text-gray-700">Location:</Label>
+                    <input
+                      type="text"
+                      id="location"
+                      name="location"
+                      value={formData.location}
+                      onChange={handleChange}
+                      className="w-full outline-none placeholder:text-gray-400 text-black bg-transparent focus:ring-0 border-b border-black p-0"
+                      placeholder="Enter location"
+                    />
+                  </div>
+                </div>
+              </div>
+
               <div className="mb-6 sm:mb-8">
                 <h2 className="text-lg sm:text-xl text-center font-semibold text-white bg-black">Section 1. Personal Information</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 mt-4 sm:mt-6 items-center">

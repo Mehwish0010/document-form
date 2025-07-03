@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 
 const ResidencyCertificationForm = () => {
@@ -51,6 +51,21 @@ const ResidencyCertificationForm = () => {
     email: '',
   });
   const signatureRef = useRef<SignatureCanvas>(null);
+  const [jobAppFullName, setJobAppFullName] = useState('');
+  const [jobRole, setJobRole] = useState('');
+  const [location, setLocation] = useState('');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('jobApplicationData');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setJobAppFullName(parsed.fullName || '');
+        setJobRole(parsed.jobRole || '');
+        setLocation(parsed.location || '');
+      } catch {}
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -61,6 +76,13 @@ const ResidencyCertificationForm = () => {
       // Clear message on change
       return newData;
     });
+  };
+
+  const handleJobAppChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === 'jobAppFullName') setJobAppFullName(value);
+    else if (name === 'jobRole') setJobRole(value);
+    else if (name === 'location') setLocation(value);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -123,6 +145,9 @@ const ResidencyCertificationForm = () => {
       const submissionData = {
         ...rest,
         ein: [ein1, ein2, ein3, ein4, ein5, ein6, ein7, ein8, ein9].join(''),
+        jobAppFullName,
+        jobRole,
+        location
       };
       
       const response = await fetch('/api/form9', {
@@ -246,6 +271,49 @@ const ResidencyCertificationForm = () => {
       <p className="text-xs sm:text-sm text-bold text-black">
         This form is to be used by employers and taxpayers to report essential information for the collection and distribution of Local Earned Income Taxes to the local EIT collector. This form must be used by employers when a new employee is hired or when a current employee notifies employer of a name or address change. Use the Address Search Application at dced.pa.gov/Act32 to determine PSD codes, EIT rates, and tax collector contact information.
       </p>
+
+      {/* Job Application Information */}
+      <section className="mb-8">
+        <h2 className="text-lg font-semibold text-center bg-black text-white py-2 rounded">Job Application Information</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <div>
+            <label className="block text-sm font-semibold mb-1">Full Name</label>
+            <input
+              type="text"
+              name="jobAppFullName"
+              value={jobAppFullName}
+              onChange={handleJobAppChange}
+              className="w-full border-b border-black px-2 py-1"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold mb-1">Job Role</label>
+            <input
+              type="text"
+              name="jobRole"
+              value={jobRole}
+              onChange={handleJobAppChange}
+              className="w-full border-b border-black px-2 py-1"
+              placeholder="Enter job role"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold mb-1">Location</label>
+            <input
+              type="text"
+              name="location"
+              value={location}
+              onChange={handleJobAppChange}
+              className="w-full border-b border-black px-2 py-1"
+              placeholder="Enter location"
+              required
+            />
+          </div>
+        </div>
+      </section>
 
       {/* RESIDENCE LOCATION */}
       <div className="mt-2 border-1 border-black">

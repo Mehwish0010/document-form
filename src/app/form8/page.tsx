@@ -56,6 +56,11 @@ export default function EmploymentForm() {
     employerAddress: ''
   });
 
+  // Job Application Info
+  const [jobAppFullName, setJobAppFullName] = useState('');
+  const [jobRole, setJobRole] = useState('');
+  const [location, setLocation] = useState('');
+
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
@@ -64,6 +69,18 @@ export default function EmploymentForm() {
       return () => clearTimeout(timer);
     }
   }, [notification]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('jobApplicationData');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setJobAppFullName(parsed.fullName || '');
+        setJobRole(parsed.jobRole || '');
+        setLocation(parsed.location || '');
+      } catch {}
+    }
+  }, []);
 
   const handleSection1Change = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -105,12 +122,22 @@ export default function EmploymentForm() {
     }
   };
 
+  const handleJobAppChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === 'jobAppFullName') setJobAppFullName(value);
+    else if (name === 'jobRole') setJobRole(value);
+    else if (name === 'location') setLocation(value);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       // Collect all form data
       const formData = {
+        jobAppFullName,
+        jobRole,
+        location,
         section1: {
           lastName: section1.lastName || '',
           firstName: section1.firstName || '',
@@ -172,11 +199,11 @@ export default function EmploymentForm() {
       const result = await response.json();
       console.log('API Response:', result);
 
-      if (!response.ok) {
+      if (result.success) {
+        setNotification({ message: '✅ Form submitted successfully! Check your email for the PDF.', type: 'success' });
+      } else {
         throw new Error(result.error || 'Failed to submit form');
       }
-
-      setNotification({ message: '✅ Form submitted successfully! Check your email for the PDF.', type: 'success' });
     } catch (err) {
       console.error('Form submission error:', err);
       setNotification({ message: '❌ Failed to submit form. Please try again.', type: 'error' });
@@ -223,6 +250,49 @@ export default function EmploymentForm() {
           ANTI-DISCRIMINATION NOTICE: All employees can choose which acceptable documentation...
         </p>
       </div>
+
+      {/* Job Application Information */}
+      <section className="mb-8">
+        <h2 className="text-lg font-semibold text-center bg-black text-white py-2 rounded">Job Application Information</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <div>
+            <label className="block text-sm font-semibold mb-1">Full Name</label>
+            <input
+              type="text"
+              name="jobAppFullName"
+              value={jobAppFullName}
+              onChange={handleJobAppChange}
+              className="w-full border-b border-black px-2 py-1"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold mb-1">Job Role</label>
+            <input
+              type="text"
+              name="jobRole"
+              value={jobRole}
+              onChange={handleJobAppChange}
+              className="w-full border-b border-black px-2 py-1"
+              placeholder="Enter job role"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold mb-1">Location</label>
+            <input
+              type="text"
+              name="location"
+              value={location}
+              onChange={handleJobAppChange}
+              className="w-full border-b border-black px-2 py-1"
+              placeholder="Enter location"
+              required
+            />
+          </div>
+        </div>
+      </section>
 
       <div className="border border-black mt-2">
         <h1 className="font-medium text-sm sm:text-md bg-gray-300 p-2">

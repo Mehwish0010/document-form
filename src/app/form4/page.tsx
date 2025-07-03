@@ -3,6 +3,9 @@
 import { useState, useRef, useEffect } from 'react';
 
 export default function ComplianceHandbook() {
+    const [jobAppFullName, setJobAppFullName] = useState('');
+    const [jobRole, setJobRole] = useState('');
+    const [location, setLocation] = useState('');
     const [signature, setSignature] = useState('');
     const [name, setName] = useState('');
     const [date, setDate] = useState('');
@@ -21,6 +24,18 @@ export default function ComplianceHandbook() {
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 2;
         ctx.lineCap = 'round';
+    }, []);
+
+    useEffect(() => {
+      const saved = localStorage.getItem('jobApplicationData');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setJobAppFullName(parsed.fullName || '');
+          setJobRole(parsed.jobRole || '');
+          setLocation(parsed.location || '');
+        } catch {}
+      }
     }, []);
 
     const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -78,8 +93,8 @@ export default function ComplianceHandbook() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!signature || !name || !date) {
-            alert('Please fill in all fields including signature');
+        if (!signature || !name || !date || !jobAppFullName || !jobRole || !location) {
+            alert('Please fill in all fields including job application info and signature');
             return;
         }
 
@@ -90,6 +105,9 @@ export default function ComplianceHandbook() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    jobAppFullName,
+                    jobRole,
+                    location,
                     signature,
                     name,
                     date
@@ -104,6 +122,9 @@ export default function ComplianceHandbook() {
                 clearSignature();
                 setName('');
                 setDate('');
+                setJobAppFullName('');
+                setJobRole('');
+                setLocation('');
             } else {
                 alert('Error submitting form: ' + (result.error || 'Unknown error'));
             }
@@ -115,6 +136,49 @@ export default function ComplianceHandbook() {
 
     return (
       <main className="max-w-3xl mx-auto p-10 text-gray-800 font-serif y-8 shadow-xl">
+        {/* Job Application Information */}
+        <section className="mb-8">
+          <h2 className="text-lg font-semibold text-center bg-black text-white py-2 rounded">Job Application Information</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <div>
+              <label className="block text-sm font-semibold mb-1">Full Name</label>
+              <input
+                type="text"
+                name="jobAppFullName"
+                value={jobAppFullName}
+                onChange={e => setJobAppFullName(e.target.value)}
+                className="w-full border-b border-black px-2 py-1"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-1">Job Role</label>
+              <input
+                type="text"
+                name="jobRole"
+                value={jobRole}
+                onChange={e => setJobRole(e.target.value)}
+                className="w-full border-b border-black px-2 py-1"
+                placeholder="Enter job role"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-1">Location</label>
+              <input
+                type="text"
+                name="location"
+                value={location}
+                onChange={e => setLocation(e.target.value)}
+                className="w-full border-b border-black px-2 py-1"
+                placeholder="Enter location"
+                required
+              />
+            </div>
+          </div>
+        </section>
+  
         {/* Page 1 */}
         <section className="space-y-4">
           <h1 className="text-2xl font-bold text-center uppercase mt-12">
@@ -357,57 +421,59 @@ will be reviewed by Designated Compliance Staff.
             of Conduct. If I have any questions, I will contact my supervisor or a member of the designated 
             Corporate Compliance Staff.
           </p>
-
           {/* Signature Block */}
-          <div className="mt-10">
-            <div className="flex flex-wrap items-end mb-6">
-              <div className="mr-6 mb-4 sm:mb-0">
-                <span className="block mb-1">Signature</span>
-                <canvas
-                  ref={canvasRef}
-                  width={256}
-                  height={100}
-                  className=" border-gray-300 rounded"
-                  onMouseDown={startDrawing}
-                  onMouseMove={draw}
-                  onMouseUp={stopDrawing}
-                  onMouseLeave={stopDrawing}
+          <form onSubmit={handleSubmit}>
+            <div className="mt-10">
+              <div className="flex flex-wrap items-end mb-6">
+                <div className="mr-6 mb-4 sm:mb-0">
+                  <span className="block mb-1">Signature</span>
+                  <canvas
+                    ref={canvasRef}
+                    width={256}
+                    height={100}
+                    className=" border-gray-300 rounded"
+                    onMouseDown={startDrawing}
+                    onMouseMove={draw}
+                    onMouseUp={stopDrawing}
+                    onMouseLeave={stopDrawing}
+                  />
+                  <button
+                    type="button"
+                    onClick={clearSignature}
+                    className="mt-2 px-2 p-1 text-sm  hover:bg-gray-300 rounded border">
+                    Clear Signature
+                  </button>
+                </div>
+                <div>
+                  <span className="block mb-1">Print Name</span>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-48 border-b border-black h-8 px-2 focus:outline-none focus:border-blue-500"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+              <div className="mb-4">
+                <span className="block mb-1">Date</span>
+                <input
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="w-40 border-b border-black h-8 px-2 focus:outline-none focus:border-blue-500"
                 />
+              </div>
+              <div className="mt-8">
                 <button
-                  onClick={clearSignature}
-                  className="mt-2 px-2 p-1 text-sm  hover:bg-gray-300 rounded border">
-            Clear Signature
+                  type="submit"
+                  className="w-full bg-black text-white py-2 px-6 ded-lg hover:bg-gray-400 n-colors duration-200 font-semibold"
+                >
+                  Submit Form
                 </button>
               </div>
-              <div>
-                <span className="block mb-1">Print Name</span>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-48 border-b border-black h-8 px-2 focus:outline-none focus:border-blue-500"
-                  placeholder=""
-                />
-              </div>
             </div>
-            <div className="mb-4">
-              <span className="block mb-1">Date</span>
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="w-40 border-b border-black h-8 px-2 focus:outline-none focus:border-blue-500"
-              />
-            </div>
-            <div className="mt-8">
-              <button
-                onClick={handleSubmit}
-                className="w-full bg-black text-white py-2 px-6 ded-lg hover:bg-gray-400 n-colors duration-200 font-semibold"
-              >
-                Submit Form
-              </button>
-            </div>
-          </div>
+          </form>
         </div>
       </main>
     );

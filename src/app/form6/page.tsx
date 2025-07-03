@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
 
 export default function DisclosureForm() {
@@ -14,8 +14,31 @@ export default function DisclosureForm() {
     guardianDate: '',
   });
 
+  const [jobAppFullName, setJobAppFullName] = useState('');
+  const [jobRole, setJobRole] = useState('');
+  const [location, setLocation] = useState('');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('jobApplicationData');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setJobAppFullName(parsed.fullName || '');
+        setJobRole(parsed.jobRole || '');
+        setLocation(parsed.location || '');
+      } catch {}
+    }
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleJobAppChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name === 'jobAppFullName') setJobAppFullName(value);
+    else if (name === 'jobRole') setJobRole(value);
+    else if (name === 'location') setLocation(value);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -31,6 +54,9 @@ export default function DisclosureForm() {
       signature: applicantSignature,
       witnessSignature,
       guardianSignature,
+      jobAppFullName,
+      jobRole,
+      location
     };
 
     try {
@@ -157,6 +183,49 @@ export default function DisclosureForm() {
         ].map((text, i) => (
           <p key={i} className="mb-2 sm:mb-3 text-xs sm:text-sm">{text}</p>
         ))}
+
+        {/* Job Application Information */}
+        <section className="mb-8">
+          <h2 className="text-lg font-semibold text-center bg-black text-white py-2 rounded">Job Application Information</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <div>
+              <label className="block text-sm font-semibold mb-1">Full Name</label>
+              <input
+                type="text"
+                name="jobAppFullName"
+                value={jobAppFullName}
+                onChange={handleJobAppChange}
+                className="w-full border-b border-black px-2 py-1"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-1">Job Role</label>
+              <input
+                type="text"
+                name="jobRole"
+                value={jobRole}
+                onChange={handleJobAppChange}
+                className="w-full border-b border-black px-2 py-1"
+                placeholder="Enter job role"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-1">Location</label>
+              <input
+                type="text"
+                name="location"
+                value={location}
+                onChange={handleJobAppChange}
+                className="w-full border-b border-black px-2 py-1"
+                placeholder="Enter location"
+                required
+              />
+            </div>
+          </div>
+        </section>
 
         {/* Witness and Applicant Section */}
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-2 sm:gap-y-0 items-end">

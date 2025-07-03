@@ -2,44 +2,34 @@
 
 import React, { useRef, useEffect } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
-import JobApplicationFields from '../../components/JobApplicationFields';
 
 export default function ConfidentialityAgreement() {
     const [formData, setFormData] = React.useState({
+      jobAppFullName: '',
+      jobRole: '',
+      location: '',
       name: '',
       signature: '',
       date: '',
-      print: '',
-      // Job application fields
-      fullName: '',
-      jobRole: '',
-      location: ''
+      print: ''
     });
 
     const signaturePadRef = useRef<SignatureCanvas>(null);
 
-    // Load job application data on component mount
     useEffect(() => {
-      const jobData = localStorage.getItem('jobApplicationData');
-      if (jobData) {
-        const parsedData = JSON.parse(jobData);
-        setFormData(prev => ({
-          ...prev,
-          fullName: parsedData.fullName || '',
-          jobRole: parsedData.jobRole || '',
-          location: parsedData.location || ''
-        }));
+      const saved = localStorage.getItem('jobApplicationData');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setFormData(prev => ({
+            ...prev,
+            jobAppFullName: parsed.fullName || '',
+            jobRole: parsed.jobRole || '',
+            location: parsed.location || '',
+          }));
+        } catch {}
       }
     }, []);
-
-    const handleJobDataLoad = (jobData: import('../../components/JobApplicationFields').JobApplicationData) => {
-      setFormData(prev => ({
-        ...prev,
-        fullName: jobData.fullName || '',
-        jobRole: jobData.jobRole || '',
-        location: jobData.location || ''
-      }));
-    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData({
@@ -77,19 +67,19 @@ export default function ConfidentialityAgreement() {
       try {
         const signatureDataUrl = signaturePadRef.current?.toDataURL() || '';
         // Ensure all required fields are filled
-        if (!formData.name || !formData.date || !formData.print || !signaturePadRef.current || signaturePadRef.current.isEmpty()) {
+        if (!formData.name || !formData.date || !formData.print || !signaturePadRef.current || signaturePadRef.current.isEmpty() || !formData.jobAppFullName || !formData.jobRole || !formData.location) {
           showNotification('error', 'Please fill in all required fields');
           return;
         }
         // Prepare the data
         const formDataToSend = {
+          jobAppFullName: formData.jobAppFullName.trim(),
+          jobRole: formData.jobRole.trim(),
+          location: formData.location.trim(),
           name: formData.name.trim(),
           signature: signatureDataUrl,
           date: formData.date,
-          print: formData.print.trim(),
-          fullName: formData.fullName.trim(),
-          jobRole: formData.jobRole.trim(),
-          location: formData.location.trim()
+          print: formData.print.trim()
         };
         const response = await fetch('/api/form1', {
           method: 'POST',
@@ -102,13 +92,13 @@ export default function ConfidentialityAgreement() {
         if (response.ok && result.success) {
           showNotification('success', 'Form submitted successfully!');
           setFormData({
+            jobAppFullName: '',
+            jobRole: '',
+            location: '',
             name: '',
             signature: '',
             date: '',
-            print: '',
-            fullName: '',
-            jobRole: '',
-            location: ''
+            print: ''
           });
           signaturePadRef.current?.clear();
         } else {
@@ -121,13 +111,51 @@ export default function ConfidentialityAgreement() {
 
     return (
       <form onSubmit={handleSubmit} className="max-w-2xl mx-auto px-4 sm:px-16 py-8 sm:py-16 font-serif text-[14px] sm:text-[15px] text-black leading-relaxed tracking-wide shadow-lg rounded-lg">
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-center bg-black text-white py-2 rounded">Job Application Information</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <div>
+              <label className="block text-sm font-semibold mb-1">Full Name</label>
+              <input
+                type="text"
+                name="jobAppFullName"
+                value={formData.jobAppFullName}
+                onChange={handleChange}
+                className="w-full border-b border-black px-2 py-1"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-1">Job Role</label>
+              <input
+                type="text"
+                name="jobRole"
+                value={formData.jobRole}
+                onChange={handleChange}
+                className="w-full border-b border-black px-2 py-1"
+                placeholder="Enter job role"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold mb-1">Location</label>
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                className="w-full border-b border-black px-2 py-1"
+                placeholder="Enter location"
+                required
+              />
+            </div>
+          </div>
+        </div>
         <h1 className="text-center text-base sm:text-lg font-bold mb-4 sm:mb-6 uppercase">
           Behavior Analysis & Therapy Partners
         </h1>
         <h2 className="text-center font-semibold mb-6 sm:mb-10 uppercase">Confidentiality Agreement</h2>
-  
-        {/* Job Application Information */}
-        <JobApplicationFields onDataLoad={handleJobDataLoad} />
   
         <p className="mb-6 sm:mb-8">
           I, <input 
