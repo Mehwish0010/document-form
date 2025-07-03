@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-import { PDFDocument, StandardFonts, rgb, PDFFont } from 'pdf-lib';
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 
 const emailConfig = {
   user: 'mehwishsheikh0010sheikh@gmail.com',
@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
 
 async function generateCompliancePDF(formData) {
   const pdfDoc = await PDFDocument.create();
-  let page = pdfDoc.addPage([612, 1800]);
+  const page = pdfDoc.addPage([612, 1800]);
   const { width } = page.getSize();
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
@@ -34,7 +34,7 @@ async function generateCompliancePDF(formData) {
     const words = text.split(" ");
     let line = "";
     const lines = [];
-    for (let word of words) {
+    for (const word of words) {
       const testLine = line + word + " ";
       const width = font.widthOfTextAtSize(testLine, fontSize);
       if (width > maxWidth) {
@@ -121,7 +121,7 @@ async function generateCompliancePDF(formData) {
       const dims = image.scale(0.4);
       page.drawImage(image, { x: padding + 10, y: y - dims.height, width: dims.width, height: dims.height });
       signatureHeight = dims.height;
-    } catch (error) {
+    } catch {
       page.drawLine({ start: { x: padding + 10, y: y }, end: { x: padding + 250, y: y }, thickness: 1 });
     }
   } else {

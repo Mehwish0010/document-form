@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { PDFDocument, rgb, StandardFonts, RGB } from 'pdf-lib';
 
 const emailConfig = {
   user: 'mehwishsheikh0010sheikh@gmail.com',
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-    const drawText = (text: string, x: number, y: number, size: number, isBold: boolean = false, color: any = rgb(0, 0, 0)) => {
+    const drawText = (text: string, x: number, y: number, size: number, isBold: boolean = false, color: RGB = rgb(0, 0, 0)) => {
       page.drawText(text, {
         x,
         y,

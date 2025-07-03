@@ -1,6 +1,5 @@
 "use client"
 
-import FormsPage from "./all-forms/page"
 import JobApplicationPage from "./job-applications/page"
 
 

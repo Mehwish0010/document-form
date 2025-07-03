@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
     function drawParagraph(text: string, margin: number, maxWidth: number) {
       const words = text.split(' ');
       let line = '';
-      for (let word of words) {
+      for (const word of words) {
         const testLine = line + word + ' ';
         const testWidth = font.widthOfTextAtSize(testLine, 11);
         if (testWidth > maxWidth && line !== '') {

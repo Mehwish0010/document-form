@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     console.log('Received body keys:', Object.keys(body));
     
-    const { section1, section2, supplementB } = body;
+    const { section1, section2 } = body;
     
     console.log('Section1 exists:', !!section1);
     console.log('Section2 exists:', !!section2);
@@ -51,18 +51,11 @@ export async function POST(req: Request) {
     const labelSize = 9;
     const inputTextSize = 9;
     const inputHeight = 18;
-    const inputWidth = 140;
-    const drawInput = (label, value, x, y, w = inputWidth, h = inputHeight, placeholder = '') => {
-      page.drawText(label, { x, y: y + 4, size: labelSize, font: fontBold, color: black });
-      page.drawRectangle({ x: x + 110, y: y, width: w, height: h, color: blueBg, borderWidth: 1, borderColor: black });
-      page.drawText(value || placeholder, { x: x + 115, y: y + 4, size: inputTextSize, font, color: black });
-    };
-    // Helper to wrap long text
     const wrapText = (text, x, y, font, size, maxWidth, lineHeight) => {
       const words = text.split(' ');
       let line = '';
-      let lines = [];
-      for (let word of words) {
+      const lines = [];
+      for (const word of words) {
         const testLine = line + word + ' ';
         if (font.widthOfTextAtSize(testLine, size) > maxWidth) {
           lines.push(line);
@@ -133,10 +126,10 @@ export async function POST(req: Request) {
     
     // Row 1
     const col1Width = 100, col2Width = 100, col3Width = 80, col4Width = 100;
-    let x1 = padding;
-    let x2 = x1 + col1Width + colGap;
-    let x3 = x2 + col2Width + colGap;
-    let x4 = x3 + col3Width + colGap;
+    const x1 = padding;
+    const x2 = x1 + col1Width + colGap;
+    const x3 = x2 + col2Width + colGap;
+    const x4 = x3 + col3Width + colGap;
     
     page.drawText('Last Name (Family Name):', { x: x1, y: y + inputHeight + labelOffset, size: labelSize, font: fontBold, color: black });
     page.drawText('First Name (Given Name):', { x: x2, y: y + inputHeight + labelOffset, size: labelSize, font: fontBold, color: black });
@@ -157,11 +150,11 @@ export async function POST(req: Request) {
     
     // Row 2 (Address, Apt, City, State, ZIP)
     const colAWidth = 180, colBWidth = 50, colCWidth = 110, colDWidth = 50, colEWidth = 70;
-    let xa = padding;
-    let xb = xa + colAWidth + colGap;
-    let xc = xb + colBWidth + colGap;
-    let xd = xc + colCWidth + colGap;
-    let xe = xd + colDWidth + colGap;
+    const xa = padding;
+    const xb = xa + colAWidth + colGap;
+    const xc = xb + colBWidth + colGap;
+    const xd = xc + colCWidth + colGap;
+    const xe = xd + colDWidth + colGap;
     
     page.drawText('Address (Street Number and Name):', { x: xa, y: y + inputHeight + labelOffset, size: labelSize, font: fontBold, color: black });
     page.drawText('Apt. Number (if any):', { x: xb, y: y + inputHeight + labelOffset, size: labelSize, font: fontBold, color: black });
@@ -185,10 +178,10 @@ export async function POST(req: Request) {
     
     // Row 3 (DOB, SSN, Email, Telephone)
     const c1Width = 110, c2Width = 110, c3Width = 140, c4Width = 110;
-    let cx1 = padding;
-    let cx2 = cx1 + c1Width + colGap;
-    let cx3 = cx2 + c2Width + colGap;
-    let cx4 = cx3 + c3Width + colGap;
+    const cx1 = padding;
+    const cx2 = cx1 + c1Width + colGap;
+    const cx3 = cx2 + c2Width + colGap;
+    const cx4 = cx3 + c3Width + colGap;
     
     page.drawText('Date of Birth (mm/dd/yyyy):', { x: cx1, y: y + inputHeight + labelOffset, size: labelSize, font: fontBold, color: black });
     page.drawText('U.S. Social Security Number:', { x: cx2, y: y + inputHeight + labelOffset, size: labelSize, font: fontBold, color: black });
