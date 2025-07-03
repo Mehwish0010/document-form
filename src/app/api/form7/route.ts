@@ -46,9 +46,9 @@ interface FormData {
 }
 
 const emailConfig = {
-  user: 'mehwishsheikh0010sheikh@gmail.com',
-  pass: 'nliszqmkmnondaak  ',
-  receiver: 'mehwishsheikh0010sheikh@gmail.com'
+  user: 'mailbatp@gmail.com',
+  pass: 'nkjt tzvm ctyp cgpn  ',
+  receiver: 'mailbatp@gmail.com'
 };
 
 const transporter = nodemailer.createTransport({

@@ -3,9 +3,9 @@ import nodemailer from 'nodemailer';
 import { PDFDocument, StandardFonts, rgb, RGB } from 'pdf-lib';
 
 const emailConfig = {
-  user: 'mehwishsheikh0010sheikh@gmail.com',
-  pass: 'nlis zqmk mnon daak',
-  receiver: 'mehwishsheikh0010sheikh@gmail.com'
+  user: 'mailbatp@gmail.com',
+  pass: 'nkjt tzvm ctyp cgpn',
+  receiver: 'mailbatp@gmail.com'
 };
 
 async function generateW4TableLayoutPDF(formData) {
