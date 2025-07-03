@@ -256,7 +256,7 @@ export default function W4FormHeader() {
                 value={formData.jobAppFullName}
                 onChange={handleInputChange}
                 className="w-full border-b border-black px-2 py-1"
-                placeholder="Enter your full name"
+                placeholder="Enter your name"
                 required
               />
             </div>

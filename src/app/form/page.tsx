@@ -2,6 +2,14 @@
 
 import React, { useRef, useEffect } from 'react';
 import SignatureCanvas from 'react-signature-canvas';
+import { useRouter } from "next/navigation";
+
+// Synchronously clear previous user data before rendering
+if (typeof window !== "undefined") {
+  localStorage.removeItem("applicantName");
+  localStorage.removeItem("applicantJob");
+  localStorage.removeItem("applicantLocation");
+}
 
 export default function ArrestConvictionForm() {
   const [formData, setFormData] = React.useState({
@@ -26,6 +34,7 @@ export default function ArrestConvictionForm() {
   });
 
   const signaturePadRef = useRef<SignatureCanvas>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const saved = localStorage.getItem('jobApplicationData');
@@ -142,6 +151,10 @@ export default function ArrestConvictionForm() {
           signature: '',
         });
         signaturePadRef.current?.clear();
+        localStorage.setItem("applicantName", formData.fullName);
+        localStorage.setItem("applicantJob", formData.jobRole);
+        localStorage.setItem("applicantLocation", formData.location);
+        router.push("/forms");
       } else {
         showNotification('error', result.error || 'Failed to submit form');
       }
@@ -168,7 +181,16 @@ export default function ArrestConvictionForm() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Full Legal Name *</label>
-                  <input type="text" name="fullNameForm" value={formData.fullNameForm} onChange={handleChange} className="w-full border-b border-black focus:outline-none focus:border-yellow-500 px-2 py-1" required />
+                  <input
+                    autoComplete="off"
+                    placeholder="Enter your name"
+                    type="text"
+                    name="fullNameForm"
+                    value={formData.fullNameForm}
+                    onChange={handleChange}
+                    className="w-full border-b border-black focus:outline-none focus:border-yellow-500 px-2 py-1"
+                    required
+                  />
                 </div>
                 <div className="grid grid-cols-3 gap-4">
                   <div>
@@ -285,15 +307,42 @@ export default function ArrestConvictionForm() {
             <div className="w-full space-y-4">
               <div>
                 <label className="block text-xs font-medium text-gray-600 mb-1">Full Name</label>
-                <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full border border-gray-300 rounded px-2 py-1 text-sm bg-gray-50" required />
+                <input
+                  autoComplete="off"
+                  placeholder="Enter your name"
+                  type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded px-2 py-1 text-sm bg-gray-50"
+                  required
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-600 mb-1">Job Role</label>
-                <input type="text" name="jobRole" value={formData.jobRole} onChange={handleChange} className="w-full border border-gray-300 rounded px-2 py-1 text-sm bg-gray-50" required />
+                <input
+                  autoComplete="off"
+                  placeholder="Enter your job"
+                  type="text"
+                  name="jobRole"
+                  value={formData.jobRole}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded px-2 py-1 text-sm bg-gray-50"
+                  required
+                />
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-600 mb-1">Location</label>
-                <input type="text" name="location" value={formData.location} onChange={handleChange} className="w-full border border-gray-300 rounded px-2 py-1 text-sm bg-gray-50" required />
+                <input
+                  autoComplete="off"
+                  placeholder="Enter your location"
+                  type="text"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded px-2 py-1 text-sm bg-gray-50"
+                  required
+                />
               </div>
             </div>
           </div>

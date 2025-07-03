@@ -9,6 +9,7 @@ export default function ComplianceHandbook() {
     const [signature, setSignature] = useState('');
     const [name, setName] = useState('');
     const [date, setDate] = useState('');
+    const [job, setJob] = useState('');
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isDrawing, setIsDrawing] = useState(false);
     const [lastX, setLastX] = useState(0);
@@ -35,6 +36,14 @@ export default function ComplianceHandbook() {
           setJobRole(parsed.jobRole || '');
           setLocation(parsed.location || '');
         } catch {}
+      }
+    }, []);
+
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        setName(localStorage.getItem("applicantName") || "");
+        setJob(localStorage.getItem("applicantJob") || "");
+        setLocation(localStorage.getItem("applicantLocation") || "");
       }
     }, []);
 
@@ -110,7 +119,8 @@ export default function ComplianceHandbook() {
                     location,
                     signature,
                     name,
-                    date
+                    date,
+                    job
                 })
             });
 
@@ -125,6 +135,7 @@ export default function ComplianceHandbook() {
                 setJobAppFullName('');
                 setJobRole('');
                 setLocation('');
+                setJob('');
             } else {
                 alert('Error submitting form: ' + (result.error || 'Unknown error'));
             }

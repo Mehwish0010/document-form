@@ -98,21 +98,33 @@ const EmploymentApplication = () => {
     signature: '',
     signatureDate: '',
   });
-  const [jobAppFullName, setJobAppFullName] = useState('');
-  const [jobRole, setJobRole] = useState('');
-  const [location, setLocation] = useState('');
+  const [jobAppInfo, setJobAppInfo] = useState({
+    jobAppFullName: '',
+    jobRole: '',
+    location: ''
+  });
 
   useEffect(() => {
     const saved = localStorage.getItem('jobApplicationData');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setJobAppFullName(parsed.fullName || '');
-        setJobRole(parsed.jobRole || '');
-        setLocation(parsed.location || '');
+        setJobAppInfo({
+          jobAppFullName: parsed.fullName || '',
+          jobRole: parsed.jobRole || '',
+          location: parsed.location || ''
+        });
       } catch {}
     }
   }, []);
+
+  const handleJobAppChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setJobAppInfo(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   type FormDataKey = keyof FormData;
 
@@ -203,9 +215,9 @@ const EmploymentApplication = () => {
         },
         body: JSON.stringify({
           ...formData,
-          fullName: jobAppFullName,
-          jobRole,
-          location
+          jobAppFullName: jobAppInfo.jobAppFullName,
+          jobRole: jobAppInfo.jobRole,
+          location: jobAppInfo.location
         })
       });
 
@@ -311,10 +323,10 @@ const EmploymentApplication = () => {
               <input
                 type="text"
                 name="jobAppFullName"
-                value={jobAppFullName}
-                onChange={e => setJobAppFullName(e.target.value)}
+                value={jobAppInfo.jobAppFullName}
+                onChange={handleJobAppChange}
                 className="w-full border-b border-black px-2 py-1"
-                placeholder="Enter your full name"
+                placeholder="Enter your name"
                 required
               />
             </div>
@@ -323,8 +335,8 @@ const EmploymentApplication = () => {
               <input
                 type="text"
                 name="jobRole"
-                value={jobRole}
-                onChange={e => setJobRole(e.target.value)}
+                value={jobAppInfo.jobRole}
+                onChange={handleJobAppChange}
                 className="w-full border-b border-black px-2 py-1"
                 placeholder="Enter job role"
                 required
@@ -335,8 +347,8 @@ const EmploymentApplication = () => {
               <input
                 type="text"
                 name="location"
-                value={location}
-                onChange={e => setLocation(e.target.value)}
+                value={jobAppInfo.location}
+                onChange={handleJobAppChange}
                 className="w-full border-b border-black px-2 py-1"
                 placeholder="Enter location"
                 required

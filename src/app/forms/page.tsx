@@ -165,6 +165,7 @@ export default function Forms() {
         [name]: value
       }));
     }
+    localStorage.setItem(name, value);
   };
 
   const handleCheckboxChange = (name: keyof FormData, checked: boolean) => {
@@ -172,6 +173,7 @@ export default function Forms() {
       ...prev,
       [name]: checked
     }));
+    localStorage.setItem(name, checked.toString());
   };
 
   return (
@@ -197,7 +199,7 @@ export default function Forms() {
                       value={formData.jobAppFullName}
                       onChange={handleChange}
                       className="w-full outline-none placeholder:text-gray-400 text-black bg-transparent focus:ring-0 border-b border-black p-0"
-                      placeholder="Enter your full name"
+                      placeholder="Enter your name"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -243,7 +245,7 @@ export default function Forms() {
                           value={formData.fullName}
                           onChange={handleChange}
                           className="w-full outline-none placeholder:text-gray-400 text-black bg-transparent focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 border-0 p-0"
-                          placeholder=""
+                          placeholder="Enter your name"
                         />
                       </div>
                     </div>
@@ -312,7 +314,7 @@ export default function Forms() {
                           value={formData.otherNames}
                           onChange={handleChange}
                            className="w-full outline-none placeholder:text-gray-400 text-black bg-transparent focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 border-0 p-0"
-                          placeholder=""
+                          placeholder="Enter your name"
                         />
                       </div>
                     </div>
@@ -360,7 +362,7 @@ export default function Forms() {
                         value={formData.arrestDetail1}
                         onChange={handleChange}
                         className="w-full sm:w-[800px] border-0 border-b ml-4 sm:ml-20 border-black outline-none placeholder:text-gray-400 text-black bg-white focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-                        placeholder=""
+                        placeholder="Enter arrest details"
                       />
                       <input
                         type="text"
@@ -369,7 +371,7 @@ export default function Forms() {
                         value={formData.arrestDetail2}
                         onChange={handleChange}
                         className="w-full sm:w-[800px] border-0 border-b ml-4 sm:ml-20 border-black outline-none placeholder:text-gray-400 text-black bg-white focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-                        placeholder=""
+                        placeholder="Enter arrest details"
                       />
                     </div>
                   </div>

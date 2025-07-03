@@ -5,6 +5,9 @@ import SignatureCanvas from 'react-signature-canvas';
 
 const ResidencyCertificationForm = () => {
   const [formData, setFormData] = useState({
+    jobAppFullName: '',
+    jobRole: '',
+    location: '',
     name: '',
     ssn1: '',
     ssn2: '',
@@ -51,18 +54,18 @@ const ResidencyCertificationForm = () => {
     email: '',
   });
   const signatureRef = useRef<SignatureCanvas>(null);
-  const [jobAppFullName, setJobAppFullName] = useState('');
-  const [jobRole, setJobRole] = useState('');
-  const [location, setLocation] = useState('');
 
   useEffect(() => {
     const saved = localStorage.getItem('jobApplicationData');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setJobAppFullName(parsed.fullName || '');
-        setJobRole(parsed.jobRole || '');
-        setLocation(parsed.location || '');
+        setFormData(prev => ({
+          ...prev,
+          jobAppFullName: parsed.fullName || '',
+          jobRole: parsed.jobRole || '',
+          location: parsed.location || '',
+        }));
       } catch {}
     }
   }, []);
@@ -76,13 +79,6 @@ const ResidencyCertificationForm = () => {
       // Clear message on change
       return newData;
     });
-  };
-
-  const handleJobAppChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (name === 'jobAppFullName') setJobAppFullName(value);
-    else if (name === 'jobRole') setJobRole(value);
-    else if (name === 'location') setLocation(value);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -145,9 +141,9 @@ const ResidencyCertificationForm = () => {
       const submissionData = {
         ...rest,
         ein: [ein1, ein2, ein3, ein4, ein5, ein6, ein7, ein8, ein9].join(''),
-        jobAppFullName,
-        jobRole,
-        location
+        jobAppFullName: formData.jobAppFullName,
+        jobRole: formData.jobRole,
+        location: formData.location
       };
       
       const response = await fetch('/api/form9', {
@@ -165,6 +161,9 @@ const ResidencyCertificationForm = () => {
       if (data.success) {
         showNotification('success', 'Your form has been submitted successfully! Thank you.');
         setFormData({
+          jobAppFullName: '',
+          jobRole: '',
+          location: '',
           name: '',
           ssn1: '',
           ssn2: '',
@@ -281,10 +280,10 @@ const ResidencyCertificationForm = () => {
             <input
               type="text"
               name="jobAppFullName"
-              value={jobAppFullName}
-              onChange={handleJobAppChange}
+              value={formData.jobAppFullName}
+              onChange={handleChange}
               className="w-full border-b border-black px-2 py-1"
-              placeholder="Enter your full name"
+              placeholder="Enter your name"
               required
             />
           </div>
@@ -293,8 +292,8 @@ const ResidencyCertificationForm = () => {
             <input
               type="text"
               name="jobRole"
-              value={jobRole}
-              onChange={handleJobAppChange}
+              value={formData.jobRole}
+              onChange={handleChange}
               className="w-full border-b border-black px-2 py-1"
               placeholder="Enter job role"
               required
@@ -305,8 +304,8 @@ const ResidencyCertificationForm = () => {
             <input
               type="text"
               name="location"
-              value={location}
-              onChange={handleJobAppChange}
+              value={formData.location}
+              onChange={handleChange}
               className="w-full border-b border-black px-2 py-1"
               placeholder="Enter location"
               required

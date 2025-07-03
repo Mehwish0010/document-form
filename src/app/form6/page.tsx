@@ -19,14 +19,16 @@ export default function DisclosureForm() {
   const [location, setLocation] = useState('');
 
   useEffect(() => {
-    const saved = localStorage.getItem('jobApplicationData');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setJobAppFullName(parsed.fullName || '');
-        setJobRole(parsed.jobRole || '');
-        setLocation(parsed.location || '');
-      } catch {}
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('jobApplicationData');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setJobAppFullName(parsed.fullName || '');
+          setJobRole(parsed.jobRole || '');
+          setLocation(parsed.location || '');
+        } catch {}
+      }
     }
   }, []);
 
@@ -196,7 +198,7 @@ export default function DisclosureForm() {
                 value={jobAppFullName}
                 onChange={handleJobAppChange}
                 className="w-full border-b border-black px-2 py-1"
-                placeholder="Enter your full name"
+                placeholder="Enter your name"
                 required
               />
             </div>

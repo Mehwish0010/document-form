@@ -17,17 +17,19 @@ export default function ConfidentialityAgreement() {
     const signaturePadRef = useRef<SignatureCanvas>(null);
 
     useEffect(() => {
-      const saved = localStorage.getItem('jobApplicationData');
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          setFormData(prev => ({
-            ...prev,
-            jobAppFullName: parsed.fullName || '',
-            jobRole: parsed.jobRole || '',
-            location: parsed.location || '',
-          }));
-        } catch {}
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('jobApplicationData');
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            setFormData(prev => ({
+              ...prev,
+              jobAppFullName: parsed.fullName || '',
+              jobRole: parsed.jobRole || '',
+              location: parsed.location || ''
+            }));
+          } catch {}
+        }
       }
     }, []);
 
@@ -122,7 +124,7 @@ export default function ConfidentialityAgreement() {
                 value={formData.jobAppFullName}
                 onChange={handleChange}
                 className="w-full border-b border-black px-2 py-1"
-                placeholder="Enter your full name"
+                placeholder="Enter your name"
                 required
               />
             </div>

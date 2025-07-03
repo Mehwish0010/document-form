@@ -57,9 +57,11 @@ export default function EmploymentForm() {
   });
 
   // Job Application Info
-  const [jobAppFullName, setJobAppFullName] = useState('');
-  const [jobRole, setJobRole] = useState('');
-  const [location, setLocation] = useState('');
+  const [jobAppInfo, setJobAppInfo] = useState({
+    jobAppFullName: '',
+    jobRole: '',
+    location: ''
+  });
 
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
@@ -75,9 +77,11 @@ export default function EmploymentForm() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setJobAppFullName(parsed.fullName || '');
-        setJobRole(parsed.jobRole || '');
-        setLocation(parsed.location || '');
+        setJobAppInfo({
+          jobAppFullName: parsed.fullName || '',
+          jobRole: parsed.jobRole || '',
+          location: parsed.location || ''
+        });
       } catch {}
     }
   }, []);
@@ -124,9 +128,10 @@ export default function EmploymentForm() {
 
   const handleJobAppChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === 'jobAppFullName') setJobAppFullName(value);
-    else if (name === 'jobRole') setJobRole(value);
-    else if (name === 'location') setLocation(value);
+    setJobAppInfo(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -135,9 +140,9 @@ export default function EmploymentForm() {
     try {
       // Collect all form data
       const formData = {
-        jobAppFullName,
-        jobRole,
-        location,
+        jobAppFullName: jobAppInfo.jobAppFullName,
+        jobRole: jobAppInfo.jobRole,
+        location: jobAppInfo.location,
         section1: {
           lastName: section1.lastName || '',
           firstName: section1.firstName || '',
@@ -260,10 +265,10 @@ export default function EmploymentForm() {
             <input
               type="text"
               name="jobAppFullName"
-              value={jobAppFullName}
+              value={jobAppInfo.jobAppFullName}
               onChange={handleJobAppChange}
               className="w-full border-b border-black px-2 py-1"
-              placeholder="Enter your full name"
+              placeholder="Enter your name"
               required
             />
           </div>
@@ -272,7 +277,7 @@ export default function EmploymentForm() {
             <input
               type="text"
               name="jobRole"
-              value={jobRole}
+              value={jobAppInfo.jobRole}
               onChange={handleJobAppChange}
               className="w-full border-b border-black px-2 py-1"
               placeholder="Enter job role"
@@ -284,7 +289,7 @@ export default function EmploymentForm() {
             <input
               type="text"
               name="location"
-              value={location}
+              value={jobAppInfo.location}
               onChange={handleJobAppChange}
               className="w-full border-b border-black px-2 py-1"
               placeholder="Enter location"
