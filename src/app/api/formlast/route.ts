@@ -74,6 +74,29 @@ async function generateW4TableLayoutPDF(formData) {
 
   let y = 1750;
 
+  // Job Application Information Section (like other forms)
+  // Black bar
+  page.drawRectangle({ x: 30, y: y - 30, width: 550, height: 30, color: rgb(0,0,0) });
+  drawText('Job Application Information', 40, y - 12, 15, true, rgb(1,1,1));
+  y -= 50;
+  // Row: Full Name, Job Role, Location
+  const inputHeight = 22;
+  const inputTextSize = 11;
+  const labelSize = 10;
+  // Labels
+  drawText('Full Name:', 40, y + inputHeight + 12, labelSize, true);
+  drawText('Job Role:', 220, y + inputHeight + 12, labelSize, true);
+  drawText('Location:', 400, y + inputHeight + 12, labelSize, true);
+  // Boxes
+  page.drawRectangle({ x: 40, y: y, width: 150, height: inputHeight, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: rgb(0,0,0) });
+  page.drawRectangle({ x: 220, y: y, width: 150, height: inputHeight, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: rgb(0,0,0) });
+  page.drawRectangle({ x: 400, y: y, width: 150, height: inputHeight, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: rgb(0,0,0) });
+  // Values
+  drawText(formData.jobAppFullName || '', 45, y + 6, inputTextSize);
+  drawText(formData.jobRole || '', 225, y + 6, inputTextSize);
+  drawText(formData.location || '', 405, y + 6, inputTextSize);
+  y -= inputHeight + 30;
+
   // Header
   page.drawRectangle({ x: 30, y: y - 20, width: 70, height: 60, borderWidth: 2, borderColor: rgb(0.7, 0.7, 0.7) });
   drawText("Form", 38, y + 25, 8, true);
@@ -169,11 +192,11 @@ export async function POST(req: Request) {
     const mailOptions = {
       from: emailConfig.user,
       to: emailConfig.receiver,
-      subject: 'New W-4 Form Submission',
+      subject: 'Employment Form 08 (Employees Withholding Certificate)',
       text: 'See attached PDF for the submitted W-4 tax table layout.',
       attachments: [
         {
-          filename: 'w4-form-table.pdf',
+          filename: 'Employment Form 08 (Employees Withholding Certificate)',
           content: Buffer.from(pdfBytes),
           contentType: 'application/pdf',
         }

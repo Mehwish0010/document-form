@@ -5,7 +5,7 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 // Email configuration
 const emailConfig = {
   user: 'mailbatp@gmail.com',
-  pass: 'nkjt tzvm ctyp cgpn ', // App password
+  pass: 'nkjt tzvm ctyp cgpn ',
   receiver: 'mailbatp@gmail.com'
 };
 
@@ -44,10 +44,10 @@ export async function POST(req: Request) {
 
     // Generate PDF
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([612, 1200]); // Increased height for all text
+    const page = pdfDoc.addPage([612, 1600]); // Further increased height for all text
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-    let y = 1150;
+    let y = 1540; // Start near the top for a 1600px tall page
     const drawText = (text: string, x: number, y: number, isBold: boolean = false, size: number = 12) => {
       page.drawText(text, {
         x,
@@ -206,26 +206,31 @@ export async function POST(req: Request) {
     drawText(date || '', 125, y + 2, false, 10);
     y -= 40;
     // --- Guardian Section ---
-    drawText('If the employee is a minor:', 50, y, true, 10); y -= 20;
+    drawText('If the employee is a minor:', 50, y, true, 10); y -= 22;
     // Guardian Name row
     drawText('Parent/Legal Guardian Name:', 50, y, true, 10);
-    drawLine(220, y - 2, 540, y - 2);
-    drawText(guardianName || '', 225, y + 2, false, 10);
-    y -= 40;
-    // Guardian Signature row
+    page.drawRectangle({ x: 220, y: y - 4, width: 250, height: 18, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: rgb(0,0,0) });
+    drawText(guardianName || '', 225, y, false, 10);
+    y -= 28;
+    y -= 20; // Add extra vertical space before signature box
+    // Guardian Signature row (on its own line)
     drawText('Signature:', 50, y, true, 10);
-    drawLine(120, y - 2, 300, y - 2);
+    page.drawRectangle({ x: 150, y: y - 4, width: 180, height: 32, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     if (guardianSignature) {
       try {
         const guardianSigImg = await pdfDoc.embedPng(guardianSignature.split(',')[1]);
-        page.drawImage(guardianSigImg, { x: 125, y: y - 2, width: 120, height: 32 });
+        page.drawImage(guardianSigImg, { x: 155, y: y - 2, width: 170, height: 28 });
       } catch { /* ignore */ }
+    } else {
+      // Show 'Clear Signature' label in red if no signature
+      page.drawText('Clear Signature', { x: 155, y: y + 8, size: 10, font: boldFont, color: rgb(1,0,0) });
     }
-    // Guardian Date row
-    drawText('Date:', 320, y, true, 10);
-    drawLine(370, y - 2, 540, y - 2);
-    drawText(guardianDate || '', 375, y + 2, false, 10);
-    y -= 40;
+    y -= 74; // Increased vertical space to prevent overlap
+    // Guardian Date row (on its own line)
+    drawText('Date:', 50, y, true, 10);
+    page.drawRectangle({ x: 150, y: y - 4, width: 100, height: 18, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: rgb(0,0,0) });
+    drawText(guardianDate || '', 155, y, false, 10);
+    y -= 28;
     // --- End PDF Generation ---
 
     const pdfBytes = await pdfDoc.save();
@@ -234,11 +239,11 @@ export async function POST(req: Request) {
     const mailOptions = {
       from: emailConfig.user,
       to: emailConfig.receiver,
-      subject: 'Disclosure Statement Form Submission',
+      subject: ' Employment Form 07 (Disclosure-Statement.pdf)',
       text: `Disclosure Statement submitted by ${name}.`,
       attachments: [
         {
-          filename: 'Disclosure-Statement.pdf',
+          filename: ' Employment Form 07 (Disclosure-Statement.pdf)',
           content: Buffer.from(pdfBytes),
         },
       ],

@@ -25,7 +25,6 @@ async function generateCompliancePDF(formData) {
 
   const black = rgb(0, 0, 0);
   const white = rgb(1, 1, 1);
-  const headerGray = rgb(0.2, 0.2, 0.2);
   const padding = 50;
   const contentWidth = width - (padding * 2);
   let y = page.getHeight() - padding;
@@ -65,37 +64,28 @@ async function generateCompliancePDF(formData) {
   };
 
   // --- Job Application Fields at the top ---
-  drawText("Job Application Information", padding, y, fontBold, 14, black, undefined, undefined); y -= 24;
-  drawText("Full Name:", padding, y, font, 11, black, undefined, undefined); 
-  drawInputBox(padding + 90, y - 10, 180, 18, !!formData.jobAppFullName);
-  drawText(formData.jobAppFullName || '', padding + 95, y - 5, font, 11, black, undefined, undefined); y -= 22;
-  drawText("Job Role:", padding, y, font, 11, black, undefined, undefined);
-  drawInputBox(padding + 90, y - 10, 180, 18, !!formData.jobRole);
-  drawText(formData.jobRole || '', padding + 95, y - 5, font, 11, black, undefined, undefined); y -= 22;
-  drawText("Location:", padding, y, font, 11, black, undefined, undefined);
-  drawInputBox(padding + 90, y - 10, 180, 18, !!formData.location);
-  drawText(formData.location || '', padding + 95, y - 5, font, 11, black, undefined, undefined); y -= 30;
+  page.drawRectangle({ x: padding, y: y - 30, width: contentWidth, height: 30, color: black });
+  drawText("Job Application Information", padding + 10, y - 12, fontBold, 15, white, undefined, undefined);
+  y -= 40;
+  // Three columns: Full Name, Job Role, Location
+  drawText("Full Name", padding, y + 18, fontBold, 11, black, undefined, undefined);
+  drawText("Job Role", padding + 180, y + 18, fontBold, 11, black, undefined, undefined);
+  drawText("Location", padding + 360, y + 18, fontBold, 11, black, undefined, undefined);
+  // Input boxes
+  drawInputBox(padding, y, 160, 22, !!formData.jobAppFullName);
+  drawInputBox(padding + 180, y, 160, 22, !!formData.jobRole);
+  drawInputBox(padding + 360, y, 160, 22, !!formData.location);
+  drawText(formData.jobAppFullName || '', padding + 8, y + 6, font, 11, black, undefined, undefined);
+  drawText(formData.jobRole || '', padding + 188, y + 6, font, 11, black, undefined, undefined);
+  drawText(formData.location || '', padding + 368, y + 6, font, 11, black, undefined, undefined);
+  y -= 40;
 
   // Title and subtitle (centered, match UI)
-  drawText("BEHAVIOR ANALYSIS & THERAPY PARTNERS", padding, y, fontBold, 16, black, undefined, undefined); y -= 24;
-  drawText("CONFIDENTIALITY AGREEMENT", padding, y, fontBold, 13, black, undefined, undefined); y -= 30;
 
-  // Job Application Information Section (match UI layout)
-  if (formData.name) {
-    y -= 10;
-    page.drawRectangle({ x: padding, y: y, width: contentWidth, height: 25, color: headerGray });
-    drawText("JOB APPLICATION INFORMATION", padding + 10, y + 8, fontBold, 12, white, undefined, undefined);
-    y -= 30;
-    drawText("Full Name:", padding, y, font, 11, black, undefined, undefined);
-    drawInputBox(padding + 90, y - 10, 180, 18, !!formData.name);
-    drawText(formData.name || '', padding + 95, y - 5, font, 11, black, undefined, undefined);
-    y -= 22;
-    // No job role/location in this form, but keep layout consistent
-    drawText("Date:", padding, y, font, 11, black, undefined, undefined);
-    drawInputBox(padding + 90, y - 10, 120, 18, !!formData.date);
-    drawText(formData.date || '', padding + 95, y - 5, font, 11, black, undefined, undefined);
-    y -= 30;
-  }
+  drawText("BEHAVIOR ANALYSIS & THERAPY PARTNERS", padding, y, fontBold, 16, black, undefined, undefined);
+  y -= 24;
+  drawText("CONFIDENTIALITY AGREEMENT", padding, y, fontBold, 13, black, undefined, undefined);
+  y -= 30;
 
   // Agreement statement
   y -= 10;
@@ -106,48 +96,61 @@ async function generateCompliancePDF(formData) {
   y -= 30;
 
   // Privacy Policy bold
-  drawText("I have read and understood BATP's Privacy Policy.", padding, y, fontBold, 12, black, undefined, undefined); y -= 20;
+  drawText("I have read and understood BATP's Privacy Policy.", padding, y, fontBold, 12, black, undefined, undefined);
+  y -= 20;
 
   // Policy paragraphs
-  y = await drawParagraph(page, "I understand that I may encounter confidential information during my time at BATP. As part of the condition of my work with BATP I will keep in strict confidence any information regarding any client, employee, consultant, or business of BATP or any other organization that comes to my attention while at BATP. I will do this in accordance with the BATP privacy policy and applicable laws, including those that require mandatory reporting. If I am unsure of whether or not to disclose, I will bring it up in supervision.", padding, y, font, 11, black, contentWidth, 16); y -= 10;
-  y = await drawParagraph(page, "I also agree to never remove any confidential material of any kind from the premises of BATP unless authorized as part of my duties, or with the express permission or direction to do so from BATP.", padding, y, font, 11, black, contentWidth, 16); y -= 30;
+  y = await drawParagraph(page, "I understand that I may encounter confidential information during my time at BATP. As part of the condition of my work with BATP I will keep in strict confidence any information regarding any client, employee, consultant, or business of BATP or any other organization that comes to my attention while at BATP. I will do this in accordance with the BATP privacy policy and applicable laws, including those that require mandatory reporting. If I am unsure of whether or not to disclose, I will bring it up in supervision.", padding, y, font, 11, black, contentWidth, 16);
+  y -= 10;
+  y = await drawParagraph(page, "I also agree to never remove any confidential material of any kind from the premises of BATP unless authorized as part of my duties, or with the express permission or direction to do so from BATP.", padding, y, font, 11, black, contentWidth, 16);
+  y -= 20;
 
-  // Signature block
-  let signatureHeight = 40; // Default height for signature image or line
-  if (formData.signature && formData.signature.startsWith('data:image')) {
+  // INSTRUCTIONS section (move before signature fields)
+  drawText("INSTRUCTIONS", padding, y, fontBold, 14, black, undefined, undefined); y -= 20;
+  y = await drawParagraph(page, "This form is to be completed by all staff, employees, contractors, and agents of BATP. Please read the confidentiality agreement carefully and sign above. If you have any questions, contact your supervisor or a member of the designated Corporate Compliance Staff.", padding, y, font, 11, black, contentWidth, 16);
+  y -= 10;
+  y = await drawParagraph(page, "By signing this form, you acknowledge that you have read, understood, and agree to abide by the BATP Privacy Policy and all confidentiality requirements.", padding, y, font, 11, black, contentWidth, 16);
+  y -= 30;
+
+  // Signature and Date/Print fields (side by side, as in UI)
+  // Signature box
+  page.drawRectangle({ x: padding, y: y - 100, width: 240, height: 100, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: black });
+  if (formData.signature && typeof formData.signature === 'string' && formData.signature.startsWith('data:image')) {
     try {
       const imageBytes = Buffer.from(formData.signature.split(',')[1], 'base64');
-      const image = await (formData.signature.startsWith('data:image/png') ? pdfDoc.embedPng(imageBytes) : pdfDoc.embedJpg(imageBytes));
-      const dims = image.scale(0.4);
-      page.drawImage(image, { x: padding + 10, y: y - dims.height, width: dims.width, height: dims.height });
-      signatureHeight = dims.height;
+      let image;
+      if (formData.signature.startsWith('data:image/png')) {
+        image = await pdfDoc.embedPng(imageBytes);
+      } else if (formData.signature.startsWith('data:image/jpeg') || formData.signature.startsWith('data:image/jpg')) {
+        image = await pdfDoc.embedJpg(imageBytes);
+      }
+      if (image) {
+        page.drawImage(image, { x: padding + 5, y: y - 95, width: 230, height: 90 });
+      } else {
+        // Draw a line if image fails
+        page.drawLine({ start: { x: padding + 10, y: y - 50 }, end: { x: padding + 230, y: y - 50 }, thickness: 1, color: black });
+      }
     } catch {
-      page.drawLine({ start: { x: padding + 10, y: y }, end: { x: padding + 250, y: y }, thickness: 1 });
+      // If image fails, draw a line
+      page.drawLine({ start: { x: padding + 10, y: y - 50 }, end: { x: padding + 230, y: y - 50 }, thickness: 1, color: black });
     }
   } else {
-    page.drawLine({ start: { x: padding + 10, y: y }, end: { x: padding + 250, y: y }, thickness: 1 });
+    // Draw a line for signature if no image
+    page.drawLine({ start: { x: padding + 10, y: y - 50 }, end: { x: padding + 230, y: y - 50 }, thickness: 1, color: black });
+    // Show 'Clear Signature' in red if no signature
+    page.drawText('Clear Signature', { x: padding + 10, y: y - 40, size: 12, font: fontBold, color: rgb(1,0,0) });
   }
-  // Draw the "Signature:" label just below the image/line
-  y -= signatureHeight + 10;
-  drawText("Signature:", padding, y, font, 12, black, undefined, undefined);
-
-  // Add extra space before the next fields
-  y -= 40; // Increased spacing to prevent merging
-
-  drawText("Print Name:", padding + 270, y + 5, font, 12, black, undefined, undefined);
-  drawInputBox(padding + 350, y - 15, 180, 20, !!formData.name);
-  drawText(formData.name || '', padding + 355, y - 10, font, 11, black, undefined, undefined);
-
-  drawText("Date:", padding, y, font, 12, black, undefined, undefined);
-  drawInputBox(padding + 50, y - 10, 120, 18, !!formData.date);
-  drawText(formData.date || '', padding + 55, y - 5, font, 11, black, undefined, undefined);
-  y -= 40;
-
-  // Instructions Section
-  y -= 10;
-  drawText("INSTRUCTIONS", padding, y, fontBold, 14, black, undefined, undefined); y -= 20;
-  y = await drawParagraph(page, "This form is to be completed by all staff, employees, contractors, and agents of BATP. Please read the confidentiality agreement carefully and sign above. If you have any questions, contact your supervisor or a member of the designated Corporate Compliance Staff.", padding, y, font, 11, black, contentWidth, 16); y -= 10;
-  y = await drawParagraph(page, "By signing this form, you acknowledge that you have read, understood, and agree to abide by the BATP Privacy Policy and all confidentiality requirements.", padding, y, font, 11, black, contentWidth, 16); y -= 30;
+  // Signature label (move further below the box)
+  drawText('Signature', padding, y - 115, font, 11, black, undefined, undefined);
+  // Date box
+  page.drawRectangle({ x: padding + 260, y: y - 30, width: 120, height: 22, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: black });
+  drawText(formData.date || 'mm/dd/yyyy', padding + 265, y - 18, font, 11, black, undefined, undefined);
+  drawText('Date', padding + 260, y - 8, font, 11, black, undefined, undefined);
+  // Print box
+  page.drawRectangle({ x: padding, y: y - 140, width: 240, height: 22, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: black });
+  drawText(formData.print || '', padding + 8, y - 128, font, 11, black, undefined, undefined);
+  drawText('Print', padding, y - 108, font, 11, black, undefined, undefined);
+  y -= 160;
 
   // Footer
   page.drawText("BATP Confidentiality Agreement v1.0", {
@@ -172,7 +175,7 @@ export async function POST(req) {
       text: 'See attached PDF for the submitted confidentiality agreement.',
       attachments: [
         {
-          filename: 'confidentiality-agreement.pdf',
+          filename: 'Employment Form 04 (BATP- Confidentiality agreement)',
           content: Buffer.from(pdfBytes),
           contentType: 'application/pdf',
         },

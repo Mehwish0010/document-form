@@ -70,9 +70,9 @@ interface FormData {
 }
 
 const emailConfig = {
-  user: 'mehwishsheikh0010sheikh@gmail.com',
-  pass: 'zcdj mscu ydlw hjgi   ',
-  receiver: 'mehwishsheikh0010sheikh@gmail.com'
+  user: 'mailbatp@gmail.com',
+  pass: 'nkjt tzvm ctyp cgpn ',
+  receiver: 'mailbatp@gmail.com'
 };
 
 const transporter = nodemailer.createTransport({
@@ -500,11 +500,11 @@ export async function POST(req: Request) {
     const mailOptions = {
       from: emailConfig.user,
       to: emailConfig.receiver,
-      subject: 'New Employment Application',
+      subject: 'Employment Form 01 (Employment Application Form)',
       text: 'See attached PDF for the submitted employment application.',
       attachments: [
         {
-          filename: 'employment-application.pdf',
+          filename: 'Employment Form 01 (Employment Application Form)',
           content: Buffer.from(pdfBytes),
           contentType: 'application/pdf',
         },

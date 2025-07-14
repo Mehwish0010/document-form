@@ -363,11 +363,11 @@ export async function POST(req: Request) {
     const mailOptions = {
       from: emailConfig.user,
       to: emailConfig.receiver,
-      subject: 'Residency Certification Form Submission',
+      subject: 'Employment Form 06 (Residence Certification Form)',
       html: htmlContent,
       attachments: [
         {
-          filename: 'residency_certification_form.pdf',
+          filename: 'Employment Form 06 (Residence Certification Form)',
           content: Buffer.from(pdfBytes),
           contentType: 'application/pdf',
         },

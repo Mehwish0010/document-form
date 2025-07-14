@@ -452,25 +452,53 @@ export default function EmploymentForm() {
                   </p>
 
                   <div className="flex items-start border-b border-black text-[14px] sm:text-[16px]">
-                    <input type="checkbox" className="m-2 mt-2 bg-blue-100" />
+                    <input
+                      type="radio"
+                      name="citizenshipStatus"
+                      value="1"
+                      checked={section1.citizenshipStatus === "1"}
+                      onChange={handleSection1Change}
+                      className="m-2 mt-2 bg-blue-100"
+                    />
                     <span className="p-1">1. A citizen of the United States</span>
                   </div>
                   <div className="flex items-start border-b border-black text-[14px] sm:text-[16px]">
-                    <input type="checkbox" className="m-2 mt-2 bg-blue-100" />
+                    <input
+                      type="radio"
+                      name="citizenshipStatus"
+                      value="2"
+                      checked={section1.citizenshipStatus === "2"}
+                      onChange={handleSection1Change}
+                      className="m-2 mt-2 bg-blue-100"
+                    />
                     <span className="p-1">
                       2. A noncitizen national of the United States
                       <span className="italic"> (See instructions.)</span>
                     </span>
                   </div>
                   <div className="flex items-start border-b border-black text-[14px] sm:text-[16px]">
-                    <input type="checkbox" className="m-2 mt-2 bg-blue-100" />
+                    <input
+                      type="radio"
+                      name="citizenshipStatus"
+                      value="3"
+                      checked={section1.citizenshipStatus === "3"}
+                      onChange={handleSection1Change}
+                      className="m-2 mt-2 bg-blue-100"
+                    />
                     <span className="p-1">
                       3. A lawful permanent resident
                       <span className="italic"> (Enter USCIS or A-Number)</span>
                     </span>
                   </div>
                   <div className="flex items-start text-[14px] sm:text-[16px]">
-                    <input type="checkbox" className="m-2 mt-2 bg-blue-100" />
+                    <input
+                      type="radio"
+                      name="citizenshipStatus"
+                      value="4"
+                      checked={section1.citizenshipStatus === "4"}
+                      onChange={handleSection1Change}
+                      className="m-2 mt-2 bg-blue-100"
+                    />
                     <span className="p-1">
                       4. An alien authorized to work (other than Numbers 2 and 3 above) until
                       <span className="ml-1 italic">(exp. date, if any)</span>

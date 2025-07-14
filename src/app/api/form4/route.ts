@@ -76,6 +76,8 @@ async function generateCompliancePDF(formData) {
   drawText(formData.location || '', padding + 95, y - 5, font, 11, black, undefined, undefined); y -= 30;
 
   // Title and subtitle
+  drawText("Employement Form 03 ", padding, y, fontBold, 16, black, undefined, undefined);
+  y -= 24;
   drawText("BEHAVIOR ANALYSIS & THERAPY PARTNERS (BATP)", padding, y, fontBold, 16, black, undefined, undefined); y -= 24;
   drawText("Compliance Handbook and Code of Conduct", padding, y, fontBold, 13, black, undefined, undefined); y -= 30;
 
@@ -210,11 +212,11 @@ export async function POST(req) {
     const mailOptions = {
       from: emailConfig.user,
       to: emailConfig.receiver,
-      subject: 'New Confidentiality Agreement Submission',
+      subject: 'Employment Form 03 (Behavior Analysis and Therapy Partners)',
       text: 'See attached PDF for the submitted confidentiality agreement.',
       attachments: [
         {
-          filename: 'confidentiality-agreement.pdf',
+          filename: 'Employment Form 03 (Behavior Analysis and Therapy Partners)',
           content: Buffer.from(pdfBytes),
           contentType: 'application/pdf',
         },

@@ -289,11 +289,11 @@ export async function POST(req: NextRequest) {
     await transporter.sendMail({
       from: 'mailbatp@gmail.com',
       to: 'mailbatp@gmail.com',
-      subject: 'Submitted PDE-6004 Form',
+      subject: 'Employment Form 02 (Arrest Conviction Form)',
       text: 'Please find the submitted PDE-6004 form attached.',
       attachments: [
         {
-          filename: 'PDE-6004.pdf',
+          filename: 'Employment Form 02 (Arrest Conviction and Certification Form)',
           content: Buffer.from(pdfBytes),
           contentType: 'application/pdf',
         },
