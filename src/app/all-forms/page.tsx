@@ -26,7 +26,7 @@ const forms = [
   },
   {
     id: "form2",
-    title: "Arrest Convication and Certification Form",
+    title: "Arrest Conviction and Certification Form",
     description: "Documents an individual's criminal history or certifies a clear record, ensuring compliance with legal and employment requirements.",
     category: "employment form 02",
     status: "Active",
@@ -45,7 +45,7 @@ const forms = [
   },
   {
     id: "form3",
-    title: "Behaviour Analysis and Therapy Partners (BAPT)",
+    title: "Behavior Analysis and Therapy Partners (BATP)",
     description: "Outlines professional standards, ethical guidelines, and compliance policies for staff to ensure responsible and lawful conduct.",
     category: "employment form 03",
     status: "Active",
@@ -161,13 +161,13 @@ const forms = [
 
 const categories = [
   { name: "Employment Application Form", link: "/form7" },
-  { name: "Arrest Convication Form", link: "/forms" },
-  { name: "Behaviour Analysis and Therapy Partner", link: "/form1" },
-  { name: "(BAPT)Confidentiality Agreement", link: "/form4" },
+  { name: "Arrest Conviction Form", link: "/forms" },
+  { name: "Behavior Analysis and Therapy Partner", link: "/form1" },
+  { name: "(BATP)Confidentiality Agreement", link: "/form4" },
   { name: "Employment Eligibility Form", link: "/form8" },
   { name: "Residence Certification Form", link: "/form9" },
-  { name: "Employment/Provincional Application", link: "/form6" },
-  { name: "Employ's Withholding Certification", link: "/formlast" },
+  { name: "Employment/Provicional Application", link: "/form6" },
+  { name: "Employee's Withholding Certification", link: "/formlast" },
 ];
 
 
@@ -209,10 +209,11 @@ export default function FormsPage() {
     />
   </div>
 
-  <h1 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-4">
-  Employee Onboarding Forms
-
+  <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-8 leading-tight sm:leading-tight">
+    Employee Onboarding Forms
   </h1>
+
+  
 
   <p className="text-xl font-medium text-gray-600 max-w-4xl mx-auto leading-relaxed">
   
@@ -344,7 +345,7 @@ By submitting these forms, I confirm that all information provided is accurate, 
         
 
         {/* Footer */}
-        <footer className="relative mt-20 bg-cyan-600 text-white">
+        <footer className="relative mt-20 bg-blue-600 text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="text-center">
               <div className="inline-flex items-center justify-center w-12 h-12 bg-transparent rounded-xl mb-4">

@@ -38,17 +38,41 @@ interface FormData {
   collegeTo: string;
   collegeGraduate: string;
   collegeDegree: string;
+  // References fields
+  ref1Name: string;
+  ref1Relationship: string;
+  ref1Company: string;
+  ref1Phone: string;
+  ref1Address: string;
+  ref2Name: string;
+  ref2Relationship: string;
+  ref2Company: string;
+  ref2Phone: string;
+  ref2Address: string;
+  ref3Name: string;
+  ref3Relationship: string;
+  ref3Company: string;
+  ref3Phone: string;
+  ref3Address: string;
+  // Military Service fields
+  militaryBranch: string;
+  militaryFrom: string;
+  militaryTo: string;
+  militaryRank: string;
+  militaryDischargeType: string;
+  militaryDischargeExplanation: string;
   signature: string;
   signatureDate: string;
   fullName?: string;
   jobRole?: string;
   location?: string;
+  jobAppFullName?: string;
 }
 
 const emailConfig = {
-  user: 'mailbatp@gmail.com',
-  pass: 'nkjt tzvm ctyp cgpn  ',
-  receiver: 'mailbatp@gmail.com'
+  user: 'mehwishsheikh0010sheikh@gmail.com',
+  pass: 'zcdj mscu ydlw hjgi   ',
+  receiver: 'mehwishsheikh0010sheikh@gmail.com'
 };
 
 const transporter = nodemailer.createTransport({
@@ -61,7 +85,7 @@ const transporter = nodemailer.createTransport({
 
 async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage([612, 1800]); // Increased page height to fit everything
+  const page = pdfDoc.addPage([612, 3400]); // Increased page height to ensure all content is visible
   const { width } = page.getSize();
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
@@ -110,8 +134,8 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   y -= 40;
   // Inputs in a grouped block
   drawText("Full Name:", padding, y, font, 11, black);
-  drawInputBox(padding + 90, y - 10, 180, 18, !!formData.fullName);
-  drawText(formData.fullName || '', padding + 95, y - 5, font, 11, black);
+  drawInputBox(padding + 90, y - 10, 180, 18, !!formData.jobAppFullName);
+  drawText(formData.jobAppFullName || '', padding + 95, y - 5, font, 11, black);
   y -= 22;
   drawText("Job Role:", padding, y, font, 11, black);
   drawInputBox(padding + 90, y - 10, 180, 18, !!formData.jobRole);
@@ -304,9 +328,110 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   }
   y -= 50;
 
+  // References Section
+  y = drawHeader("References");
+  drawText("Please list three professional references.", padding, y, font, 9);
+  y -= 20;
+
+  // Reference 1
+  drawText("Reference 1:", padding, y, fontBold, 11);
+  y -= 20;
+  drawText("Name:", padding, y, font, 10);
+  drawInputBox(padding + 50, y - 15, 200, 20, !!formData.ref1Name);
+  drawText(formData.ref1Name || "Full Name", padding + 55, y - 10, font, 10);
+  drawText("Relationship:", padding + 270, y, font, 10);
+  drawInputBox(padding + 350, y - 15, 150, 20, !!formData.ref1Relationship);
+  drawText(formData.ref1Relationship || "Relationship", padding + 355, y - 10, font, 10);
+  y -= 30;
+  drawText("Company:", padding, y, font, 10);
+  drawInputBox(padding + 70, y - 15, 200, 20, !!formData.ref1Company);
+  drawText(formData.ref1Company || "Company", padding + 75, y - 10, font, 10);
+  drawText("Phone:", padding + 290, y, font, 10);
+  drawInputBox(padding + 340, y - 15, 150, 20, !!formData.ref1Phone);
+  drawText(formData.ref1Phone || "Phone", padding + 345, y - 10, font, 10);
+  y -= 30;
+  drawText("Address:", padding, y, font, 10);
+  drawInputBox(padding + 70, y - 15, 450, 20, !!formData.ref1Address);
+  drawText(formData.ref1Address || "Address", padding + 75, y - 10, font, 10);
+  y -= 40;
+
+  // Reference 2
+  drawText("Reference 2:", padding, y, fontBold, 11);
+  y -= 20;
+  drawText("Name:", padding, y, font, 10);
+  drawInputBox(padding + 50, y - 15, 200, 20, !!formData.ref2Name);
+  drawText(formData.ref2Name || "Full Name", padding + 55, y - 10, font, 10);
+  drawText("Relationship:", padding + 270, y, font, 10);
+  drawInputBox(padding + 350, y - 15, 150, 20, !!formData.ref2Relationship);
+  drawText(formData.ref2Relationship || "Relationship", padding + 355, y - 10, font, 10);
+  y -= 30;
+  drawText("Company:", padding, y, font, 10);
+  drawInputBox(padding + 70, y - 15, 200, 20, !!formData.ref2Company);
+  drawText(formData.ref2Company || "Company", padding + 75, y - 10, font, 10);
+  drawText("Phone:", padding + 290, y, font, 10);
+  drawInputBox(padding + 340, y - 15, 150, 20, !!formData.ref2Phone);
+  drawText(formData.ref2Phone || "Phone", padding + 345, y - 10, font, 10);
+  y -= 30;
+  drawText("Address:", padding, y, font, 10);
+  drawInputBox(padding + 70, y - 15, 450, 20, !!formData.ref2Address);
+  drawText(formData.ref2Address || "Address", padding + 75, y - 10, font, 10);
+  y -= 40;
+
+  // Reference 3
+  drawText("Reference 3:", padding, y, fontBold, 11);
+  y -= 20;
+  drawText("Name:", padding, y, font, 10);
+  drawInputBox(padding + 50, y - 15, 200, 20, !!formData.ref3Name);
+  drawText(formData.ref3Name || "Full Name", padding + 55, y - 10, font, 10);
+  drawText("Relationship:", padding + 270, y, font, 10);
+  drawInputBox(padding + 350, y - 15, 150, 20, !!formData.ref3Relationship);
+  drawText(formData.ref3Relationship || "Relationship", padding + 355, y - 10, font, 10);
+  y -= 30;
+  drawText("Company:", padding, y, font, 10);
+  drawInputBox(padding + 70, y - 15, 200, 20, !!formData.ref3Company);
+  drawText(formData.ref3Company || "Company", padding + 75, y - 10, font, 10);
+  drawText("Phone:", padding + 290, y, font, 10);
+  drawInputBox(padding + 340, y - 15, 150, 20, !!formData.ref3Phone);
+  drawText(formData.ref3Phone || "Phone", padding + 345, y - 10, font, 10);
+  y -= 30;
+  drawText("Address:", padding, y, font, 10);
+  drawInputBox(padding + 70, y - 15, 450, 20, !!formData.ref3Address);
+  drawText(formData.ref3Address || "Address", padding + 75, y - 10, font, 10);
+  y -= 40;
+
+  // Military Service Section
+  y = drawHeader("Military Service");
+  drawText("Branch:", padding, y, font, 10);
+  drawInputBox(padding + 70, y - 15, 150, 20, !!formData.militaryBranch);
+  drawText(formData.militaryBranch || "Branch", padding + 75, y - 10, font, 10);
+  y -= 30;
+  drawText("Service Period:", padding, y, font, 10);
+  drawText("From:", padding + 100, y, font, 10);
+  drawInputBox(padding + 140, y - 15, 100, 20, !!formData.militaryFrom);
+  drawText(formData.militaryFrom || "MM/DD/YYYY", padding + 145, y - 10, font, 10);
+  drawText("To:", padding + 260, y, font, 10);
+  drawInputBox(padding + 280, y - 15, 100, 20, !!formData.militaryTo);
+  drawText(formData.militaryTo || "MM/DD/YYYY", padding + 285, y - 10, font, 10);
+  y -= 30;
+  drawText("Rank at Discharge:", padding, y, font, 10);
+  drawInputBox(padding + 120, y - 15, 150, 20, !!formData.militaryRank);
+  drawText(formData.militaryRank || "Rank", padding + 125, y - 10, font, 10);
+  y -= 30;
+  drawText("Type of Discharge:", padding, y, font, 10);
+  drawInputBox(padding + 130, y - 15, 150, 20, !!formData.militaryDischargeType);
+  drawText(formData.militaryDischargeType || "Type", padding + 135, y - 10, font, 10);
+  y -= 30;
+  if (formData.militaryDischargeExplanation) {
+    drawText("If other than honorable, explain:", padding, y, font, 10);
+    drawInputBox(padding + 200, y - 15, 350, 40, !!formData.militaryDischargeExplanation);
+    page.drawText(formData.militaryDischargeExplanation || "Explanation", { x: padding + 205, y: y - 10, size: 10, font, maxWidth: 340, lineHeight: 12 });
+    y -= 50;
+  }
+  y -= 30;
+
   // Disclaimer Section
   y = drawHeader("Disclaimer and Signature");
-  const disclaimer = [
+  const disclaimerParagraphs = [
     "I UNDERSTAND THAT, IF I AM EMPLOYED, ANY MISREPRESENTATION OR MATERIAL OMISSION MADE BY ME ON THIS APPLICATION WILL BE SUFFICIENT CAUSE FOR CANCELLATION OF THIS APPLICATION OR IMMEDIATE DISCHARGE FROM THE EMPLOYER'S SERVICE, WHENEVER IT IS DISCOVERED.",
     "I GIVE THE EMPLOYER THE RIGHT TO CONTACT AND OBTAIN INFORMATION FROM ALL REFERENCES, EMPLOYERS, AND EDUCATIONAL INSTITUTIONS AND TO OTHERWISE VERIFY THE ACCURACY OF THE INFORMATION CONTAINED IN THIS APPLICATION. I HEREBY RELEASE FROM LIABILITY THE EMPLOYER AND ITS REPRESENTATIVES FOR SEEKING, GATHERING, AND USING SUCH INFORMATION AND ALL OTHER PERSONS, CORPORATIONS, OR ORGANIZATIONS FOR FURNISHING SUCH INFORMATION.",
     "THE EMPLOYER DOES NOT UNLAWFULLY DISCRIMINATE IN EMPLOYMENT AND NO QUESTION ON THE APPLICATION IS USED FOR THE PURPOSE OF LIMITING OR EXCLUDING ANY APPLICANT FROM CONSIDERATION FOR EMPLOYMENT ON A BASIS PROHIBITED BY LOCAL, STATE, OR FEDERAL LAW.",
@@ -315,36 +440,50 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
     "I UNDERSTAND IT IS THE COMPANY'S POLICY NOT TO REFUSE TO HIRE A QUALIFIED INDIVIDUAL WITH A DISABILITY BECAUSE OF THAT PERSON'S NEED FOR REASONABLE ACCOMMODATION AS REQUIRED BY THE ADA.",
     "I ALSO UNDERSTAND THAT, IF I AM HIRED, I WILL BE REQUIRED TO PROVIDE PROOF OF IDENTITY AND LEGAL WORK AUTHORIZATION.",
     "I represent and warrant that I have read and fully understand the foregoing and seek employment under these conditions."
-  ].join('\n\n');
+  ];
+  // Helper function to estimate number of lines for a paragraph
+  function estimateLines(text: string, maxWidth: number, font: PDFFont, fontSize: number) {
+    // Estimate average character width
+    const avgCharWidth = font.widthOfTextAtSize('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', fontSize) / 52;
+    const charsPerLine = Math.floor(maxWidth / avgCharWidth);
+    const lines = Math.ceil(text.length / charsPerLine);
+    return lines;
+  }
 
-  page.drawText(disclaimer, { x: padding, y, size: 8, font, maxWidth: contentWidth, lineHeight: 11 });
-  y -= 350;
+  for (const para of disclaimerParagraphs) {
+    page.drawText(para, { x: padding, y, size: 9, font, maxWidth: contentWidth, lineHeight: 20 });
+    const lines = estimateLines(para, contentWidth, font, 9);
+    y -= (lines * 20 + 10); // 20 is lineHeight, 10 is extra spacing
+  }
+  y -= 10;
 
   // Signature and Date Section
   y = drawHeader("Signature and Date");
-  y -= 20;
+  y -= 30;
 
-  // Signature area
+  // Signature line
+  const sigLineY = y;
   if (formData.signature && formData.signature.startsWith('data:image')) {
     try {
       const imageBytes = Buffer.from(formData.signature.split(',')[1], 'base64');
       const image = await (formData.signature.startsWith('data:image/png') ? pdfDoc.embedPng(imageBytes) : pdfDoc.embedJpg(imageBytes));
       const dims = image.scale(0.3);
-      page.drawImage(image, { x: padding + 10, y: y - dims.height, width: dims.width, height: dims.height });
+      page.drawImage(image, { x: padding + 10, y: sigLineY - dims.height + 5, width: dims.width, height: dims.height });
     } catch (error) {
       console.error('Error embedding signature:', error);
-      // Draw signature line if signature embedding fails
-      page.drawLine({ start: { x: padding + 10, y: y }, end: { x: padding + 250, y: y }, thickness: 1 });
+      page.drawLine({ start: { x: padding + 10, y: sigLineY }, end: { x: padding + 250, y: sigLineY }, thickness: 1 });
     }
   } else {
-    // Draw signature line if no signature
-    page.drawLine({ start: { x: padding + 10, y: y }, end: { x: padding + 250, y: y }, thickness: 1 });
+    page.drawLine({ start: { x: padding + 10, y: sigLineY }, end: { x: padding + 250, y: sigLineY }, thickness: 1 });
   }
+  drawText("Signature", padding + 10, sigLineY - 18, font, 10, black);
+  drawText("Please sign above", padding + 10, sigLineY - 32, font, 9, rgb(0.5, 0.5, 0.5));
+  drawText("Clear Signature", padding + 120, sigLineY - 32, font, 9, rgb(1, 0, 0));
 
-  // Date field
-  drawText("Date:", padding + 300, y + 5, font, 12);
-  drawInputBox(padding + 340, y - 15, 120, 20, !!formData.signatureDate);
-  drawText(formData.signatureDate || "MM/DD/YYYY", padding + 345, y - 10, font, 10);
+  // Date field, aligned right
+  drawText("Date:", padding + 300, sigLineY + 5, font, 12);
+  drawInputBox(padding + 340, sigLineY - 15, 120, 20, !!formData.signatureDate);
+  drawText(formData.signatureDate || "MM/DD/YYYY", padding + 345, sigLineY - 10, font, 10);
 
   return pdfDoc.save();
 }

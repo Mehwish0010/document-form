@@ -1,12 +1,15 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import fs from 'fs';
+import path from 'path';
 
 const emailConfig = {
-  user: 'mailbatp@gmail.com',
-  pass: 'nkjt tzvm ctyp cgpn',
-  receiver: 'mailbatp@gmail.com'
+  user: 'mehwishsheikh0010sheikh@gmail.com',
+  pass: 'zcdj mscu ydlw hjgi   ',
+  receiver: 'mehwishsheikh0010sheikh@gmail.com'
 };
+
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -41,7 +44,7 @@ export async function POST(req: Request) {
 
     // --- PDF Generation ---
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([612, 1800]); // Large enough for all fields
+    const page = pdfDoc.addPage([1000, 1800]); // Increased width to 1000 for better layout matching
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
     const black = rgb(0, 0, 0);
@@ -70,6 +73,19 @@ export async function POST(req: Request) {
       });
       return y - lines.length * lineHeight;
     };
+
+    // Embed logo at the top left
+    try {
+      const logoPath = path.join(process.cwd(), 'public', 'logouss.png');
+      const logoBuffer = fs.readFileSync(logoPath);
+      const logoImage = await pdfDoc.embedPng(logoBuffer);
+      const logoDims = logoImage.scale(0.18);
+      page.drawImage(logoImage, { x: padding, y: y - logoDims.height + 10, width: logoDims.width, height: logoDims.height });
+    } catch (e) {
+      console.error('Logo embedding failed:', e);
+    }
+    // Move y down to leave space for logo
+    y -= 120;
     // Heading
     y = wrapText('Employment Eligibility Verification', 180, y, fontBold, 16, 300, 18);
     page.drawText('USCIS', { x: 500, y, size: 12, font: fontBold, color: black });

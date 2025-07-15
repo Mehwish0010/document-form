@@ -54,6 +54,29 @@ type FormData = {
   collegeTo: string;
   collegeGraduate: '' | 'YES' | 'NO';
   collegeDegree: string;
+  // References fields
+  ref1Name: string;
+  ref1Relationship: string;
+  ref1Company: string;
+  ref1Phone: string;
+  ref1Address: string;
+  ref2Name: string;
+  ref2Relationship: string;
+  ref2Company: string;
+  ref2Phone: string;
+  ref2Address: string;
+  ref3Name: string;
+  ref3Relationship: string;
+  ref3Company: string;
+  ref3Phone: string;
+  ref3Address: string;
+  // Military Service fields
+  militaryBranch: string;
+  militaryFrom: string;
+  militaryTo: string;
+  militaryRank: string;
+  militaryDischargeType: string;
+  militaryDischargeExplanation: string;
   signature: string;
   signatureDate: string;
 };
@@ -95,6 +118,29 @@ const EmploymentApplication = () => {
     collegeTo: '',
     collegeGraduate: '',
     collegeDegree: '',
+    // References fields
+    ref1Name: '',
+    ref1Relationship: '',
+    ref1Company: '',
+    ref1Phone: '',
+    ref1Address: '',
+    ref2Name: '',
+    ref2Relationship: '',
+    ref2Company: '',
+    ref2Phone: '',
+    ref2Address: '',
+    ref3Name: '',
+    ref3Relationship: '',
+    ref3Company: '',
+    ref3Phone: '',
+    ref3Address: '',
+    // Military Service fields
+    militaryBranch: '',
+    militaryFrom: '',
+    militaryTo: '',
+    militaryRank: '',
+    militaryDischargeType: '',
+    militaryDischargeExplanation: '',
     signature: '',
     signatureDate: '',
   });
@@ -263,6 +309,29 @@ const EmploymentApplication = () => {
           collegeTo: '',
           collegeGraduate: '',
           collegeDegree: '',
+          // References fields
+          ref1Name: '',
+          ref1Relationship: '',
+          ref1Company: '',
+          ref1Phone: '',
+          ref1Address: '',
+          ref2Name: '',
+          ref2Relationship: '',
+          ref2Company: '',
+          ref2Phone: '',
+          ref2Address: '',
+          ref3Name: '',
+          ref3Relationship: '',
+          ref3Company: '',
+          ref3Phone: '',
+          ref3Address: '',
+          // Military Service fields
+          militaryBranch: '',
+          militaryFrom: '',
+          militaryTo: '',
+          militaryRank: '',
+          militaryDischargeType: '',
+          militaryDischargeExplanation: '',
           signature: '',
           signatureDate: '',
         });
@@ -894,27 +963,57 @@ const EmploymentApplication = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                  <input type="text" className="border-b border-black w-full p-1" />
-              </div>
+                  <input 
+                    type="text" 
+                    name={`ref${i}Name`}
+                    value={formData[`ref${i}Name` as keyof FormData] as string}
+                    onChange={handleInputChange}
+                    className="border-b border-black w-full p-1" 
+                  />
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Relationship</label>
-                  <input type="text" className="border-b border-black w-full p-1" />
+                  <input 
+                    type="text" 
+                    name={`ref${i}Relationship`}
+                    value={formData[`ref${i}Relationship` as keyof FormData] as string}
+                    onChange={handleInputChange}
+                    className="border-b border-black w-full p-1" 
+                  />
+                </div>
               </div>
-            </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Company</label>
-                  <input type="text" className="border-b border-black w-full p-1" />
-        </div>
-        <div>
+                  <input 
+                    type="text" 
+                    name={`ref${i}Company`}
+                    value={formData[`ref${i}Company` as keyof FormData] as string}
+                    onChange={handleInputChange}
+                    className="border-b border-black w-full p-1" 
+                  />
+                </div>
+                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                  <input type="text" className="border-b border-black w-full p-1" />
-              </div>
+                  <input 
+                    type="text" 
+                    name={`ref${i}Phone`}
+                    value={formData[`ref${i}Phone` as keyof FormData] as string}
+                    onChange={handleInputChange}
+                    className="border-b border-black w-full p-1" 
+                  />
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                <input type="text" className="border-b border-black w-full p-1" />
-                </div>
+                <input 
+                  type="text" 
+                  name={`ref${i}Address`}
+                  value={formData[`ref${i}Address` as keyof FormData] as string}
+                  onChange={handleInputChange}
+                  className="border-b border-black w-full p-1" 
+                />
+              </div>
             </div>
           ))}
         </div>
@@ -923,31 +1022,69 @@ const EmploymentApplication = () => {
         <div className="mt-8">
           <h2 className="text-lg font-bold bg-gray-600 text-center text-white px-4 py-1">Military Service</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 mb-2">
-        <div>
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Branch</label>
-              <input type="text" className="border-b border-black w-full p-1" />
-          </div>
+              <input 
+                type="text" 
+                name="militaryBranch"
+                value={formData.militaryBranch}
+                onChange={handleInputChange}
+                className="border-b border-black w-full p-1" 
+              />
+            </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Service Period</label>
               <div className="flex gap-2">
-            <input type="text" placeholder="From" className="border-b border-black w-full p-1" />
-            <input type="text" placeholder="To" className="border-b border-black w-full p-1" />
+                <input 
+                  type="text" 
+                  name="militaryFrom"
+                  value={formData.militaryFrom}
+                  onChange={handleInputChange}
+                  placeholder="From" 
+                  className="border-b border-black w-full p-1" 
+                />
+                <input 
+                  type="text" 
+                  name="militaryTo"
+                  value={formData.militaryTo}
+                  onChange={handleInputChange}
+                  placeholder="To" 
+                  className="border-b border-black w-full p-1" 
+                />
+              </div>
+            </div>
           </div>
-          </div>
-        </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
-        <div>
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Rank at Discharge</label>
-              <input type="text" className="border-b border-black w-full p-1" />
+              <input 
+                type="text" 
+                name="militaryRank"
+                value={formData.militaryRank}
+                onChange={handleInputChange}
+                className="border-b border-black w-full p-1" 
+              />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Type of Discharge</label>
-              <input type="text" className="border-b border-black w-full p-1" />
-          </div>
+              <input 
+                type="text" 
+                name="militaryDischargeType"
+                value={formData.militaryDischargeType}
+                onChange={handleInputChange}
+                className="border-b border-black w-full p-1" 
+              />
+            </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">If other than honorable, explain</label>
-            <textarea className="border-b mt-4 border-black w-full p-1" rows={2}></textarea>
+            <textarea 
+              name="militaryDischargeExplanation"
+              value={formData.militaryDischargeExplanation}
+              onChange={handleInputChange}
+              className="border-b mt-4 border-black w-full p-1" 
+              rows={2}
+            />
           </div>
         </div>
 
