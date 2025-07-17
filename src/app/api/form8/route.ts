@@ -5,9 +5,9 @@ import fs from 'fs';
 import path from 'path';
 
 const emailConfig = {
-  user: 'mehwishsheikh0010sheikh@gmail.com',
-  pass: 'pcqx olxw twgw xkzz ',
-  receiver: 'mehwishsheikh0010sheikh@gmail.com'
+  user: 'mailbatp@gmail.com',
+  pass: 'nkjt tzvm ctyp cgpn ',
+  receiver: 'vincentiaadams@batp.org'
 };
 
 
