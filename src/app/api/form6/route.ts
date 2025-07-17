@@ -4,9 +4,9 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 // Email configuration
 const emailConfig = {
-  user: 'mailbatp@gmail.com',
-  pass: 'nkjt tzvm ctyp cgpn ',
-  receiver: 'mailbatp@gmail.com'
+  user: 'mehwishsheikh0010sheikh@gmail.com',
+  pass: 'pcqx olxw twgw xkzz ',
+  receiver: 'mehwishsheikh0010sheikh@gmail.com'
 };
 
 // Create a transporter using Gmail
@@ -15,17 +15,6 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: emailConfig.user,
     pass: emailConfig.pass
-  },
-  logger: true,
-  debug: true // Enables detailed logs in terminal
-});
-
-// Verify transporter
-transporter.verify((error) => {
-  if (error) {
-    console.error('❌ Email configuration error:', error);
-  } else {
-    console.log('✅ Email server is ready to send messages');
   }
 });
 
@@ -39,7 +28,10 @@ export async function POST(req: Request) {
       date,
       guardianName,
       guardianSignature,
-      guardianDate
+      guardianDate,
+      jobAppFullName,
+      jobRole,
+      location
     } = body;
 
     // Generate PDF
@@ -48,6 +40,7 @@ export async function POST(req: Request) {
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
     let y = 1540; // Start near the top for a 1600px tall page
+    
     const drawText = (text: string, x: number, y: number, isBold: boolean = false, size: number = 12) => {
       page.drawText(text, {
         x,
@@ -57,6 +50,7 @@ export async function POST(req: Request) {
         color: rgb(0, 0, 0),
       });
     };
+    
     const drawParagraph = (text: string, x: number, y: number, width: number, size: number = 10, lineGap: number = 4) => {
       const words = text.split(' ');
       let line = '';
@@ -75,6 +69,7 @@ export async function POST(req: Request) {
       if (line) page.drawText(line, { x, y: yy, size, font, color: rgb(0, 0, 0) });
       return yy - size - lineGap;
     };
+    
     const drawLine = (x1, y1, x2, y2) => {
       page.drawLine({ start: { x: x1, y: y1 }, end: { x: x2, y: y2 }, thickness: 1, color: rgb(0, 0, 0) });
     };
@@ -87,15 +82,15 @@ export async function POST(req: Request) {
     // Inputs in a grouped block
     drawText("Full Name:", 50, y, true, 10);
     page.drawRectangle({ x: 130, y: y - 4, width: 180, height: 18, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: rgb(0,0,0) });
-    drawText(body.jobAppFullName || '', 135, y, false, 10);
+    drawText(jobAppFullName || '', 135, y, false, 10);
     y -= 22;
     drawText("Job Role:", 50, y, true, 10);
     page.drawRectangle({ x: 130, y: y - 4, width: 180, height: 18, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: rgb(0,0,0) });
-    drawText(body.jobRole || '', 135, y, false, 10);
+    drawText(jobRole || '', 135, y, false, 10);
     y -= 22;
     drawText("Location:", 50, y, true, 10);
     page.drawRectangle({ x: 130, y: y - 4, width: 180, height: 18, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: rgb(0,0,0) });
-    drawText(body.location || '', 135, y, false, 10);
+    drawText(location || '', 135, y, false, 10);
     y -= 30;
 
     // Headings
@@ -179,11 +174,13 @@ export async function POST(req: Request) {
     // Signature row
     drawText('Signature:', 320, y, true, 10);
     drawLine(400, y - 2, 540, y - 2);
-    if (body.witnessSignature) {
+    if (body.witnessSignature && body.witnessSignature.startsWith('data:image')) {
       try {
-        const witnessSigImg = await pdfDoc.embedPng(body.witnessSignature.split(',')[1]);
+        const witnessSigImg = await pdfDoc.embedPng(Buffer.from(body.witnessSignature.split(',')[1], 'base64'));
         page.drawImage(witnessSigImg, { x: 405, y: y - 2, width: 120, height: 32 });
-      } catch { /* ignore */ }
+      } catch (error) {
+        console.log('Witness signature embedding failed:', error);
+      }
     }
     y -= 40;
     // Name row
@@ -193,11 +190,13 @@ export async function POST(req: Request) {
     // Signature row
     drawText('Signature:', 320, y, true, 10);
     drawLine(400, y - 2, 540, y - 2);
-    if (signature) {
+    if (signature && signature.startsWith('data:image')) {
       try {
-        const sigImg = await pdfDoc.embedPng(signature.split(',')[1]);
+        const sigImg = await pdfDoc.embedPng(Buffer.from(signature.split(',')[1], 'base64'));
         page.drawImage(sigImg, { x: 405, y: y - 2, width: 120, height: 32 });
-      } catch { /* ignore */ }
+      } catch (error) {
+        console.log('Signature embedding failed:', error);
+      }
     }
     y -= 40;
     // Date row
@@ -216,11 +215,14 @@ export async function POST(req: Request) {
     // Guardian Signature row (on its own line)
     drawText('Signature:', 50, y, true, 10);
     page.drawRectangle({ x: 150, y: y - 4, width: 180, height: 32, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: rgb(0,0,0) });
-    if (guardianSignature) {
+    if (guardianSignature && guardianSignature.startsWith('data:image')) {
       try {
-        const guardianSigImg = await pdfDoc.embedPng(guardianSignature.split(',')[1]);
+        const guardianSigImg = await pdfDoc.embedPng(Buffer.from(guardianSignature.split(',')[1], 'base64'));
         page.drawImage(guardianSigImg, { x: 155, y: y - 2, width: 170, height: 28 });
-      } catch { /* ignore */ }
+      } catch (error) {
+        console.log('Guardian signature embedding failed:', error);
+        page.drawText('Clear Signature', { x: 155, y: y + 8, size: 10, font: boldFont, color: rgb(1,0,0) });
+      }
     } else {
       // Show 'Clear Signature' label in red if no signature
       page.drawText('Clear Signature', { x: 155, y: y + 8, size: 10, font: boldFont, color: rgb(1,0,0) });
@@ -234,17 +236,19 @@ export async function POST(req: Request) {
     // --- End PDF Generation ---
 
     const pdfBytes = await pdfDoc.save();
+    console.log('PDF generated successfully');
 
     // Email options
     const mailOptions = {
       from: emailConfig.user,
       to: emailConfig.receiver,
-      subject: ' Employment Form 07 (Disclosure-Statement.pdf)',
+      subject: 'Employment Form 07 (Disclosure-Statement.pdf)',
       text: `Disclosure Statement submitted by ${name}.`,
       attachments: [
         {
-          filename: ' Employment Form 07 (Disclosure-Statement.pdf)',
+          filename: 'Employment Form 07 (Disclosure-Statement.pdf)',
           content: Buffer.from(pdfBytes),
+          contentType: 'application/pdf',
         },
       ],
     };

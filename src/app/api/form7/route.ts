@@ -70,9 +70,9 @@ interface FormData {
 }
 
 const emailConfig = {
-  user: 'mailbatp@gmail.com',
-  pass: 'nkjt tzvm ctyp cgpn ',
-  receiver: 'mailbatp@gmail.com'
+  user: 'mehwishsheikh0010sheikh@gmail.com',
+  pass: 'pcqx olxw twgw xkzz ',
+  receiver: 'mehwishsheikh0010sheikh@gmail.com'
 };
 
 const transporter = nodemailer.createTransport({
@@ -93,7 +93,7 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   const black = rgb(0, 0, 0);
   const white = rgb(1, 1, 1);
   const headerGray = rgb(75 / 255, 85 / 255, 99 / 255);
-  const lightBlue = rgb(219 / 255, 234 / 255, 254 / 255);
+  // const lightBlue = rgb(219 / 255, 234 / 255, 254 / 255); // Commented out unused variable
 
   // Equal padding on all sides
   const padding = 50;
@@ -104,10 +104,10 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
     page.drawText(text, { x, y: yPos, font: fontToUse, size, color, lineHeight: size + 4 });
   };
 
-  const drawInputBox = (x: number, yPos: number, width: number, height: number, hasValue: boolean) => {
+  const drawInputBox = (x: number, yPos: number, width: number, height: number) => {
     page.drawRectangle({
       x, y: yPos, width, height,
-      color: hasValue ? lightBlue : white,
+      // Removed color property to ensure no background fill
       borderWidth: 1, borderColor: black,
     });
   };
@@ -134,15 +134,15 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   y -= 40;
   // Inputs in a grouped block
   drawText("Full Name:", padding, y, font, 11, black);
-  drawInputBox(padding + 90, y - 10, 180, 18, !!formData.jobAppFullName);
+  drawInputBox(padding + 90, y - 10, 180, 18);
   drawText(formData.jobAppFullName || '', padding + 95, y - 5, font, 11, black);
   y -= 22;
   drawText("Job Role:", padding, y, font, 11, black);
-  drawInputBox(padding + 90, y - 10, 180, 18, !!formData.jobRole);
+  drawInputBox(padding + 90, y - 10, 180, 18);
   drawText(formData.jobRole || '', padding + 95, y - 5, font, 11, black);
   y -= 22;
   drawText("Location:", padding, y, font, 11, black);
-  drawInputBox(padding + 90, y - 10, 180, 18, !!formData.location);
+  drawInputBox(padding + 90, y - 10, 180, 18);
   drawText(formData.location || '', padding + 95, y - 5, font, 11, black);
   y -= 30;
 
@@ -168,53 +168,53 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
 
   // Full Name and Date row
   drawText("Full Name:", padding, y, font, 10);
-  drawInputBox(padding + 70, y - 15, 200, 20, !!formData.lastName);
+  drawInputBox(padding + 70, y - 15, 200, 20);
   drawText(formData.lastName || "Last", padding + 75, y - 10, font, 10);
-  drawInputBox(padding + 280, y - 15, 100, 20, !!formData.firstName);
+  drawInputBox(padding + 280, y - 15, 100, 20);
   drawText(formData.firstName || "First", padding + 285, y - 10, font, 10);
-  drawInputBox(padding + 390, y - 15, 50, 20, !!formData.middleInitial);
+  drawInputBox(padding + 390, y - 15, 50, 20);
   drawText(formData.middleInitial || "M.I.", padding + 395, y - 10, font, 10);
   drawText("Date:", padding + 450, y, font, 10);
-  drawInputBox(padding + 480, y - 15, 80, 20, !!formData.date);
+  drawInputBox(padding + 480, y - 15, 80, 20);
   drawText(formData.date || "MM/DD/YYYY", padding + 485, y - 10, font, 10);
   y -= 35;
 
   // Address row
   drawText("Address:", padding, y, font, 10);
-  drawInputBox(padding + 70, y - 15, 300, 20, !!formData.streetAddress);
+  drawInputBox(padding + 70, y - 15, 300, 20);
   drawText(formData.streetAddress || "Street Address", padding + 75, y - 10, font, 10);
   drawText("Apt/Unit:", padding + 380, y, font, 10);
-  drawInputBox(padding + 440, y - 15, 120, 20, !!formData.apartmentUnit);
+  drawInputBox(padding + 440, y - 15, 120, 20);
   drawText(formData.apartmentUnit || "Apt/Unit #", padding + 445, y - 10, font, 10);
   y -= 35;
 
   // City, State, ZIP row
-  drawInputBox(padding + 70, y - 15, 150, 20, !!formData.city);
+  drawInputBox(padding + 70, y - 15, 150, 20);
   drawText(formData.city || "City", padding + 75, y - 10, font, 10);
-  drawInputBox(padding + 230, y - 15, 80, 20, !!formData.state);
+  drawInputBox(padding + 230, y - 15, 80, 20);
   drawText(formData.state || "State", padding + 235, y - 10, font, 10);
-  drawInputBox(padding + 320, y - 15, 100, 20, !!formData.zipCode);
+  drawInputBox(padding + 320, y - 15, 100, 20);
   drawText(formData.zipCode || "ZIP Code", padding + 325, y - 10, font, 10);
   y -= 35;
 
   // Phone and Email row
   drawText("Phone:", padding, y, font, 10);
-  drawInputBox(padding + 70, y - 15, 200, 20, !!formData.phone);
+  drawInputBox(padding + 70, y - 15, 200, 20);
   drawText(formData.phone || "Phone Number", padding + 75, y - 10, font, 10);
   drawText("Email:", padding + 280, y, font, 10);
-  drawInputBox(padding + 330, y - 15, 230, 20, !!formData.email);
+  drawInputBox(padding + 330, y - 15, 230, 20);
   drawText(formData.email || "Email Address", padding + 335, y - 10, font, 10);
   y -= 35;
 
   // Driver's License row
   drawText("Driver's License:", padding, y, font, 10);
-  drawInputBox(padding + 100, y - 15, 150, 20, !!formData.driversLicense);
+  drawInputBox(padding + 100, y - 15, 150, 20);
   drawText(formData.driversLicense || "License Number", padding + 105, y - 10, font, 10);
   drawText("State:", padding + 260, y, font, 10);
-  drawInputBox(padding + 300, y - 15, 60, 20, !!formData.licenseState);
+  drawInputBox(padding + 300, y - 15, 60, 20);
   drawText(formData.licenseState || "State", padding + 305, y - 10, font, 10);
   drawText("Exp:", padding + 370, y, font, 10);
-  drawInputBox(padding + 400, y - 15, 80, 20, !!formData.licenseExp);
+  drawInputBox(padding + 400, y - 15, 80, 20);
   drawText(formData.licenseExp || "MM/DD/YYYY", padding + 405, y - 10, font, 10);
   y -= 35;
 
@@ -224,16 +224,16 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
 
   // Date Available and SSN row
   drawText("Date Available:", padding, y, font, 10);
-  drawInputBox(padding + 100, y - 15, 120, 20, !!formData.dateAvailable);
+  drawInputBox(padding + 100, y - 15, 120, 20);
   drawText(formData.dateAvailable || "MM/DD/YYYY", padding + 105, y - 10, font, 10);
   drawText("Social Security No.:", padding + 230, y, font, 10);
-  drawInputBox(padding + 350, y - 15, 150, 20, !!formData.socialSecurity);
+  drawInputBox(padding + 350, y - 15, 150, 20);
   drawText(formData.socialSecurity || "SSN", padding + 355, y - 10, font, 10);
   y -= 35;
 
   // Position Applied row
   drawText("Position Applied for:", padding, y, font, 10);
-  drawInputBox(padding + 130, y - 15, 400, 20, !!formData.positionApplied);
+  drawInputBox(padding + 130, y - 15, 400, 20);
   drawText(formData.positionApplied || "Position", padding + 135, y - 10, font, 10);
   y -= 35;
 
@@ -256,7 +256,7 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   if (formData.previousEmployment === 'YES') {
     y -= 25;
     drawText("If yes, when?", padding, y, font, 10);
-    drawInputBox(padding + 80, y - 15, 100, 20, !!formData.previousEmploymentDate);
+    drawInputBox(padding + 80, y - 15, 100, 20);
     drawText(formData.previousEmploymentDate || "MM/DD/YYYY", padding + 85, y - 10, font, 10);
   }
   y -= 30;
@@ -269,7 +269,7 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   if (formData.felonyConviction === 'YES') {
     y -= 25;
     drawText("If yes, explain:", padding, y, font, 10);
-    drawInputBox(padding + 80, y - 15, 450, 40, !!formData.felonyExplanation);
+    drawInputBox(padding + 80, y - 15, 450, 40);
     page.drawText(formData.felonyExplanation || "Explanation", { x: padding + 85, y: y - 10, size: 10, font, maxWidth: 440, lineHeight: 12 });
     y -= 50;
   }
@@ -286,14 +286,14 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   y = drawHeader("Education");
   drawText("High School", padding, y, fontBold, 12); y -= 20;
   drawText("Address:", padding, y, font, 10);
-  drawInputBox(padding + 70, y - 15, 450, 20, !!formData.highSchoolAddress);
+  drawInputBox(padding + 70, y - 15, 450, 20);
   drawText(formData.highSchoolAddress || "School Address", padding + 75, y - 10, font, 10);
   y -= 30;
   drawText("From:", padding, y, font, 10);
-  drawInputBox(padding + 40, y - 15, 100, 20, !!formData.highSchoolFrom);
+  drawInputBox(padding + 40, y - 15, 100, 20);
   drawText(formData.highSchoolFrom || "MM/DD/YYYY", padding + 45, y - 10, font, 10);
   drawText("To:", padding + 150, y, font, 10);
-  drawInputBox(padding + 170, y - 15, 100, 20, !!formData.highSchoolTo);
+  drawInputBox(padding + 170, y - 15, 100, 20);
   drawText(formData.highSchoolTo || "MM/DD/YYYY", padding + 175, y - 10, font, 10);
   y -= 30;
   drawText("Did you graduate?", padding, y, font, 10);
@@ -301,21 +301,21 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   drawCheckbox(padding + 150, y, formData.highSchoolGraduate === 'NO'); drawText("NO", padding + 165, y, font, 10);
   if (formData.highSchoolGraduate === 'YES') {
     drawText("Diploma:", padding + 200, y, font, 10);
-    drawInputBox(padding + 260, y - 15, 200, 20, !!formData.highSchoolDiploma);
+    drawInputBox(padding + 260, y - 15, 200, 20);
     drawText(formData.highSchoolDiploma || "Diploma Type", padding + 265, y - 10, font, 10);
   }
   y -= 35;
 
   drawText("College", padding, y, fontBold, 12); y -= 20;
   drawText("Address:", padding, y, font, 10);
-  drawInputBox(padding + 70, y - 15, 450, 20, !!formData.collegeAddress);
+  drawInputBox(padding + 70, y - 15, 450, 20);
   drawText(formData.collegeAddress || "College Address", padding + 75, y - 10, font, 10);
   y -= 30;
   drawText("From:", padding, y, font, 10);
-  drawInputBox(padding + 40, y - 15, 100, 20, !!formData.collegeFrom);
+  drawInputBox(padding + 40, y - 15, 100, 20);
   drawText(formData.collegeFrom || "MM/DD/YYYY", padding + 45, y - 10, font, 10);
   drawText("To:", padding + 150, y, font, 10);
-  drawInputBox(padding + 170, y - 15, 100, 20, !!formData.collegeTo);
+  drawInputBox(padding + 170, y - 15, 100, 20);
   drawText(formData.collegeTo || "MM/DD/YYYY", padding + 175, y - 10, font, 10);
   y -= 30;
   drawText("Did you graduate?", padding, y, font, 10);
@@ -323,7 +323,7 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   drawCheckbox(padding + 150, y, formData.collegeGraduate === 'NO'); drawText("NO", padding + 165, y, font, 10);
   if (formData.collegeGraduate === 'YES') {
     drawText("Degree:", padding + 200, y, font, 10);
-    drawInputBox(padding + 260, y - 15, 200, 20, !!formData.collegeDegree);
+    drawInputBox(padding + 260, y - 15, 200, 20);
     drawText(formData.collegeDegree || "Degree Type", padding + 265, y - 10, font, 10);
   }
   y -= 50;
@@ -337,21 +337,21 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   drawText("Reference 1:", padding, y, fontBold, 11);
   y -= 20;
   drawText("Name:", padding, y, font, 10);
-  drawInputBox(padding + 50, y - 15, 200, 20, !!formData.ref1Name);
+  drawInputBox(padding + 50, y - 15, 200, 20);
   drawText(formData.ref1Name || "Full Name", padding + 55, y - 10, font, 10);
   drawText("Relationship:", padding + 270, y, font, 10);
-  drawInputBox(padding + 350, y - 15, 150, 20, !!formData.ref1Relationship);
+  drawInputBox(padding + 350, y - 15, 150, 20);
   drawText(formData.ref1Relationship || "Relationship", padding + 355, y - 10, font, 10);
   y -= 30;
   drawText("Company:", padding, y, font, 10);
-  drawInputBox(padding + 70, y - 15, 200, 20, !!formData.ref1Company);
+  drawInputBox(padding + 70, y - 15, 200, 20);
   drawText(formData.ref1Company || "Company", padding + 75, y - 10, font, 10);
   drawText("Phone:", padding + 290, y, font, 10);
-  drawInputBox(padding + 340, y - 15, 150, 20, !!formData.ref1Phone);
+  drawInputBox(padding + 340, y - 15, 150, 20);
   drawText(formData.ref1Phone || "Phone", padding + 345, y - 10, font, 10);
   y -= 30;
   drawText("Address:", padding, y, font, 10);
-  drawInputBox(padding + 70, y - 15, 450, 20, !!formData.ref1Address);
+  drawInputBox(padding + 70, y - 15, 450, 20);
   drawText(formData.ref1Address || "Address", padding + 75, y - 10, font, 10);
   y -= 40;
 
@@ -359,21 +359,21 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   drawText("Reference 2:", padding, y, fontBold, 11);
   y -= 20;
   drawText("Name:", padding, y, font, 10);
-  drawInputBox(padding + 50, y - 15, 200, 20, !!formData.ref2Name);
+  drawInputBox(padding + 50, y - 15, 200, 20);
   drawText(formData.ref2Name || "Full Name", padding + 55, y - 10, font, 10);
   drawText("Relationship:", padding + 270, y, font, 10);
-  drawInputBox(padding + 350, y - 15, 150, 20, !!formData.ref2Relationship);
+  drawInputBox(padding + 350, y - 15, 150, 20);
   drawText(formData.ref2Relationship || "Relationship", padding + 355, y - 10, font, 10);
   y -= 30;
   drawText("Company:", padding, y, font, 10);
-  drawInputBox(padding + 70, y - 15, 200, 20, !!formData.ref2Company);
+  drawInputBox(padding + 70, y - 15, 200, 20);
   drawText(formData.ref2Company || "Company", padding + 75, y - 10, font, 10);
   drawText("Phone:", padding + 290, y, font, 10);
-  drawInputBox(padding + 340, y - 15, 150, 20, !!formData.ref2Phone);
+  drawInputBox(padding + 340, y - 15, 150, 20);
   drawText(formData.ref2Phone || "Phone", padding + 345, y - 10, font, 10);
   y -= 30;
   drawText("Address:", padding, y, font, 10);
-  drawInputBox(padding + 70, y - 15, 450, 20, !!formData.ref2Address);
+  drawInputBox(padding + 70, y - 15, 450, 20);
   drawText(formData.ref2Address || "Address", padding + 75, y - 10, font, 10);
   y -= 40;
 
@@ -381,49 +381,51 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   drawText("Reference 3:", padding, y, fontBold, 11);
   y -= 20;
   drawText("Name:", padding, y, font, 10);
-  drawInputBox(padding + 50, y - 15, 200, 20, !!formData.ref3Name);
+  drawInputBox(padding + 50, y - 15, 200, 20);
   drawText(formData.ref3Name || "Full Name", padding + 55, y - 10, font, 10);
   drawText("Relationship:", padding + 270, y, font, 10);
-  drawInputBox(padding + 350, y - 15, 150, 20, !!formData.ref3Relationship);
+  drawInputBox(padding + 350, y - 15, 150, 20);
   drawText(formData.ref3Relationship || "Relationship", padding + 355, y - 10, font, 10);
   y -= 30;
   drawText("Company:", padding, y, font, 10);
-  drawInputBox(padding + 70, y - 15, 200, 20, !!formData.ref3Company);
+  drawInputBox(padding + 70, y - 15, 200, 20);
   drawText(formData.ref3Company || "Company", padding + 75, y - 10, font, 10);
   drawText("Phone:", padding + 290, y, font, 10);
-  drawInputBox(padding + 340, y - 15, 150, 20, !!formData.ref3Phone);
+  drawInputBox(padding + 340, y - 15, 150, 20);
   drawText(formData.ref3Phone || "Phone", padding + 345, y - 10, font, 10);
   y -= 30;
   drawText("Address:", padding, y, font, 10);
-  drawInputBox(padding + 70, y - 15, 450, 20, !!formData.ref3Address);
+  drawInputBox(padding + 70, y - 15, 450, 20);
   drawText(formData.ref3Address || "Address", padding + 75, y - 10, font, 10);
   y -= 40;
 
   // Military Service Section
   y = drawHeader("Military Service");
   drawText("Branch:", padding, y, font, 10);
-  drawInputBox(padding + 70, y - 15, 150, 20, !!formData.militaryBranch);
+  drawInputBox(padding + 70, y - 15, 150, 20);
   drawText(formData.militaryBranch || "Branch", padding + 75, y - 10, font, 10);
   y -= 30;
   drawText("Service Period:", padding, y, font, 10);
   drawText("From:", padding + 100, y, font, 10);
-  drawInputBox(padding + 140, y - 15, 100, 20, !!formData.militaryFrom);
+  drawInputBox(padding + 140, y - 15, 100, 20);
   drawText(formData.militaryFrom || "MM/DD/YYYY", padding + 145, y - 10, font, 10);
   drawText("To:", padding + 260, y, font, 10);
-  drawInputBox(padding + 280, y - 15, 100, 20, !!formData.militaryTo);
+  drawInputBox(padding + 280, y - 15, 100, 20);
   drawText(formData.militaryTo || "MM/DD/YYYY", padding + 285, y - 10, font, 10);
   y -= 30;
   drawText("Rank at Discharge:", padding, y, font, 10);
-  drawInputBox(padding + 120, y - 15, 150, 20, !!formData.militaryRank);
+  drawInputBox(padding + 120, y - 15, 150, 20);
   drawText(formData.militaryRank || "Rank", padding + 125, y - 10, font, 10);
   y -= 30;
   drawText("Type of Discharge:", padding, y, font, 10);
-  drawInputBox(padding + 130, y - 15, 150, 20, !!formData.militaryDischargeType);
+  drawInputBox(padding + 130, y - 15, 150, 20);
   drawText(formData.militaryDischargeType || "Type", padding + 135, y - 10, font, 10);
-  y -= 30;
+  y -= 10;
+  y -= 10; // Move the box and label 10 units lower
   if (formData.militaryDischargeExplanation) {
+    y -= 10; // Move the box and label 10 units lower
     drawText("If other than honorable, explain:", padding, y, font, 10);
-    drawInputBox(padding + 200, y - 15, 350, 40, !!formData.militaryDischargeExplanation);
+    drawInputBox(padding + 145, y - 15, 350, 20);
     page.drawText(formData.militaryDischargeExplanation || "Explanation", { x: padding + 205, y: y - 10, size: 10, font, maxWidth: 340, lineHeight: 12 });
     y -= 50;
   }
@@ -461,7 +463,7 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   y = drawHeader("Signature and Date");
   y -= 30;
 
-  // Signature line
+  // Signature line (left side)
   const sigLineY = y;
   if (formData.signature && formData.signature.startsWith('data:image')) {
     try {
@@ -477,13 +479,11 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
     page.drawLine({ start: { x: padding + 10, y: sigLineY }, end: { x: padding + 250, y: sigLineY }, thickness: 1 });
   }
   drawText("Signature", padding + 10, sigLineY - 18, font, 10, black);
-  drawText("Please sign above", padding + 10, sigLineY - 32, font, 9, rgb(0.5, 0.5, 0.5));
-  drawText("Clear Signature", padding + 120, sigLineY - 32, font, 9, rgb(1, 0, 0));
 
-  // Date field, aligned right
-  drawText("Date:", padding + 300, sigLineY + 5, font, 12);
-  drawInputBox(padding + 340, sigLineY - 15, 120, 20, !!formData.signatureDate);
-  drawText(formData.signatureDate || "MM/DD/YYYY", padding + 345, sigLineY - 10, font, 10);
+  // Date field (right side, same y)
+  drawText("Date:", padding + 350, sigLineY + 5, font, 12);
+  drawInputBox(padding + 350, sigLineY - 30, 120, 20);
+  drawText(formData.signatureDate || "MM/DD/YYYY", padding + 355, sigLineY - 20, font, 10);
 
   return pdfDoc.save();
 }

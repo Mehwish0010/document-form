@@ -3,9 +3,9 @@ import nodemailer from 'nodemailer';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 
 const emailConfig = {
-  user: 'mailbatp@gmail.com',
-  pass: 'nkjt tzvm ctyp cgpn ',
-  receiver: 'mailbatp@gmail.com'
+  user: 'mehwishsheikh0010sheikh@gmail.com',
+  pass: 'pcqx olxw twgw xkzz ',
+  receiver: 'mehwishsheikh0010sheikh@gmail.com'
 };
 
 const transporter = nodemailer.createTransport({
@@ -59,26 +59,31 @@ async function generateCompliancePDF(formData) {
   const drawText = (text, x, yPos, fontToUse, size, color = black, maxWidth, lineHeight) => {
     page.drawText(text, { x, y: yPos, font: fontToUse, size, color, maxWidth, lineHeight });
   };
-  const drawInputBox = (x, yPos, w, h, hasValue) => {
-    page.drawRectangle({ x, y: yPos, width: w, height: h, color: hasValue ? rgb(0.9,0.95,1) : white, borderWidth: 1, borderColor: black });
+  // Remove blue background from all input boxes
+  const drawInputBox = (x, yPos, w, h) => {
+    page.drawRectangle({ x, y: yPos, width: w, height: h, borderWidth: 1, borderColor: black });
   };
 
   // --- Job Application Fields at the top ---
   page.drawRectangle({ x: padding, y: y - 30, width: contentWidth, height: 30, color: black });
   drawText("Job Application Information", padding + 10, y - 12, fontBold, 15, white, undefined, undefined);
-  y -= 40;
-  // Three columns: Full Name, Job Role, Location
-  drawText("Full Name", padding, y + 18, fontBold, 11, black, undefined, undefined);
-  drawText("Job Role", padding + 180, y + 18, fontBold, 11, black, undefined, undefined);
-  drawText("Location", padding + 360, y + 18, fontBold, 11, black, undefined, undefined);
-  // Input boxes
-  drawInputBox(padding, y, 160, 22, !!formData.jobAppFullName);
-  drawInputBox(padding + 180, y, 160, 22, !!formData.jobRole);
-  drawInputBox(padding + 360, y, 160, 22, !!formData.location);
-  drawText(formData.jobAppFullName || '', padding + 8, y + 6, font, 11, black, undefined, undefined);
-  drawText(formData.jobRole || '', padding + 188, y + 6, font, 11, black, undefined, undefined);
-  drawText(formData.location || '', padding + 368, y + 6, font, 11, black, undefined, undefined);
-  y -= 40;
+  y -= 80;
+// Draw labels in a row
+const labelY = y + 18;
+drawText("Full Name", padding, labelY, fontBold, 11, black, undefined, undefined);
+drawText("Job Role", padding + 180, labelY, fontBold, 11, black, undefined, undefined);
+drawText("Location", padding + 360, labelY, fontBold, 11, black, undefined, undefined);
+// Add vertical space between label row and input box row
+y -= 6;
+// Draw input boxes in a row
+drawInputBox(padding, y, 160, 22);
+drawInputBox(padding + 180, y, 160, 22);
+drawInputBox(padding + 360, y, 160, 22);
+// Draw values in boxes
+drawText(formData.jobAppFullName || '', padding + 8, y + 6, font, 11, black, undefined, undefined);
+drawText(formData.jobRole || '', padding + 188, y + 6, font, 11, black, undefined, undefined);
+drawText(formData.location || '', padding + 368, y + 6, font, 11, black, undefined, undefined);
+y -= 40;
 
   // Title and subtitle (centered, match UI)
 
@@ -90,7 +95,7 @@ async function generateCompliancePDF(formData) {
   // Agreement statement
   y -= 10;
   y = await drawParagraph(page, "I, ", padding, y, font, 11, black, contentWidth, 16);
-  drawInputBox(padding + 20, y + 4, 200, 14, !!formData.name);
+  drawInputBox(padding + 20, y + 4, 200, 14);
   drawText(formData.name || '', padding + 25, y + 7, font, 11, black, undefined, undefined);
   drawText(", agree with the following statements:", padding + 230, y + 7, font, 11, black, undefined, undefined);
   y -= 30;
@@ -112,9 +117,20 @@ async function generateCompliancePDF(formData) {
   y = await drawParagraph(page, "By signing this form, you acknowledge that you have read, understood, and agree to abide by the BATP Privacy Policy and all confidentiality requirements.", padding, y, font, 11, black, contentWidth, 16);
   y -= 30;
 
-  // Signature and Date/Print fields (side by side, as in UI)
+  // Signature and Date fields (side by side)
+  // Signature label
+  drawText('Signature', padding, y, font, 11, black, undefined, undefined);
+  // Date label on the right
+  const dateLabelX = padding + 300;
+  drawText('Date', dateLabelX, y, font, 11, black, undefined, undefined);
+  // Move down for boxes
+  y -= 24;
   // Signature box
-  page.drawRectangle({ x: padding, y: y - 100, width: 240, height: 100, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: black });
+  page.drawRectangle({ x: padding, y: y - 100, width: 240, height: 100, borderWidth: 1, borderColor: black });
+  // Date box to the right
+  page.drawRectangle({ x: dateLabelX, y: y - 10, width: 120, height: 22, borderWidth: 1, borderColor: black });
+  drawText(formData.date || 'mm/dd/yyyy', dateLabelX + 10, y + 2, font, 11, black, undefined, undefined);
+  // Signature image logic (if present)
   if (formData.signature && typeof formData.signature === 'string' && formData.signature.startsWith('data:image')) {
     try {
       const imageBytes = Buffer.from(formData.signature.split(',')[1], 'base64');
@@ -127,30 +143,21 @@ async function generateCompliancePDF(formData) {
       if (image) {
         page.drawImage(image, { x: padding + 5, y: y - 95, width: 230, height: 90 });
       } else {
-        // Draw a line if image fails
         page.drawLine({ start: { x: padding + 10, y: y - 50 }, end: { x: padding + 230, y: y - 50 }, thickness: 1, color: black });
       }
     } catch {
-      // If image fails, draw a line
       page.drawLine({ start: { x: padding + 10, y: y - 50 }, end: { x: padding + 230, y: y - 50 }, thickness: 1, color: black });
     }
   } else {
-    // Draw a line for signature if no image
     page.drawLine({ start: { x: padding + 10, y: y - 50 }, end: { x: padding + 230, y: y - 50 }, thickness: 1, color: black });
-    // Show 'Clear Signature' in red if no signature
     page.drawText('Clear Signature', { x: padding + 10, y: y - 40, size: 12, font: fontBold, color: rgb(1,0,0) });
   }
-  // Signature label (move further below the box)
-  drawText('Signature', padding, y - 115, font, 11, black, undefined, undefined);
-  // Date box
-  page.drawRectangle({ x: padding + 260, y: y - 30, width: 120, height: 22, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: black });
-  drawText(formData.date || 'mm/dd/yyyy', padding + 265, y - 18, font, 11, black, undefined, undefined);
-  drawText('Date', padding + 260, y - 8, font, 11, black, undefined, undefined);
-  // Print box
-  page.drawRectangle({ x: padding, y: y - 140, width: 240, height: 22, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: black });
-  drawText(formData.print || '', padding + 8, y - 128, font, 11, black, undefined, undefined);
-  drawText('Print', padding, y - 108, font, 11, black, undefined, undefined);
-  y -= 160;
+  y -= 120; // vertical space after signature/date row
+  drawText('Print Name', padding, y, font, 11, black, undefined, undefined);
+  y -= 24; // vertical space before box
+  page.drawRectangle({ x: padding, y: y - 22, width: 240, height: 22, borderWidth: 1, borderColor: black });
+  drawText(formData.print || '', padding + 8, y - 10, font, 11, black, undefined, undefined);
+  y -= 40; // vertical space after print box
 
   // Footer
   page.drawText("BATP Confidentiality Agreement v1.0", {
@@ -171,7 +178,7 @@ export async function POST(req) {
     const mailOptions = {
       from: emailConfig.user,
       to: emailConfig.receiver,
-      subject: 'New Confidentiality Agreement Submission',
+      subject: 'Employment Form 04 (BATP- Confidentiality agreement)',
       text: 'See attached PDF for the submitted confidentiality agreement.',
       attachments: [
         {

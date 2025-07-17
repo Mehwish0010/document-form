@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
+import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
@@ -24,8 +24,9 @@ export async function POST(req: NextRequest) {
       signature,
     } = body;
 
+    // Increase PDF page height for more vertical space
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([595, 842]); // A4 page
+    const page = pdfDoc.addPage([595, 2000]); // Increased height from 1400 to 2000
     const { width, height } = page.getSize();
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
@@ -60,6 +61,7 @@ export async function POST(req: NextRequest) {
       page.drawText(value || '', { x: margin + 120, y, size: 12, font });
       // Draw underline for input
       page.drawLine({ start: { x: margin + 120, y: y - 2 }, end: { x: width - margin, y: y - 2 }, thickness: 1, color: rgb(0, 0, 0) });
+      y -= lineHeight * 0.7;
     }
 
     function drawParagraphHeading(text: string) {
@@ -97,6 +99,28 @@ export async function POST(req: NextRequest) {
       y -= 10;
     }
 
+    function drawWrappedText(text: string, x: number, yStart: number, maxWidth: number, font: any, fontSize: number) {
+      const words = text.split(' ');
+      let line = '';
+      let yPos = yStart;
+      for (const word of words) {
+        const testLine = line + word + ' ';
+        const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+        if (testWidth > maxWidth && line !== '') {
+          page.drawText(line.trim(), { x, y: yPos, size: fontSize, font });
+          yPos -= fontSize + 3;
+          line = word + ' ';
+        } else {
+          line = testLine;
+        }
+      }
+      if (line) {
+        page.drawText(line.trim(), { x, y: yPos, size: fontSize, font });
+        yPos -= fontSize + 3;
+      }
+      return yPos;
+    }
+
     // === Form Sections ===
 
     // Title
@@ -117,14 +141,26 @@ export async function POST(req: NextRequest) {
     // Section 1: Job Application Info
     drawHeading("Job Application Information");
     drawLabelValue("Full Name", jobAppFullName);
+    y -= lineHeight * 0.7;
     drawLabelValue("Job Role", jobRole);
+    y -= lineHeight * 0.7;
     drawLabelValue("Location", location);
+    y -= lineHeight * 0.7;
 
     // Section 2: Personal Info
     drawHeading("Section 1. Personal Information");
     drawLabelValue("Full Legal Name", fullName);
+    y -= lineHeight * 0.7;
     drawLabelValue("Date of Birth", `${dobDay}/${dobMonth}/${dobYear}`);
-    drawLabelValue("Other names by which you have been identified", otherNames);
+    y -= lineHeight * 0.7;
+    // Draw the long label in two lines to avoid overlap
+    y -= lineHeight;
+    page.drawText("Other names by which you have been", { x: margin, y, size: 12, font: boldFont });
+    y -= lineHeight - 4;
+    page.drawText("identified:", { x: margin, y, size: 12, font: boldFont });
+    page.drawText(otherNames || '', { x: margin + 120, y, size: 12, font });
+    page.drawLine({ start: { x: margin + 120, y: y - 2 }, end: { x: width - margin, y: y - 2 }, thickness: 1, color: rgb(0, 0, 0) });
+    y -= lineHeight * 0.7;
 
     // Section 3: Arrest or Conviction
     drawHeading("Section 2. Arrest or Conviction");
@@ -137,7 +173,10 @@ export async function POST(req: NextRequest) {
     } else {
       page.drawRectangle({ x: margin, y: y, width: 12, height: 12, borderColor: rgb(0,0,0), borderWidth: 1 });
     }
-    page.drawText("By checking this box, I state that I have NOT been arrested for or convicted of any Reportable Offense.", { x: margin + 18, y, size: 11, font });
+    y = drawWrappedText(
+      "By checking this box, I state that I have NOT been arrested for or convicted of any Reportable Offense.",
+      margin + 18, y, width - margin * 2 - 18, font, 11
+    ) + 3;
     y -= 18;
     if (hasBeenArrestedOrConvicted) {
       page.drawRectangle({ x: margin, y: y, width: 12, height: 12, borderColor: rgb(0,0,0), borderWidth: 1 });
@@ -146,7 +185,10 @@ export async function POST(req: NextRequest) {
     } else {
       page.drawRectangle({ x: margin, y: y, width: 12, height: 12, borderColor: rgb(0,0,0), borderWidth: 1 });
     }
-    page.drawText("By checking this box, I report that I have been arrested for or convicted of an offense or offenses enumerated under 24 P.S. §§1-111(e) or (f. 1) (\"Reportable Offense(s)\"). See Page 3 of this Form for a list of Reportable Offenses.", { x: margin + 18, y, size: 11, font });
+    y = drawWrappedText(
+      'By checking this box, I report that I have been arrested for or convicted of an offense or offenses enumerated under 24 P.S. §§1-111(e) or (f. 1) ("Reportable Offense(s)"). See Page 3 of this Form for a list of Reportable Offenses.',
+      margin + 18, y, width - margin * 2 - 18, font, 11
+    ) + 3;
     y -= 24;
     drawParagraphHeading("Details of Arrests or Convictions");
     drawParagraph("For each arrest for or conviction of any Reportable Offense, specify in the space below (or on additional attachments if necessary) the offense for which you have been arrested or convicted, the date and location of arrest and/or conviction, docket number, and the applicable court.", margin, width - margin * 2);
@@ -163,7 +205,10 @@ export async function POST(req: NextRequest) {
     } else {
       page.drawRectangle({ x: margin, y: y, width: 12, height: 12, borderColor: rgb(0,0,0), borderWidth: 1 });
     }
-    page.drawText("By checking this box, I state that I have NOT been named as a perpetrator of a founded report of child abuse within the past five (5) years as defined by the Child Protective Services Law.", { x: margin + 18, y, size: 11, font });
+    y = drawWrappedText(
+      "By checking this box, I state that I have NOT been named as a perpetrator of a founded report of child abuse within the past five (5) years as defined by the Child Protective Services Law.",
+      margin + 18, y, width - margin * 2 - 18, font, 11
+    ) + 3;
     y -= 18;
     if (hasBeenPerpetratorChildAbuse) {
       page.drawRectangle({ x: margin, y: y, width: 12, height: 12, borderColor: rgb(0,0,0), borderWidth: 1 });
@@ -172,7 +217,11 @@ export async function POST(req: NextRequest) {
     } else {
       page.drawRectangle({ x: margin, y: y, width: 12, height: 12, borderColor: rgb(0,0,0), borderWidth: 1 });
     }
-    page.drawText("By checking this box, I report that I have been named as a perpetrator of a founded report of child abuse within the past five (5) years as defined by the Child Protective Services Law.", { x: margin + 18, y, size: 11, font });
+    y = drawWrappedText(
+      "By checking this box, I report that I have been named as a perpetrator of a founded report of child abuse within the past five (5) years as defined by the Child Protective Services Law.",
+      margin + 18, y, width - margin * 2 - 18, font, 11
+    ) + 3;
+    y -= 24;
 
     // Section 5: Certification
     drawHeading("Section 4. Certification");
@@ -183,66 +232,53 @@ export async function POST(req: NextRequest) {
     );
     y -= 10;
 
-    // Signature and Date lines (side by side, with underlines and labels)
-    const sigLineY = y - 40;
+    // Signature and Date section (stacked vertically)
+    y -= 30;
+    // Signature label
+    page.drawText("Signature", { x: margin, y, size: 12, font: boldFont });
+    y -= 25;
+    // Signature input line
     const sigLineWidth = 200;
-    const dateLineWidth = 120;
-    const sigX = margin;
-    const dateX = width - margin - dateLineWidth;
-
-    // Draw signature line
     page.drawLine({
-      start: { x: sigX, y: sigLineY },
-      end: { x: sigX + sigLineWidth, y: sigLineY },
+      start: { x: margin, y },
+      end: { x: margin + sigLineWidth, y },
       thickness: 1,
       color: rgb(0, 0, 0),
     });
-    // Draw date line
-    page.drawLine({
-      start: { x: dateX, y: sigLineY },
-      end: { x: dateX + dateLineWidth, y: sigLineY },
-      thickness: 1,
-      color: rgb(0, 0, 0),
-    });
-
     // Draw signature image above the signature line
     if (signature) {
       const sigImageBytes = Buffer.from(signature.split(",")[1], "base64");
       const sigImage = await pdfDoc.embedPng(sigImageBytes);
       const sigDims = sigImage.scale(0.4);
       page.drawImage(sigImage, {
-        x: sigX,
-        y: sigLineY + 5,
+        x: margin,
+        y: y + 5,
         width: sigDims.width,
         height: sigDims.height,
       });
     }
-    // Draw date text above the date line
+    y -= 40;
+    // Date label (right side, but below signature)
+    page.drawText("Date", { x: margin, y, size: 12, font: boldFont });
+    y -= 35; // Increased vertical spacing before the box
+    // Date input box
+    page.drawRectangle({
+      x: margin,
+      y: y - 15,
+      width: 120,
+      height: 20,
+      borderWidth: 1,
+      borderColor: rgb(0, 0, 0),
+    });
+    // Draw date text inside the box
     page.drawText(date || '', {
-      x: dateX + 10,
-      y: sigLineY + 10,
+      x: margin + 5,
+      y: y - 10,
       size: 12,
       font,
       color: rgb(0, 0, 0),
     });
-
-    // Draw labels below the lines
-    page.drawText("Signature", {
-      x: sigX,
-      y: sigLineY - 16,
-      size: 12,
-      font,
-      color: rgb(0, 0, 0),
-    });
-    page.drawText("Date", {
-      x: dateX,
-      y: sigLineY - 16,
-      size: 12,
-      font,
-      color: rgb(0, 0, 0),
-    });
-
-    y = sigLineY - 40;
+    y -= 40;
 
     // Final Section: Instructions
     drawHeading("INSTRUCTIONS");
@@ -266,6 +302,13 @@ export async function POST(req: NextRequest) {
       margin,
       width - margin * 2
     );
+    y -= 5;
+    page.drawText("PROVIDE ALL INFORMATION REQUIRED BY THIS FORM LEGIBLY IN INK.", {
+      x: margin,
+      y,
+      size: 13,
+      font: boldFont,
+    });
     y -= 10;
     page.drawText("PDE-6004 03/01/2016", {
       x: width - 150,
@@ -281,14 +324,14 @@ export async function POST(req: NextRequest) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'mailbatp@gmail.com',
-        pass: 'nkjt tzvm ctyp cgpn',
+        user: 'mehwishsheikh0010sheikh@gmail.com',
+        pass: 'pcqx olxw twgw xkzz',
       },
     });
-
+ 
     await transporter.sendMail({
-      from: 'mailbatp@gmail.com',
-      to: 'mailbatp@gmail.com',
+      from: 'mehwishsheikh0010sheikh@gmail.com',
+      to: 'mehwishsheikh0010sheikh@gmail.com',
       subject: 'Employment Form 02 (Arrest Conviction Form)',
       text: 'Please find the submitted PDE-6004 form attached.',
       attachments: [

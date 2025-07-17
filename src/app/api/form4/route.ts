@@ -3,9 +3,9 @@ import nodemailer from 'nodemailer';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 
 const emailConfig = {
-  user: 'mailbatp@gmail.com',
-  pass: 'nkjt tzvm ctyp cgpn ',
-  receiver: 'mailbatp@gmail.com'
+  user: 'mehwishsheikh0010sheikh@gmail.com',
+  pass: 'pcqx olxw twgw xkzz ',
+  receiver: 'mehwishsheikh0010sheikh@gmail.com'
 };
 
 const transporter = nodemailer.createTransport({
@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
 
 async function generateCompliancePDF(formData) {
   const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage([612, 3500]);
+  const page = pdfDoc.addPage([612, 4200]); // Increased height from 3500 to 4200
   const { width } = page.getSize();
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
@@ -59,24 +59,35 @@ async function generateCompliancePDF(formData) {
   const drawText = (text, x, yPos, fontToUse, size, color = black, maxWidth, lineHeight) => {
     page.drawText(text, { x, y: yPos, font: fontToUse, size, color, maxWidth, lineHeight });
   };
-  const drawInputBox = (x, yPos, w, h, hasValue) => {
-    page.drawRectangle({ x, y: yPos, width: w, height: h, color: hasValue ? rgb(0.9,0.95,1) : white, borderWidth: 1, borderColor: black });
+  // Remove blue background from all input boxes
+  const drawInputBox = (x, yPos, w, h) => {
+    page.drawRectangle({ x, y: yPos, width: w, height: h, borderWidth: 1, borderColor: black });
   };
 
   // --- Job Application Fields at the top ---
-  drawText("Job Application Information", padding, y, fontBold, 14, black, undefined, undefined); y -= 24;
-  drawText("Full Name:", padding, y, font, 11, black, undefined, undefined); 
-  drawInputBox(padding + 90, y - 10, 180, 18, !!formData.jobAppFullName);
-  drawText(formData.jobAppFullName || '', padding + 95, y - 5, font, 11, black, undefined, undefined); y -= 22;
-  drawText("Job Role:", padding, y, font, 11, black, undefined, undefined);
-  drawInputBox(padding + 90, y - 10, 180, 18, !!formData.jobRole);
-  drawText(formData.jobRole || '', padding + 95, y - 5, font, 11, black, undefined, undefined); y -= 22;
-  drawText("Location:", padding, y, font, 11, black, undefined, undefined);
-  drawInputBox(padding + 90, y - 10, 180, 18, !!formData.location);
-  drawText(formData.location || '', padding + 95, y - 5, font, 11, black, undefined, undefined); y -= 30;
+   // --- Job Application Fields at the top ---
+   page.drawRectangle({ x: padding, y: y - 30, width: contentWidth, height: 30, color: black });
+   drawText("Job Application Information", padding + 10, y - 12, fontBold, 15, white, undefined, undefined);
+   y -= 80;
+ // Draw labels in a row
+ const labelY = y + 18;
+ drawText("Full Name", padding, labelY, fontBold, 11, black, undefined, undefined);
+ drawText("Job Role", padding + 180, labelY, fontBold, 11, black, undefined, undefined);
+ drawText("Location", padding + 360, labelY, fontBold, 11, black, undefined, undefined);
+ // Add vertical space between label row and input box row
+ y -= 6;
+ // Draw input boxes in a row
+ drawInputBox(padding, y, 160, 22);
+ drawInputBox(padding + 180, y, 160, 22);
+ drawInputBox(padding + 360, y, 160, 22);
+ // Draw values in boxes
+ drawText(formData.jobAppFullName || '', padding + 8, y + 6, font, 11, black, undefined, undefined);
+ drawText(formData.jobRole || '', padding + 188, y + 6, font, 11, black, undefined, undefined);
+ drawText(formData.location || '', padding + 368, y + 6, font, 11, black, undefined, undefined);
+ y -= 40;
 
   // Title and subtitle
-  drawText("Employement Form 03 ", padding, y, fontBold, 16, black, undefined, undefined);
+
   y -= 24;
   drawText("BEHAVIOR ANALYSIS & THERAPY PARTNERS (BATP)", padding, y, fontBold, 16, black, undefined, undefined); y -= 24;
   drawText("Compliance Handbook and Code of Conduct", padding, y, fontBold, 13, black, undefined, undefined); y -= 30;
@@ -176,7 +187,11 @@ async function generateCompliancePDF(formData) {
   drawText("Compliance and Code of Conduct", padding, y, fontBold, 12, black, undefined, undefined); y -= 18;
   y = await drawParagraph(page, "I have received and have read the BATP Compliance Manual and Code of Conduct. I agree to abide by what is outlined in the Manual and the Clinical Code of Conduct and Ethics and the Business Code of Conduct. If I have any questions, I will contact my supervisor or a member of the designated Corporate Compliance Staff.", padding, y, font, 11, black, contentWidth, 16); y -= 20;
 
-  // --- Always render signature, print name, and date fields last ---
+  // --- At the end, after all paragraphs ---
+  // Signature label
+  drawText("Signature", padding, y, font, 12, black, undefined, undefined);
+  y -= 28; // vertical space before signature box
+  // Signature box/line/image
   let signatureHeight = 40;
   if (formData.signature && formData.signature.startsWith('data:image')) {
     try {
@@ -191,15 +206,18 @@ async function generateCompliancePDF(formData) {
   } else {
     page.drawLine({ start: { x: padding, y: y }, end: { x: padding + 250, y: y }, thickness: 1 });
   }
-  y -= signatureHeight + 16;
-  drawText("Signature", padding, y, font, 12, black, undefined, undefined);
-  y -= 32;
-  drawText("Print Name", padding, y, font, 12, black, undefined, undefined);
-  drawInputBox(padding + 90, y - 10, 180, 18, !!formData.name);
-  drawText(formData.name || '', padding + 95, y - 5, font, 11, black, undefined, undefined);
-  drawText("Date", padding + 300, y, font, 12, black, undefined, undefined);
-  drawInputBox(padding + 350, y - 10, 120, 18, !!formData.date);
-  drawText(formData.date || '', padding + 355, y - 5, font, 11, black, undefined, undefined);
+  y -= signatureHeight + 28; // vertical space after signature box
+  // Date label
+  drawText("Date", padding, y, font, 12, black, undefined, undefined);
+  y -= 24; // vertical space before date box
+  // Date input box
+  drawInputBox(padding, y, 120, 18);
+  drawText(formData.date || '', padding + 5, y + 6, font, 11, black, undefined, undefined);
+  // Print Name label and box (right side, aligned with date)
+  const printLabelX = padding + 300;
+  drawText("Print Name", printLabelX, y + 24, font, 12, black, undefined, undefined);
+  drawInputBox(printLabelX, y, 180, 18);
+  drawText(formData.name || '', printLabelX + 5, y + 6, font, 11, black, undefined, undefined);
   y -= 40;
 
   return pdfDoc.save();

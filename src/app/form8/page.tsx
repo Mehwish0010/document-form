@@ -310,22 +310,22 @@ export default function EmploymentForm() {
             name="lastName"
             value={section1.lastName}
             onChange={handleSection1Change}
-            className="border border-black p-1 w-full bg-blue-100" placeholder="" /></div>
+            className="border border-black p-1 w-full bg-white" placeholder="" /></div>
           <div><label className="text-xs sm:text-sm font-medium">First Name (Given Name)</label><input 
             name="firstName"
             value={section1.firstName}
             onChange={handleSection1Change}
-            className="border border-black p-1 w-full bg-blue-100" placeholder="" /></div>
+            className="border border-black p-1 w-full bg-white" placeholder="" /></div>
           <div><label className="text-xs sm:text-sm font-medium">Middle Initial</label><input 
             name="middleInitial"
             value={section1.middleInitial}
             onChange={handleSection1Change}
-            className="border border-black p-1 w-full bg-blue-100" placeholder="" /></div>
+            className="border border-black p-1 w-full bg-white" placeholder="" /></div>
           <div><label className="text-xs sm:text-sm font-medium">Other Last Names Used (if any)</label><input 
             name="otherLastNames"
             value={section1.otherLastNames}
             onChange={handleSection1Change}
-            className="border border-black p-1 w-full bg-blue-100" placeholder="" /></div>
+            className="border border-black p-1 w-full bg-white" placeholder="" /></div>
         </div>
 
         <div className="flex flex-col sm:flex-row flex-wrap gap-2 mt-2">
@@ -336,7 +336,7 @@ export default function EmploymentForm() {
               name="address"
               value={section1.address}
               onChange={handleSection1Change}
-              className="border border-black p-1 w-full bg-blue-100" />
+              className="border border-black p-1 w-full bg-white" />
           </div>
 
           {/* Apt Number */}
@@ -346,7 +346,7 @@ export default function EmploymentForm() {
               name="aptNumber"
               value={section1.aptNumber}
               onChange={handleSection1Change}
-              className="border border-black bg-blue-100 p-1 w-full" />
+              className="border border-black p-1 w-full bg-white" />
           </div>
 
           {/* City */}
@@ -356,7 +356,7 @@ export default function EmploymentForm() {
               name="city"
               value={section1.city}
               onChange={handleSection1Change}
-              className="border border-black bg-blue-100 p-1 w-full" />
+              className="border border-black p-1 w-full bg-white" />
           </div>
 
           {/* State */}
@@ -366,7 +366,7 @@ export default function EmploymentForm() {
               name="state"
               value={section1.state}
               onChange={handleSection1Change}
-              className="border border-black bg-blue-100 p-1 w-full" />
+              className="border border-black p-1 w-full bg-white" />
           </div>
 
           {/* ZIP Code */}
@@ -376,7 +376,7 @@ export default function EmploymentForm() {
               name="zipCode"
               value={section1.zipCode}
               onChange={handleSection1Change}
-              className="border border-black bg-blue-100 p-1 w-full" />
+              className="border border-black p-1 w-full bg-white" />
           </div>
         </div>
 
@@ -385,26 +385,26 @@ export default function EmploymentForm() {
             name="dateOfBirth"
             value={section1.dateOfBirth}
             onChange={handleSection1Change}
-            className="border bg-blue-100 border-black p-1 w-full" placeholder="" /></div>
+            className="border border-black p-1 w-full bg-white" placeholder="" /></div>
           <div><label className="text-xs sm:text-sm font-medium">U.S. Social Security Number</label><input 
             name="ssn"
             value={section1.ssn}
             onChange={handleSection1Change}
-            className="border bg-blue-100 border-black p-1 w-full" placeholder="" /></div>
+            className="border border-black p-1 w-full bg-white" placeholder="" /></div>
           <div><label className="text-xs sm:text-sm font-medium">Employee&apos;s Email Address</label><input 
             name="email"
             value={section1.email}
             onChange={handleSection1Change}
-            className="border bg-blue-100 border-black p-1 w-full" placeholder="" /></div>
+            className="border border-black p-1 w-full bg-white" placeholder="" /></div>
           <div><label className="text-xs sm:text-sm font-medium">Employee&apos;s Telephone Number</label><input 
             name="telephone"
             value={section1.telephone}
             onChange={handleSection1Change}
-            className="border border-black p-1 bg-blue-100 w-full" placeholder="" /></div>
+            className="border border-black p-1 w-full bg-white" placeholder="" /></div>
         </div>
 
         {/* Signature and Date Section */}
-        <div className="flex flex-col sm:flex-row justify-between items-center text-[14px] sm:text-[16px] mt-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center text-[14px] sm:text-[16px] mt-4 gap-4">
           <div className="w-full sm:w-1/2 mb-4 sm:mb-0">
             <label className="block font-medium">Signature of Employee</label>
             <div className="border border-gray-300 rounded">
@@ -426,7 +426,7 @@ export default function EmploymentForm() {
           </div>
           <div className="w-full sm:w-[48%]">
             <label className="block font-medium">Today&apos;s Date (mm/dd/yyyy)</label>
-            <input type="text" className="w-full p-2 bg-blue-100 text-xs" />
+            <input type="text" name="employeeDate" value={section1.employeeDate} onChange={handleSection1Change} className="w-full p-2 bg-white border border-black text-xs" />
           </div>
         </div>
       </div>
@@ -514,17 +514,17 @@ export default function EmploymentForm() {
 
               {/* Additional Fields */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] sm:text-[12px]">
-                <div className='border ml-2 p-1'>
+                <div className='border ml-2 p-1 '>
                   <label className="block text-[12px] sm:text-[14px]">USCIS A-Number</label>
-                  <input type="text" className="border-t border-black w-full h-[40px] sm:h-[52px] text-xs bg-blue-100" />
+                  <input type="text" name="uscisNumber" value={section1.uscisNumber} onChange={handleSection1Change} className="border-t bg-blue-100 border-black w-full h-[40px] sm:h-[52px] text-xs " />
                 </div>
                 <div className='border ml-2 p-1'>
                   <label className="block font-medium text-[12px] sm:text-[14px]">Form I-94 Admission Number</label>
-                  <input type="text" className="border-t border-black w-full p-1 text-xs h-[40px] sm:h-[52px] bg-blue-100" />
+                  <input type="text" name="i94Number" value={section1.i94Number} onChange={handleSection1Change} className="border-t bg-blue-100 border-black w-full p-1 text-xs h-[40px] sm:h-[52px] " />
                 </div>
                 <div className='border ml-2 p-2'>
                   <label className="block font-medium text-[12px] sm:text-[14px]">Foreign Passport Number and Country of Issuance</label>
-                  <input type="text" className="border-t border-black w-full p-1 h-[32px] text-xs bg-blue-100" />
+                  <input type="text" name="passportNumber" value={section1.passportNumber} onChange={handleSection1Change} className="border-t border-black w-full p-1 h-[32px] text-xs bg-blue-100" />
                 </div>
               </div>
             </div>
@@ -552,13 +552,131 @@ export default function EmploymentForm() {
                   name="document1.title"
                   value={section2.document1.title}
                   onChange={handleSection2Change}
-                  className="w-full bg-blue-100 p-1 text-[12px] sm:text-[14px]" 
-                  type="text" 
+                  className="w-full bg-white p-1 text-[12px] sm:text-[14px]" 
+                  type="text"
+                  placeholder="Enter document title"
                 />
               </td>
-              {/* ... other cells with similar responsive classes ... */}
+              <td className="border border-gray-800 p-1 h-8">
+                <input 
+                  name="document2.title"
+                  value={section2.document2.title}
+                  onChange={handleSection2Change}
+                  className="w-full bg-white p-1 text-[12px] sm:text-[14px]"
+                  type="text"
+                  placeholder="Enter document title"
+                />
+              </td>
+              <td className="border border-gray-800 p-1 h-8">
+                <input 
+                  name="document3.title"
+                  value={section2.document3.title}
+                  onChange={handleSection2Change}
+                  className="w-full bg-white p-1 text-[12px] sm:text-[14px]"
+                  type="text"
+                  placeholder="Enter document title"
+                />
+              </td>
             </tr>
-            {/* ... other rows ... */}
+            <tr>
+              <td className="border border-gray-800 p-1 font-bold bg-gray-200 text-[12px] sm:text-[14px]">Issuing Authority</td>
+              <td className="border border-gray-800 p-1 h-8">
+                <input 
+                  name="document1.authority"
+                  value={section2.document1.authority}
+                  onChange={handleSection2Change}
+                  className="w-full bg-white p-1 text-[12px] sm:text-[14px]"
+                  type="text"
+                  placeholder="Enter issuing authority"
+                />
+              </td>
+              <td className="border border-gray-800 p-1 h-8">
+                <input 
+                  name="document2.authority"
+                  value={section2.document2.authority}
+                  onChange={handleSection2Change}
+                  className="w-full bg-white p-1 text-[12px] sm:text-[14px]"
+                  type="text"
+                  placeholder="Enter issuing authority"
+                />
+              </td>
+              <td className="border border-gray-800 p-1 h-8">
+                <input 
+                  name="document3.authority"
+                  value={section2.document3.authority}
+                  onChange={handleSection2Change}
+                  className="w-full bg-white p-1 text-[12px] sm:text-[14px]"
+                  type="text"
+                  placeholder="Enter issuing authority"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td className="border border-gray-800 p-1 font-bold bg-gray-200 text-[12px] sm:text-[14px]">Document Number</td>
+              <td className="border border-gray-800 p-1 h-8">
+                <input 
+                  name="document1.number"
+                  value={section2.document1.number}
+                  onChange={handleSection2Change}
+                  className="w-full bg-white p-1 text-[12px] sm:text-[14px]"
+                  type="text"
+                  placeholder="Enter document number"
+                />
+              </td>
+              <td className="border border-gray-800 p-1 h-8">
+                <input 
+                  name="document2.number"
+                  value={section2.document2.number}
+                  onChange={handleSection2Change}
+                  className="w-full bg-white p-1 text-[12px] sm:text-[14px]"
+                  type="text"
+                  placeholder="Enter document number"
+                />
+              </td>
+              <td className="border border-gray-800 p-1 h-8">
+                <input 
+                  name="document3.number"
+                  value={section2.document3.number}
+                  onChange={handleSection2Change}
+                  className="w-full bg-white p-1 text-[12px] sm:text-[14px]"
+                  type="text"
+                  placeholder="Enter document number"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td className="border border-gray-800 p-1 font-bold bg-gray-200 text-[12px] sm:text-[14px]">Expiration Date (if any)</td>
+              <td className="border border-gray-800 p-1 h-8">
+                <input 
+                  name="document1.expiration"
+                  value={section2.document1.expiration}
+                  onChange={handleSection2Change}
+                  className="w-full bg-white p-1 text-[12px] sm:text-[14px]"
+                  type="text"
+                  placeholder="Enter expiration date"
+                />
+              </td>
+              <td className="border border-gray-800 p-1 h-8">
+                <input 
+                  name="document2.expiration"
+                  value={section2.document2.expiration}
+                  onChange={handleSection2Change}
+                  className="w-full bg-white p-1 text-[12px] sm:text-[14px]"
+                  type="text"
+                  placeholder="Enter expiration date"
+                />
+              </td>
+              <td className="border border-gray-800 p-1 h-8">
+                <input 
+                  name="document3.expiration"
+                  value={section2.document3.expiration}
+                  onChange={handleSection2Change}
+                  className="w-full bg-white p-1 text-[12px] sm:text-[14px]"
+                  type="text" 
+                  placeholder="Enter expiration date"
+                />
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

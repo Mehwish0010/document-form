@@ -3,9 +3,9 @@ import nodemailer from 'nodemailer';
 import { PDFDocument, rgb, StandardFonts, RGB } from 'pdf-lib';
 
 const emailConfig = {
-  user: 'mailbatp@gmail.com',
-  pass: 'nkjt tzvm ctyp cgpn ',
-  receiver: 'mailbatp@gmail.com'
+  user: 'mehwishsheikh0010sheikh@gmail.com',
+  pass: 'pcqx olxw twgw xkzz ',
+  receiver: 'mehwishsheikh0010sheikh@gmail.com'
 };
 
 const transporter = nodemailer.createTransport({

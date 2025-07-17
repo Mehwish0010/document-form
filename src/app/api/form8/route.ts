@@ -5,9 +5,9 @@ import fs from 'fs';
 import path from 'path';
 
 const emailConfig = {
-  user: 'mailbatp@gmail.com',
-  pass: 'nkjt tzvm ctyp cgpn ',
-  receiver: 'mailbatp@gmail.com'
+  user: 'mehwishsheikh0010sheikh@gmail.com',
+  pass: 'pcqx olxw twgw xkzz ',
+  receiver: 'mehwishsheikh0010sheikh@gmail.com'
 };
 
 
@@ -88,19 +88,20 @@ export async function POST(req: Request) {
     // Black bar for Job Application Information
     page.drawRectangle({ x: padding, y: y - 30, width: 1120, height: 30, color: black });
     page.drawText('Job Application Information', { x: padding + 10, y: y - 12, size: 15, font: fontBold, color: rgb(1,1,1) });
-    y -= 40;
+    y -= 60;
 
-    // Job info row
+    // Draw input boxes in a row
+    // Use body.jobAppFullName, body.jobRole, body.location for values
     page.drawText('Full Name:', { x: padding, y, size: labelSize, font: fontBold, color: black });
-    page.drawRectangle({ x: padding + 80, y: y - 4, width: 250, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: padding + 80, y: y - 4, width: 250, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
     page.drawText(body.jobAppFullName || '', { x: padding + 85, y: y + 6, size: inputTextSize, font, color: black });
     page.drawText('Job Role:', { x: padding + 370, y, size: labelSize, font: fontBold, color: black });
-    page.drawRectangle({ x: padding + 440, y: y - 4, width: 250, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: padding + 440, y: y - 4, width: 250, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
     page.drawText(body.jobRole || '', { x: padding + 445, y: y + 6, size: inputTextSize, font, color: black });
     page.drawText('Location:', { x: padding + 730, y, size: labelSize, font: fontBold, color: black });
-    page.drawRectangle({ x: padding + 800, y: y - 4, width: 250, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: padding + 800, y: y - 4, width: 250, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
     page.drawText(body.location || '', { x: padding + 805, y: y + 6, size: inputTextSize, font, color: black });
-    y -= inputHeight + 18;
+    y -= 40;
 
     // Section 1 header
     page.drawRectangle({ x: padding, y: y - 30, width: 1120, height: 30, color: grayBg });
@@ -121,10 +122,10 @@ export async function POST(req: Request) {
     page.drawText('Other Last Names Used (if any)', { x: col4, y: rowY, size: labelSize, font: fontBold, color: black });
     // Row 1 boxes
     const row1BoxY = rowY - labelToBoxGap;
-    page.drawRectangle({ x: col1, y: row1BoxY, width: 220, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: col2, y: row1BoxY, width: 220, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: col3, y: row1BoxY, width: 120, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: col4, y: row1BoxY, width: 220, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: col1, y: row1BoxY, width: 220, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: col2, y: row1BoxY, width: 220, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: col3, y: row1BoxY, width: 120, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: col4, y: row1BoxY, width: 220, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
     // Row 1 values
     page.drawText(section1.lastName || '', { x: col1 + 4, y: row1BoxY + 6, size: inputTextSize, font, color: black });
     page.drawText(section1.firstName || '', { x: col2 + 4, y: row1BoxY + 6, size: inputTextSize, font, color: black });
@@ -140,11 +141,11 @@ export async function POST(req: Request) {
     page.drawText('State', { x: colD, y: rowY, size: labelSize, font: fontBold, color: black });
     page.drawText('ZIP Code', { x: colE, y: rowY, size: labelSize, font: fontBold, color: black });
     const row2BoxY = rowY - labelToBoxGap;
-    page.drawRectangle({ x: colA, y: row2BoxY, width: 250, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: colB, y: row2BoxY, width: 100, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: colC, y: row2BoxY, width: 220, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: colD, y: row2BoxY, width: 100, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: colE, y: row2BoxY, width: 100, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: colA, y: row2BoxY, width: 250, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: colB, y: row2BoxY, width: 100, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: colC, y: row2BoxY, width: 220, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: colD, y: row2BoxY, width: 100, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: colE, y: row2BoxY, width: 100, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
     page.drawText(section1.address || '', { x: colA + 4, y: row2BoxY + 6, size: inputTextSize, font, color: black });
     page.drawText(section1.aptNumber || '', { x: colB + 4, y: row2BoxY + 6, size: inputTextSize, font, color: black });
     page.drawText(section1.city || '', { x: colC + 4, y: row2BoxY + 6, size: inputTextSize, font, color: black });
@@ -159,10 +160,10 @@ export async function POST(req: Request) {
     page.drawText("Employee's Email Address", { x: c3, y: rowY, size: labelSize, font: fontBold, color: black });
     page.drawText("Employee's Telephone Number", { x: c4, y: rowY, size: labelSize, font: fontBold, color: black });
     const row3BoxY = rowY - labelToBoxGap;
-    page.drawRectangle({ x: c1, y: row3BoxY, width: 220, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: c2, y: row3BoxY, width: 220, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: c3, y: row3BoxY, width: 220, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: c4, y: row3BoxY, width: 220, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: c1, y: row3BoxY, width: 220, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: c2, y: row3BoxY, width: 220, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: c3, y: row3BoxY, width: 220, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: c4, y: row3BoxY, width: 220, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
     page.drawText(section1.dateOfBirth || '', { x: c1 + 4, y: row3BoxY + 6, size: inputTextSize, font, color: black });
     page.drawText(section1.ssn || '', { x: c2 + 4, y: row3BoxY + 6, size: inputTextSize, font, color: black });
     page.drawText(section1.email || '', { x: c3 + 4, y: row3BoxY + 6, size: inputTextSize, font, color: black });
@@ -171,7 +172,7 @@ export async function POST(req: Request) {
 
     // Signature and Date
     page.drawText('Signature of Employee', { x: padding, y: y + inputHeight + 4, size: labelSize, font: fontBold, color: black });
-    page.drawRectangle({ x: padding, y, width: 700, height: 60, color: blueBg, borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: padding, y, width: 700, height: 60, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
     if (section1.employeeSignature && section1.employeeSignature.startsWith('data:image')) {
       try {
         const imageBytes = Buffer.from(section1.employeeSignature.split(',')[1], 'base64');
@@ -184,7 +185,7 @@ export async function POST(req: Request) {
     }
     page.drawText('Clear Signature', { x: padding, y: y - 16, size: 11, font, color: rgb(1,0,0) });
     page.drawText("Today's Date (mm/dd/yyyy)", { x: padding + 800, y: y + inputHeight + 4, size: labelSize, font: fontBold, color: black });
-    page.drawRectangle({ x: padding + 800, y, width: 200, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: padding + 800, y, width: 200, height: inputHeight, borderWidth: 1, borderColor: black });
     page.drawText(section1.employeeDate || '', { x: padding + 805, y: y + 6, size: inputTextSize, font, color: black });
     y -= 80;
 
@@ -230,8 +231,8 @@ export async function POST(req: Request) {
     page.drawText('If you check Item Number 4., enter one of these:', { x: padding, y, size: 11, font: fontBold, color: black });
     y -= 20;
     page.drawRectangle({ x: padding, y, width: 300, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
-    page.drawText('USCIS A-Number', { x: padding + 4, y: y + inputHeight - 8, size: 10, font, color: black });
-    page.drawText(section1.uscisNumber || '', { x: padding + 4, y: y + 6, size: inputTextSize, font, color: black });
+    page.drawText('USCIS A-Number', { x: padding + 8, y: y + inputHeight - 8, size: 10, font, color: black });
+    page.drawText(section1.uscisNumber || '', { x: padding + 32, y: y + 6, size: inputTextSize, font, color: black });
     page.drawRectangle({ x: padding + 320, y, width: 300, height: inputHeight, color: blueBg, borderWidth: 1, borderColor: black });
     page.drawText('Form I-94 Admission Number', { x: padding + 324, y: y + inputHeight - 8, size: 10, font, color: black });
     page.drawText(section1.i94Number || '', { x: padding + 324, y: y + 6, size: inputTextSize, font, color: black });
@@ -240,15 +241,62 @@ export async function POST(req: Request) {
     page.drawText(section1.passportNumber || '', { x: padding + 644, y: y + 6, size: inputTextSize, font, color: black });
     y -= inputHeight + 20;
 
-    // Document Table
-    page.drawRectangle({ x: padding, y: y, width: 1120, height: 30, color: grayBg, borderWidth: 1, borderColor: black });
-    page.drawText('LIST A', { x: padding + 10, y: y + 8, size: 12, font: fontBold, color: black });
-    page.drawText('LIST B', { x: padding + 380, y: y + 8, size: 12, font: fontBold, color: black });
-    page.drawText('LIST C', { x: padding + 750, y: y + 8, size: 12, font: fontBold, color: black });
-    y -= 30;
-    page.drawRectangle({ x: padding, y: y, width: 1120, height: 30, color: blueBg, borderWidth: 1, borderColor: black });
-    page.drawText('Document Title 1', { x: padding + 10, y: y + 8, size: 11, font, color: black });
-    y -= 40;
+    // Document Table (vertical labels)
+    const tableFieldLabels = ['Document Title', 'Issuing Authority', 'Document Number', 'Expiration Date (if any)'];
+    const tableColWidth = 300; // Increased width
+    const tableColXs = [padding, padding + tableColWidth, padding + tableColWidth * 2, padding + tableColWidth * 3];
+    const tableRowHeight = 44; // Increased height
+    // Draw header row: empty cell, then List A, List B, List C
+    page.drawRectangle({ x: padding, y: y, width: tableColWidth * 4, height: tableRowHeight, color: grayBg, borderWidth: 1, borderColor: black });
+    page.drawText('', { x: tableColXs[0] + 10, y: y + 8, size: 11, font: fontBold, color: black });
+    page.drawText('List A', { x: tableColXs[1] + 10, y: y + 8, size: 11, font: fontBold, color: black });
+    page.drawText('List B', { x: tableColXs[2] + 10, y: y + 8, size: 11, font: fontBold, color: black });
+    page.drawText('List C', { x: tableColXs[3] + 10, y: y + 8, size: 11, font: fontBold, color: black });
+    y -= tableRowHeight;
+    // Draw each field row
+    const docFields = ['title', 'authority', 'number', 'expiration'];
+    const placeholders = [
+      'Enter document title',
+      'Enter issuing authority',
+      'Enter document number',
+      'Enter expiration date'
+    ];
+    for (let i = 0; i < 4; i++) {
+      // Row backgrounds: all white
+      for (let c = 0; c < 4; c++) {
+        page.drawRectangle({ x: tableColXs[c], y: y, width: tableColWidth, height: tableRowHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+      }
+      // Label
+      page.drawText(tableFieldLabels[i], { x: tableColXs[0] + 10, y: y + 8, size: 11, font: fontBold, color: black });
+      // List A
+      const valA = section2.document1?.[docFields[i]] || '';
+      page.drawText(valA || placeholders[i], {
+        x: tableColXs[1] + 10,
+        y: y + 8,
+        size: 11,
+        font,
+        color: valA ? black : rgb(0.7,0.7,0.7)
+      });
+      // List B
+      const valB = section2.document2?.[docFields[i]] || '';
+      page.drawText(valB || placeholders[i], {
+        x: tableColXs[2] + 10,
+        y: y + 8,
+        size: 11,
+        font,
+        color: valB ? black : rgb(0.7,0.7,0.7)
+      });
+      // List C
+      const valC = section2.document3?.[docFields[i]] || '';
+      page.drawText(valC || placeholders[i], {
+        x: tableColXs[3] + 10,
+        y: y + 8,
+        size: 11,
+        font,
+        color: valC ? black : rgb(0.7,0.7,0.7)
+      });
+      y -= tableRowHeight;
+    }
 
     // Acceptable Receipts Section
     page.drawText('ACCEPTABLE RECEIPTS', { x: 500, y: y, size: 16, font: fontBold, color: black });
