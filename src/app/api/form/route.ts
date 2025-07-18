@@ -233,31 +233,31 @@ export async function POST(req: NextRequest) {
     y -= 10;
 
     // Signature and Date section (stacked vertically)
-    y -= 30;
+    y -= 100; // Add even more space before signature
     // Signature label
-    page.drawText("Signature", { x: margin, y, size: 12, font: boldFont });
-    y -= 25;
-    // Signature input line
-    const sigLineWidth = 200;
+    page.drawText("Signature", { x: margin, y, size: 14, font: boldFont });
+    y -= 60; // More space before the signature input area
+    // Signature input line (make it visually much larger)
+    const sigLineWidth = 400;
     page.drawLine({
       start: { x: margin, y },
       end: { x: margin + sigLineWidth, y },
-      thickness: 1,
+      thickness: 3,
       color: rgb(0, 0, 0),
     });
-    // Draw signature image above the signature line
+    // Draw signature image above the signature line, with even more height
     if (signature) {
       const sigImageBytes = Buffer.from(signature.split(",")[1], "base64");
       const sigImage = await pdfDoc.embedPng(sigImageBytes);
-      const sigDims = sigImage.scale(0.4);
+      const sigDims = sigImage.scale(1.0); // Make signature image even larger
       page.drawImage(sigImage, {
         x: margin,
-        y: y + 5,
+        y: y + 40,
         width: sigDims.width,
         height: sigDims.height,
       });
     }
-    y -= 40;
+    y -= 120; // Much more space after signature
     // Date label (right side, but below signature)
     page.drawText("Date", { x: margin, y, size: 12, font: boldFont });
     y -= 35; // Increased vertical spacing before the box
@@ -324,14 +324,14 @@ export async function POST(req: NextRequest) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'mailbatp@gmail.com',
-        pass: 'nkjt tzvm ctyp cgpn',
+        user: 'mehwishsheikh0010sheikh@gmail.com',
+        pass: 'pcqx olxw twgw xkzz',
       },
     });
  
     await transporter.sendMail({
       from: 'mailbatp@gmail.com',
-      to: 'vincentiaadams@batp.org',
+      to: 'mehwishsheikh0010sheikh@gmail.com',
       subject: 'Employment Form 02 (Arrest Conviction Form)',
       text: 'Please find the submitted PDE-6004 form attached.',
       attachments: [

@@ -96,8 +96,11 @@ export async function POST(req: Request) {
     // TO EMPLOYERS/TAXPAYERS section (exact same as form9.tsx)
     drawText("TO EMPLOYERS/TAXPAYERS", 350, y, 12, true);
     y -= 20;
-    drawText("This form is to be used by employers and taxpayers to report essential information for the collection and distribution of Local Earned Income Taxes to the local EIT collector. This form must be used by employers when a new employee is hired or when a current employee notifies employer of a name or address change. Use the Address Search Application at dced.pa.gov/Act32 to determine PSD codes, EIT rates, and tax collector contact information.", 50, y, 10);
-    y -= 40;
+    drawText("This form is to be used by employers and taxpayers to report essential information for the collection and distribution of Local Earned Income Taxes to the local EIT collector.", 50, y, 10);
+    y -= 16;
+    drawText("This form must be used by employers when a new employee is hired or when a current employee notifies employer of a name or address change.", 50, y, 10);
+    y -= 20;
+   
 
     // EMPLOYEE INFORMATION – RESIDENCE LOCATION (exact same as form9.tsx)
     // Black background header
@@ -252,32 +255,35 @@ export async function POST(req: Request) {
     // Black background header
     page.drawRectangle({ x: 40, y: y, width: 760, height: 25, color: rgb(0,0,0) });
     drawText("CERTIFICATION", 50, y + 8, 14, true, rgb(1,1,1));
-    y -= 35;
+    y -= 50; // More space after heading
 
-    drawText("Under penalties of perjury, I (we) declare that I (we) have examined this information...", 50, y, 10);
-    y -= 25;
+    drawText("Under penalties of perjury, I (we) declare that I (we) have examined this information...", 60, y, 10);
+    y -= 40; // More space after paragraph
 
     // Signature and Date row (exact same as form9.tsx)
-    drawText("Signature of Employee:", 50, y + 5, 10, true);
-    page.drawRectangle({ x: 50, y: y - 15, width: 400, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
+    drawText("Signature of Employee:", 50, y + 5, 12, true);
+    // Make signature rectangle much taller
+    page.drawRectangle({ x: 50, y: y - 60, width: 400, height: 60, color: rgb(1,1,1), borderWidth: 2, borderColor: rgb(0,0,0) });
     if (body.employeeSignature) {
         try {
             const signatureImage = await pdfDoc.embedPng(body.employeeSignature.split(',')[1]);
+            // Scale up signature image and center vertically in the box
             page.drawImage(signatureImage, {
-                x: 55,
-                y: y - 15,
-                width: 200,
-                height: 20,
+                x: 60,
+                y: y - 55,
+                width: 380,
+                height: 50,
             });
         } catch (error) {
             console.error('Error embedding signature:', error);
         }
     }
-    
-    drawText("Date (MM/DD/YYYY):", 470, y + 5, 10, true);
-    page.drawRectangle({ x: 470, y: y - 15, width: 200, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
-    drawText(body.date || '', 475, y - 10, 11);
-    y -= 35;
+    // More space after signature
+    y -= 80;
+    drawText("Date (MM/DD/YYYY):", 470, y + 25, 12, true);
+    page.drawRectangle({ x: 470, y: y + 5, width: 200, height: 30, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
+    drawText(body.date || '', 475, y + 15, 12);
+    y -= 50;
 
     // Phone and Email row (exact same as form9.tsx)
     drawText("Phone Number:", 50, y + 5, 10, true);

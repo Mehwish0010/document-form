@@ -447,6 +447,41 @@ will be reviewed by Designated Compliance Staff.
                     onMouseMove={draw}
                     onMouseUp={stopDrawing}
                     onMouseLeave={stopDrawing}
+                    onTouchStart={e => {
+                      const canvas = canvasRef.current;
+                      if (!canvas) return;
+                      const rect = canvas.getBoundingClientRect();
+                      const touch = e.touches[0];
+                      const x = touch.clientX - rect.left;
+                      const y = touch.clientY - rect.top;
+                      setIsDrawing(true);
+                      setLastX(x);
+                      setLastY(y);
+                    }}
+                    onTouchMove={e => {
+                      if (!isDrawing) return;
+                      const canvas = canvasRef.current;
+                      if (!canvas) return;
+                      const ctx = canvas.getContext('2d');
+                      if (!ctx) return;
+                      const rect = canvas.getBoundingClientRect();
+                      const touch = e.touches[0];
+                      const x = touch.clientX - rect.left;
+                      const y = touch.clientY - rect.top;
+                      ctx.beginPath();
+                      ctx.moveTo(lastX, lastY);
+                      ctx.lineTo(x, y);
+                      ctx.stroke();
+                      setLastX(x);
+                      setLastY(y);
+                      e.preventDefault();
+                    }}
+                    onTouchEnd={() => {
+                      setIsDrawing(false);
+                      const canvas = canvasRef.current;
+                      if (!canvas) return;
+                      setSignature(canvas.toDataURL());
+                    }}
                   />
                   <button
                     type="button"

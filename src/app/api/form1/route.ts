@@ -112,8 +112,12 @@ y -= 40;
 
   // INSTRUCTIONS section (move before signature fields)
   drawText("INSTRUCTIONS", padding, y, fontBold, 14, black, undefined, undefined); y -= 20;
-  y = await drawParagraph(page, "This form is to be completed by all staff, employees, contractors, and agents of BATP. Please read the confidentiality agreement carefully and sign above. If you have any questions, contact your supervisor or a member of the designated Corporate Compliance Staff.", padding, y, font, 11, black, contentWidth, 16);
-  y -= 10;
+  y = await drawParagraph(page, "This form is to be used by employers and taxpayers to report essential information for the collection and distribution of Local Earned Income Taxes to the local EIT collector.", padding, y, font, 11, black, contentWidth, 16);
+  y -= 16;
+  y = await drawParagraph(page, "This form must be used by employers when a new employee is hired or when a current employee notifies employer of a name or address change.", padding, y, font, 11, black, contentWidth, 16);
+  y -= 16;
+  y = await drawParagraph(page, "Use the Address Search Application at dced.pa.gov/Act32 to determine PSD codes, EIT rates, and tax collector contact information.", padding, y, font, 11, black, contentWidth, 16);
+  y -= 20;
   y = await drawParagraph(page, "By signing this form, you acknowledge that you have read, understood, and agree to abide by the BATP Privacy Policy and all confidentiality requirements.", padding, y, font, 11, black, contentWidth, 16);
   y -= 30;
 
