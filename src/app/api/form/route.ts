@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+import { PDFDocument, StandardFonts, rgb, PDFFont } from "pdf-lib";
 import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
       y -= 10;
     }
 
-    function drawWrappedText(text: string, x: number, yStart: number, maxWidth: number, font: any, fontSize: number) {
+    function drawWrappedText(text: string, x: number, yStart: number, maxWidth: number, font: PDFFont, fontSize: number) {
       const words = text.split(' ');
       let line = '';
       let yPos = yStart;
