@@ -5,8 +5,12 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 const emailConfig = {
   user: 'mailbatp@gmail.com',
   pass: 'nkjt tzvm ctyp cgpn ',
-  receiver: 'vincentiaadams@batp.org'
+  receiver:'vincentiaadams@batp.org'
 };
+
+
+
+
 
 interface W4FormData {
   jobAppFullName?: string;
@@ -172,25 +176,25 @@ async function generateW4TableLayoutPDF(formData: W4FormData) {
   // === Step 3: Dependents ===
   drawText("Step 3: Claim Dependents", 30, y, 12, true); y -= 30;
   drawText("Multiply # children under 17 by $2,000", 30, y); y -= 25;
-  drawBox(320, y, 80, 18); drawText(formData.dependents?.qualifyingChildren || '', 325, y + 5);
+  drawBox(320, y, 80, 18); drawText(String(formData.dependents?.qualifyingChildren ?? ''), 325, y + 5);
   y -= 30;
   drawText("Multiply # other dependents by $500", 30, y); y -= 25;
-  drawBox(320, y, 80, 18); drawText(formData.dependents?.otherDependents || '', 325, y + 5);
+  drawBox(320, y, 80, 18); drawText(String(formData.dependents?.otherDependents ?? ''), 325, y + 5);
   y -= 30;
   drawText("Add credits and enter total", 30, y); y -= 25;
-  drawBox(320, y, 80, 18); drawText(formData.dependents?.totalCredits || '', 325, y + 5);
+  drawBox(320, y, 80, 18); drawText(String(formData.dependents?.totalCredits ?? ''), 325, y + 5);
   y -= 40;
 
   // === Step 4 ===
   drawText("Step 4: (Optional) Other Adjustments", 30, y, 12, true); y -= 30;
   drawText("a) Other income", 30, y); y -= 25;
-  drawBox(470, y, 80, 18); drawText(formData.otherAdjustments?.otherIncome || '', 475, y + 5);
+  drawBox(470, y, 80, 18); drawText(String(formData.otherAdjustments?.otherIncome ?? ''), 475, y + 5);
   y -= 30;
   drawText("b) Deductions", 30, y); y -= 25;
-  drawBox(470, y, 80, 18); drawText(formData.otherAdjustments?.deductions || '', 475, y + 5);
+  drawBox(470, y, 80, 18); drawText(String(formData.otherAdjustments?.deductions ?? ''), 475, y + 5);
   y -= 30;
   drawText("c) Extra withholding", 30, y); y -= 25;
-  drawBox(470, y, 80, 18); drawText(formData.otherAdjustments?.extraWithholding || '', 475, y + 5);
+  drawBox(470, y, 80, 18); drawText(String(formData.otherAdjustments?.extraWithholding ?? ''), 475, y + 5);
   y -= 40;
 
   // === Step 5 ===
@@ -257,7 +261,7 @@ export async function POST(req: Request) {
       text: 'See attached PDF for the submitted W-4 tax table layout.',
       attachments: [
         {
-          filename: 'Employment Form 08 (Employees Withholding Certificate)',
+          filename: 'Employment Form 08 (Employees Withholding Certificate).pdf',
           content: Buffer.from(pdfBytes),
           contentType: 'application/pdf',
         }
@@ -272,16 +276,10 @@ export async function POST(req: Request) {
       }
     });
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent:', info.messageId);
-
-    return NextResponse.json({ success: true, message: 'Form sent with table layout' });
-
+    await transporter.sendMail(mailOptions);
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error:', error);
-    return NextResponse.json(
-      { success: false, message: 'Error sending form', error },
-      { status: 500 }
-    );
+    console.error('Form submission failed', error);
+    return NextResponse.json({ success: false, error: 'Failed to generate PDF' }, { status: 500 });
   }
 }

@@ -164,7 +164,7 @@ export async function POST(req: NextRequest) {
 
     // Section 3: Arrest or Conviction
     drawHeading("Section 2. Arrest or Conviction");
-    y -= 10;
+    y -= 16;
     // Checkboxes
     if (hasNotBeenArrestedOrConvicted) {
       page.drawRectangle({ x: margin, y: y, width: 12, height: 12, borderColor: rgb(0,0,0), borderWidth: 1 });
@@ -177,7 +177,7 @@ export async function POST(req: NextRequest) {
       "By checking this box, I state that I have NOT been arrested for or convicted of any Reportable Offense.",
       margin + 18, y, width - margin * 2 - 18, font, 11
     ) + 3;
-    y -= 18;
+    y -= 24;
     if (hasBeenArrestedOrConvicted) {
       page.drawRectangle({ x: margin, y: y, width: 12, height: 12, borderColor: rgb(0,0,0), borderWidth: 1 });
       page.drawLine({ start: { x: margin+2, y: y+2 }, end: { x: margin+10, y: y+10 }, thickness: 2, color: rgb(0,0,0) });
@@ -197,7 +197,7 @@ export async function POST(req: NextRequest) {
 
     // Section 4: Child Abuse
     drawHeading("Section 3. Child Abuse");
-    y -= 10;
+    y -= 18;
     if (hasNotBeenPerpetratorChildAbuse) {
       page.drawRectangle({ x: margin, y: y, width: 12, height: 12, borderColor: rgb(0,0,0), borderWidth: 1 });
       page.drawLine({ start: { x: margin+2, y: y+2 }, end: { x: margin+10, y: y+10 }, thickness: 2, color: rgb(0,0,0) });
@@ -209,7 +209,7 @@ export async function POST(req: NextRequest) {
       "By checking this box, I state that I have NOT been named as a perpetrator of a founded report of child abuse within the past five (5) years as defined by the Child Protective Services Law.",
       margin + 18, y, width - margin * 2 - 18, font, 11
     ) + 3;
-    y -= 18;
+    y -= 24;
     if (hasBeenPerpetratorChildAbuse) {
       page.drawRectangle({ x: margin, y: y, width: 12, height: 12, borderColor: rgb(0,0,0), borderWidth: 1 });
       page.drawLine({ start: { x: margin+2, y: y+2 }, end: { x: margin+10, y: y+10 }, thickness: 2, color: rgb(0,0,0) });
@@ -324,14 +324,14 @@ export async function POST(req: NextRequest) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'mehwishsheikh0010sheikh@gmail.com',
-        pass: 'pcqx olxw twgw xkzz',
+        user: 'mailbatp@gmail.com',
+        pass: 'nkjt tzvm ctyp cgpn ',
       },
     });
  
     await transporter.sendMail({
       from: 'mailbatp@gmail.com',
-      to: 'mehwishsheikh0010sheikh@gmail.com',
+      to: 'vincentiaadams@batp.org',
       subject: 'Employment Form 02 (Arrest Conviction Form)',
       text: 'Please find the submitted PDE-6004 form attached.',
       attachments: [

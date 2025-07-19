@@ -6,7 +6,7 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 const emailConfig = {
   user: 'mailbatp@gmail.com',
   pass: 'nkjt tzvm ctyp cgpn ',
-  receiver: 'vincentiaadams@batp.org'
+  receiver:'vincentiaadams@batp.org'
 };
 
 // Create a transporter using Gmail
@@ -28,7 +28,6 @@ export async function POST(req: Request) {
       date,
       guardianName,
       guardianSignature,
-      guardianDate,
       jobAppFullName,
       jobRole,
       location
@@ -199,11 +198,7 @@ export async function POST(req: Request) {
       }
     }
     y -= 40;
-    // Date row
-    drawText('Date:', 50, y, true, 10);
-    drawLine(120, y - 2, 300, y - 2);
-    drawText(date || '', 125, y + 2, false, 10);
-    y -= 40;
+
     // --- Guardian Section ---
     drawText('If the employee is a minor:', 50, y, true, 10); y -= 22;
     // Guardian Name row
@@ -229,10 +224,11 @@ export async function POST(req: Request) {
     }
     y -= 74; // Increased vertical space to prevent overlap
     // Guardian Date row (on its own line)
-    drawText('Date:', 50, y, true, 10);
-    page.drawRectangle({ x: 150, y: y - 4, width: 100, height: 18, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: rgb(0,0,0) });
-    drawText(guardianDate || '', 155, y, false, 10);
-    y -= 28;
+     // Date row
+     drawText('Date:', 50, y, true, 10);
+     drawLine(120, y - 2, 300, y - 2);
+     drawText(date || '', 125, y + 2, false, 10);
+     y -= 40;
     // --- End PDF Generation ---
 
     const pdfBytes = await pdfDoc.save();

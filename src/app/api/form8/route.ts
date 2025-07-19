@@ -7,7 +7,7 @@ import path from 'path';
 const emailConfig = {
   user: 'mailbatp@gmail.com',
   pass: 'nkjt tzvm ctyp cgpn ',
-  receiver: 'vincentiaadams@batp.org'
+  receiver:'vincentiaadams@batp.org'
 };
 
 
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
     const inputHeight = 28;
     const inputTextSize = 13;
     const labelSize = 12;
-    const colGap = 10;
+    const colGap = 16;
 
     // Logo
     try {
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
       const logoBuffer = fs.readFileSync(logoPath);
       const logoImage = await pdfDoc.embedPng(logoBuffer);
       const logoDims = logoImage.scale(0.42); // Increased scale for larger logo
-      page.drawImage(logoImage, { x: padding, y: y - logoDims.height + 10, width: logoDims.width, height: logoDims.height });
+      page.drawImage(logoImage, { x: padding, y: y - logoDims.height + 40, width: logoDims.width, height: logoDims.height });
     } catch {
       console.error('Logo embedding failed:');
     }
@@ -133,54 +133,62 @@ export async function POST(req: Request) {
     page.drawText(section1.otherLastNames || '', { x: col4 + 4, y: row1BoxY + 6, size: inputTextSize, font, color: black });
     rowY = row1BoxY - rowGap;
 
-    // Row 2: Address fields
-    const colA = col1, colB = col2, colC = col3, colD = col4, colE = colC + 120 + colGap;
-    page.drawText('Address (Street Number and Name)', { x: colA, y: rowY, size: labelSize, font: fontBold, color: black });
-    page.drawText('Apt. Number (if any)', { x: colB, y: rowY, size: labelSize, font: fontBold, color: black });
-    page.drawText('City or Town', { x: colC, y: rowY, size: labelSize, font: fontBold, color: black });
-    page.drawText('State', { x: colD, y: rowY, size: labelSize, font: fontBold, color: black });
-    page.drawText('ZIP Code', { x: colE, y: rowY, size: labelSize, font: fontBold, color: black });
+    // Row 2: Address fields (adjusted widths to prevent collision)
+    const addrColA = padding;
+    const addrColB = addrColA + 200 + colGap;
+    const addrColC = addrColB + 100 + colGap;
+    const addrColD = addrColC + 200 + colGap;
+    const addrColE = addrColD + 100 + colGap;
+
+    page.drawText('Address (Street Number and Name)', { x: addrColA, y: rowY, size: labelSize, font: fontBold, color: black });
+    page.drawText('Apt. Number (if any)', { x: addrColB, y: rowY, size: labelSize, font: fontBold, color: black });
+    page.drawText('City or Town', { x: addrColC, y: rowY, size: labelSize, font: fontBold, color: black });
+    page.drawText('State', { x: addrColD, y: rowY, size: labelSize, font: fontBold, color: black });
+    page.drawText('ZIP Code', { x: addrColE, y: rowY, size: labelSize, font: fontBold, color: black });
     const row2BoxY = rowY - labelToBoxGap;
-    page.drawRectangle({ x: colA, y: row2BoxY, width: 250, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: colB, y: row2BoxY, width: 100, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: colC, y: row2BoxY, width: 220, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: colD, y: row2BoxY, width: 100, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: colE, y: row2BoxY, width: 100, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
-    page.drawText(section1.address || '', { x: colA + 4, y: row2BoxY + 6, size: inputTextSize, font, color: black });
-    page.drawText(section1.aptNumber || '', { x: colB + 4, y: row2BoxY + 6, size: inputTextSize, font, color: black });
-    page.drawText(section1.city || '', { x: colC + 4, y: row2BoxY + 6, size: inputTextSize, font, color: black });
-    page.drawText(section1.state || '', { x: colD + 4, y: row2BoxY + 6, size: inputTextSize, font, color: black });
-    page.drawText(section1.zipCode || '', { x: colE + 4, y: row2BoxY + 6, size: inputTextSize, font, color: black });
+    page.drawRectangle({ x: addrColA, y: row2BoxY, width: 200, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: addrColB, y: row2BoxY, width: 100, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: addrColC, y: row2BoxY, width: 200, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: addrColD, y: row2BoxY, width: 100, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: addrColE, y: row2BoxY, width: 100, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawText(section1.address || '', { x: addrColA + 4, y: row2BoxY + 6, size: inputTextSize, font, color: black });
+    page.drawText(section1.aptNumber || '', { x: addrColB + 4, y: row2BoxY + 6, size: inputTextSize, font, color: black });
+    page.drawText(section1.city || '', { x: addrColC + 4, y: row2BoxY + 6, size: inputTextSize, font, color: black });
+    page.drawText(section1.state || '', { x: addrColD + 4, y: row2BoxY + 6, size: inputTextSize, font, color: black });
+    page.drawText(section1.zipCode || '', { x: addrColE + 4, y: row2BoxY + 6, size: inputTextSize, font, color: black });
     rowY = row2BoxY - rowGap;
 
-    // Row 3: DOB, SSN, Email, Phone
-    const c1 = col1, c2 = col2, c3 = col3, c4 = col4;
-    page.drawText('Date of Birth (mm/dd/yyyy)', { x: c1, y: rowY, size: labelSize, font: fontBold, color: black });
-    page.drawText('U.S. Social Security Number', { x: c2, y: rowY, size: labelSize, font: fontBold, color: black });
-    page.drawText("Employee's Email Address", { x: c3, y: rowY, size: labelSize, font: fontBold, color: black });
-    page.drawText("Employee's Telephone Number", { x: c4, y: rowY, size: labelSize, font: fontBold, color: black });
+    // Row 3: DOB, SSN, Email, Phone (adjusted widths and gaps)
+    const empColA = padding;
+    const empColB = empColA + 200 + colGap;
+    const empColC = empColB + 200 + colGap;
+    const empColD = empColC + 200 + colGap;
+    page.drawText('Date of Birth (mm/dd/yyyy)', { x: empColA, y: rowY, size: labelSize, font: fontBold, color: black });
+    page.drawText('U.S. Social Security Number', { x: empColB, y: rowY, size: labelSize, font: fontBold, color: black });
+    page.drawText("Employee's Email Address", { x: empColC, y: rowY, size: labelSize, font: fontBold, color: black });
+    page.drawText("Employee's Telephone Number", { x: empColD, y: rowY, size: labelSize, font: fontBold, color: black });
     const row3BoxY = rowY - labelToBoxGap;
-    page.drawRectangle({ x: c1, y: row3BoxY, width: 220, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: c2, y: row3BoxY, width: 220, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: c3, y: row3BoxY, width: 220, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
-    page.drawRectangle({ x: c4, y: row3BoxY, width: 220, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
-    page.drawText(section1.dateOfBirth || '', { x: c1 + 4, y: row3BoxY + 6, size: inputTextSize, font, color: black });
-    page.drawText(section1.ssn || '', { x: c2 + 4, y: row3BoxY + 6, size: inputTextSize, font, color: black });
-    page.drawText(section1.email || '', { x: c3 + 4, y: row3BoxY + 6, size: inputTextSize, font, color: black });
-    page.drawText(section1.telephone || '', { x: c4 + 4, y: row3BoxY + 6, size: inputTextSize, font, color: black });
+    page.drawRectangle({ x: empColA, y: row3BoxY, width: 200, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: empColB, y: row3BoxY, width: 200, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: empColC, y: row3BoxY, width: 200, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawRectangle({ x: empColD, y: row3BoxY, width: 200, height: inputHeight, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawText(section1.dateOfBirth || '', { x: empColA + 4, y: row3BoxY + 6, size: inputTextSize, font, color: black });
+    page.drawText(section1.ssn || '', { x: empColB + 4, y: row3BoxY + 6, size: inputTextSize, font, color: black });
+    page.drawText(section1.email || '', { x: empColC + 4, y: row3BoxY + 6, size: inputTextSize, font, color: black });
+    page.drawText(section1.telephone || '', { x: empColD + 4, y: row3BoxY + 6, size: inputTextSize, font, color: black });
     y = row3BoxY - rowGap - 60; // Add extra space before signature area
 
     // Signature and Date
-    page.drawText('Signature of Employee', { x: padding, y: y + inputHeight + 4, size: labelSize, font: fontBold, color: black });
-    page.drawRectangle({ x: padding, y, width: 700, height: 60, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
+    page.drawText('Signature of Employee', { x: padding, y: y + 80 + 4, size: labelSize, font: fontBold, color: black });
+    page.drawRectangle({ x: padding, y, width: 400, height: 80, color: rgb(1,1,1), borderWidth: 1, borderColor: black });
     if (section1.employeeSignature && section1.employeeSignature.startsWith('data:image')) {
       try {
         const imageBytes = Buffer.from(section1.employeeSignature.split(',')[1], 'base64');
         const image = await pdfDoc.embedPng(imageBytes);
-        const dims = image.scale(0.25);
-        page.drawImage(image, { x: padding + 10, y: y + 10, width: dims.width, height: dims.height });
+        const dims = image.scale(0.35);
+        page.drawImage(image, { x: padding + 10, y: y + 20, width: dims.width, height: dims.height });
       } catch {
-        page.drawText('Signature not available', { x: padding + 10, y: y + 20, size: 10, font, color: rgb(1,0,0) });
+        page.drawText('Signature not available', { x: padding + 10, y: y + 40, size: 10, font, color: rgb(1,0,0) });
       }
     }
     page.drawText('Clear Signature', { x: padding, y: y - 16, size: 11, font, color: rgb(1,0,0) });

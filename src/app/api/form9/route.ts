@@ -5,7 +5,7 @@ import { PDFDocument, rgb, StandardFonts, RGB } from 'pdf-lib';
 const emailConfig = {
   user: 'mailbatp@gmail.com',
   pass: 'nkjt tzvm ctyp cgpn ',
-  receiver: 'vincentiaadams@batp.org'
+  receiver:'vincentiaadams@batp.org'
 };
 
 const transporter = nodemailer.createTransport({
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
     const ein = [ein1, ein2, ein3, ein4, ein5, ein6, ein7, ein8, ein9].join('');
 
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([842, 1191]); // A4 size landscape
+    const page = pdfDoc.addPage([842, 2000]); // Further increased height for more space
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
@@ -69,248 +69,283 @@ export async function POST(req: Request) {
     };
 
     // --- Job Application Fields at the top (exact same as form9.tsx) ---
-    // Black background heading
-    const appInfoBoxY = 1150;
-    page.drawRectangle({ x: 40, y: appInfoBoxY, width: 760, height: 30, color: rgb(0,0,0) });
-    drawText("Job Application Information", 50, appInfoBoxY + 8, 14, true, rgb(1,1,1));
-    let y = appInfoBoxY - 10;
-    // Inputs in a grouped block
-    drawText("Full Name:", 50, y, 12, true);
+    let y = 1950; // Define y before using it
+    const boxTopY = y; // Save the top Y position for the box
+    // Main heading at the very top (no black background)
+    drawText("RESIDENCY CERTIFICATION FORM", 250, y, 20, true);
+    y -= 30;
+    drawText("Local Earned Income Tax Withholding", 280, y, 14, true);
+    y -= 40;
+    // Job Application Information section heading with black background
+    page.drawRectangle({ x: 40, y: y, width: 760, height: 30, color: rgb(0,0,0) });
+    drawText("Job Application Information", 50, y + 18, 14, true, rgb(1,1,1));
+    y -= 40;
+
+    // Application Information fields (vertical layout)
+    drawText("Full Name:", 50, y + 10, 12, true);
     page.drawRectangle({ x: 130, y: y - 4, width: 180, height: 18, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.jobAppFullName || '', 135, y, 12);
-    y -= 22;
-    drawText("Job Role:", 50, y, 12, true);
+    y -= 17;
+    drawText("Job Role:", 50, y + 10, 12, true);
     page.drawRectangle({ x: 130, y: y - 4, width: 180, height: 18, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.jobRole || '', 135, y, 12);
-    y -= 22;
-    drawText("Location:", 50, y, 12, true);
+    y -= 17;
+    drawText("Location:", 50, y + 10, 12, true);
     page.drawRectangle({ x: 130, y: y - 4, width: 180, height: 18, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.location || '', 135, y, 12);
     y -= 40; // Extra space below application info
 
-    // Title (exact same as form9.tsx)
-    drawText("RESIDENCY CERTIFICATION FORM", 250, y, 20, true);
-    drawText("Local Earned Income Tax Withholding", 280, y - 20, 16, true);
-    y -= 60;
-
-    // TO EMPLOYERS/TAXPAYERS section (exact same as form9.tsx)
-    drawText("TO EMPLOYERS/TAXPAYERS", 350, y, 12, true);
-    y -= 20;
-    drawText("This form is to be used by employers and taxpayers to report essential information for the collection and distribution of Local Earned Income Taxes to the local EIT collector.", 50, y, 10);
-    y -= 16;
-    drawText("This form must be used by employers when a new employee is hired or when a current employee notifies employer of a name or address change.", 50, y, 10);
-    y -= 20;
-   
-
-    // EMPLOYEE INFORMATION – RESIDENCE LOCATION (exact same as form9.tsx)
-    // Black background header
+    // Employee Information section
     page.drawRectangle({ x: 40, y: y, width: 760, height: 25, color: rgb(0,0,0) });
     drawText("EMPLOYEE INFORMATION – RESIDENCE LOCATION", 50, y + 8, 14, true, rgb(1,1,1));
-    y -= 35;
-
-    // Name and SSN row (exact same as form9.tsx)
-    drawText("Name (Last, First, Middle Initial):", 50, y + 5, 10, true);
-    page.drawRectangle({ x: 50, y: y - 15, width: 400, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
+    y -= 60; // Increased spacing
+    drawText("Name:", 50, y + 10, 12, true);
+    y -= 25; // Increased spacing
+    page.drawRectangle({ x: 50, y: y - 15, width: 700, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.name || '', 55, y - 10, 11);
-    
-    drawText("Social Security Number:", 470, y + 5, 10, true);
-    // Draw SSN boxes
-    for (let i = 0; i < 9; i++) {
-      page.drawRectangle({ x: 470 + (i * 20), y: y - 15, width: 18, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
-      drawText([ssn1, ssn2, ssn3, ssn4, ssn5, ssn6, ssn7, ssn8, ssn9][i] || '', 475 + (i * 20), y - 10, 11);
-    }
-    y -= 35;
+    y -= 50; // Increased spacing
 
-    // Street Address (exact same as form9.tsx)
-    drawText("Street Address (No PO Box, RD or RR):", 50, y + 5, 10, true);
+    drawText("Social Security Number:", 50, y + 10, 12, true);
+    y -= 25; // Increased spacing
+    // Draw 9 small boxes for SSN digits
+    for (let i = 0; i < 9; i++) {
+      page.drawRectangle({ x: 50 + i * 22, y: y - 15, width: 20, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
+      drawText((body[`ssn${i+1}`] || ''), 55 + i * 22, y - 10, 11);
+    }
+    y -= 50; // Increased spacing
+
+    drawText("Street Address (No PO Box, RD or RR):", 50, y + 10, 12, true);
+    y -= 25; // Increased spacing
     page.drawRectangle({ x: 50, y: y - 15, width: 700, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.streetAddress || '', 55, y - 10, 11);
-    y -= 35;
+    y -= 50; // Increased spacing
 
-    // Address Line 2 (exact same as form9.tsx)
-    drawText("Address Line 2:", 50, y + 5, 10, true);
+    drawText("Address Line 2:", 50, y + 10, 12, true);
+    y -= 25; // Increased spacing
     page.drawRectangle({ x: 50, y: y - 15, width: 700, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.address2 || '', 55, y - 10, 11);
-    y -= 35;
+    y -= 50; // Increased spacing
 
     // City, State, Zip, Phone row (exact same as form9.tsx)
-    const cityWidth = 150, stateWidth = 100, zipWidth = 120, phoneWidth = 200;
     let xPos = 50;
+    const cityWidth = 200;
+    const stateWidth = 100;
+    const zipWidth = 120;
+    const phoneWidth = 200;
     
-    drawText("City:", xPos, y + 5, 10, true);
+    drawText("City:", xPos, y + 8, 10, true);
     page.drawRectangle({ x: xPos, y: y - 15, width: cityWidth, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.city || '', xPos + 5, y - 10, 11);
     xPos += cityWidth + 10;
     
-    drawText("State:", xPos, y + 5, 10, true);
+    drawText("State:", xPos, y + 8, 10, true);
     page.drawRectangle({ x: xPos, y: y - 15, width: stateWidth, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.state || '', xPos + 5, y - 10, 11);
     xPos += stateWidth + 10;
     
-    drawText("Zip Code:", xPos, y + 5, 10, true);
+    drawText("Zip Code:", xPos, y + 8, 10, true);
     page.drawRectangle({ x: xPos, y: y - 15, width: zipWidth, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.zip || '', xPos + 5, y - 10, 11);
     xPos += zipWidth + 10;
     
-    drawText("Daytime Phone Number:", xPos, y + 5, 10, true);
+    drawText("Daytime Phone Number:", xPos, y + 8, 10, true);
     page.drawRectangle({ x: xPos, y: y - 15, width: phoneWidth, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.phone || '', xPos + 5, y - 10, 11);
-    y -= 35;
+    y -= 50; // Increased spacing
 
-    // Municipality (exact same as form9.tsx)
-    drawText("MUNICIPALITY (City, Borough or Township):", 50, y + 5, 10, true);
+    drawText("MUNICIPALITY (City, Borough or Township):", 50, y + 10, 12, true);
+    y -= 25; // Increased spacing
     page.drawRectangle({ x: 50, y: y - 15, width: 700, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.municipality || '', 55, y - 10, 11);
-    y -= 35;
+    y -= 50; // Increased spacing
 
     // County and PSD/Rate row (exact same as form9.tsx)
-    drawText("COUNTY:", 50, y + 5, 10, true);
+    drawText("COUNTY:", 50, y + 8, 10, true);
     page.drawRectangle({ x: 50, y: y - 15, width: 300, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.county || '', 55, y - 10, 11);
     
-    drawText("RESIDENT PSD CODE:", 370, y + 5, 10, true);
+    drawText("RESIDENT PSD CODE:", 370, y + 8, 10, true);
     page.drawRectangle({ x: 370, y: y - 15, width: 180, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.residentPsd || '', 375, y - 10, 11);
     
-    drawText("TOTAL RESIDENT EIT RATE:", 570, y + 5, 10, true);
+    drawText("TOTAL RESIDENT EIT RATE:", 570, y + 8, 10, true);
     page.drawRectangle({ x: 570, y: y - 15, width: 180, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.residentRate || '', 575, y - 10, 11);
-    y -= 50;
+    y -= 65; // Increased spacing
 
-    // EMPLOYER INFORMATION – EMPLOYMENT LOCATION (exact same as form9.tsx)
-    // Black background header
+    // EMPLOYER INFORMATION – EMPLOYMENT LOCATION (heading)
+    y -= 20;
     page.drawRectangle({ x: 40, y: y, width: 760, height: 25, color: rgb(0,0,0) });
     drawText("EMPLOYER INFORMATION – EMPLOYMENT LOCATION", 50, y + 8, 14, true, rgb(1,1,1));
-    y -= 35;
-
+    y -= 60; // Increased spacing
     // Employer Name and FEIN row (exact same as form9.tsx)
-    drawText("Employer Business Name (Use Federal ID Name):", 50, y + 5, 10, true);
-    page.drawRectangle({ x: 50, y: y - 15, width: 400, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
+    drawText("Employer Business Name (Use Federal ID Name):", 50, y + 8, 10, true);
+    y -= 25; // Increased spacing
+    page.drawRectangle({ x: 50, y: y - 15, width: 700, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.employerName || '', 55, y - 10, 11);
-    
-    drawText("EMPLOYER FEIN:", 470, y + 5, 10, true);
-    // Draw EIN boxes
-    for (let i = 0; i < 9; i++) {
-      page.drawRectangle({ x: 470 + (i * 20), y: y - 15, width: 18, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
-      drawText([ein1, ein2, ein3, ein4, ein5, ein6, ein7, ein8, ein9][i] || '', 475 + (i * 20), y - 10, 11);
-    }
-    y -= 35;
+    y -= 50; // Increased spacing
 
+    drawText("Employer Identification Number (EIN):", 50, y + 10, 12, true);
+    y -= 25; // Increased spacing
+    page.drawRectangle({ x: 50, y: y - 15, width: 700, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
+    drawText(body.ein || '', 55, y - 10, 11);
+    y -= 50; // Increased spacing
+
+    
     // Employer Street Address (exact same as form9.tsx)
-    drawText("Employer Street Address (No PO Box, RD or RR):", 50, y + 5, 10, true);
+    drawText("Employer Street Address (No PO Box, RD or RR):", 50, y + 10, 12, true);
+    y -= 25; // Increased spacing
     page.drawRectangle({ x: 50, y: y - 15, width: 700, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.employerStreet || '', 55, y - 10, 11);
-    y -= 35;
+    y -= 50; // Increased spacing
 
     // Employer Address Line 2 (exact same as form9.tsx)
-    drawText("Address Line 2:", 50, y + 5, 10, true);
+    drawText("Address Line 2:", 50, y + 10, 12, true);
+    y -= 25; // Increased spacing
     page.drawRectangle({ x: 50, y: y - 15, width: 700, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.employerAddress2 || '', 55, y - 10, 11);
-    y -= 35;
+    y -= 50; // Increased spacing
 
     // Employer City, State, Zip, Phone row (exact same as form9.tsx)
     xPos = 50;
     
-    drawText("City:", xPos, y + 5, 10, true);
+    drawText("City:", xPos, y + 8, 10, true);
     page.drawRectangle({ x: xPos, y: y - 15, width: cityWidth, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.employerCity || '', xPos + 5, y - 10, 11);
     xPos += cityWidth + 10;
     
-    drawText("State:", xPos, y + 5, 10, true);
+    drawText("State:", xPos, y + 8, 10, true);
     page.drawRectangle({ x: xPos, y: y - 15, width: stateWidth, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.employerState || '', xPos + 5, y - 10, 11);
     xPos += stateWidth + 10;
     
-    drawText("Zip Code:", xPos, y + 5, 10, true);
+    drawText("Zip Code:", xPos, y + 8, 10, true);
     page.drawRectangle({ x: xPos, y: y - 15, width: zipWidth, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.employerZip || '', xPos + 5, y - 10, 11);
     xPos += zipWidth + 10;
     
-    drawText("Daytime Phone Number:", xPos, y + 5, 10, true);
+    drawText("Daytime Phone Number:", xPos, y + 8, 10, true);
     page.drawRectangle({ x: xPos, y: y - 15, width: phoneWidth, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.employerPhone || '', xPos + 5, y - 10, 11);
-    y -= 35;
+    y -= 50; // Increased spacing
 
     // Employer Municipality (exact same as form9.tsx)
-    drawText("MUNICIPALITY (City, Borough or Township):", 50, y + 5, 10, true);
+    drawText("MUNICIPALITY (City, Borough or Township):", 50, y + 10, 12, true);
+    y -= 25; // Increased spacing
     page.drawRectangle({ x: 50, y: y - 15, width: 700, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.employerMunicipality || '', 55, y - 10, 11);
-    y -= 35;
+    y -= 50; // Increased spacing
 
     // Employer County and Work PSD/Rate row (exact same as form9.tsx)
-    drawText("COUNTY:", 50, y + 5, 10, true);
+    drawText("COUNTY:", 50, y + 8, 10, true);
     page.drawRectangle({ x: 50, y: y - 15, width: 300, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.employerCounty || '', 55, y - 10, 11);
     
-    drawText("WORK LOCATION PSD CODE:", 370, y + 5, 10, true);
+    drawText("WORK LOCATION PSD CODE:", 370, y + 8, 10, true);
     page.drawRectangle({ x: 370, y: y - 15, width: 180, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.workPsd || '', 375, y - 10, 11);
     
-    drawText("WORK LOCATION NON-RESIDENT EIT RATE:", 570, y + 5, 10, true);
+    drawText("WORK LOCATION NON-RESIDENT EIT RATE:", 570, y + 8, 10, true);
     page.drawRectangle({ x: 570, y: y - 15, width: 180, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.nonResRate || '', 575, y - 10, 11);
-    y -= 50;
+    y -= 65; // Increased spacing
 
     // CERTIFICATION (exact same as form9.tsx)
     // Black background header
     page.drawRectangle({ x: 40, y: y, width: 760, height: 25, color: rgb(0,0,0) });
     drawText("CERTIFICATION", 50, y + 8, 14, true, rgb(1,1,1));
-    y -= 50; // More space after heading
+    y -= 60; // Increased spacing
 
     drawText("Under penalties of perjury, I (we) declare that I (we) have examined this information...", 60, y, 10);
-    y -= 40; // More space after paragraph
+    y -= 50; // Increased spacing
 
     // Signature and Date row (exact same as form9.tsx)
     drawText("Signature of Employee:", 50, y + 5, 12, true);
     // Make signature rectangle much taller
-    page.drawRectangle({ x: 50, y: y - 60, width: 400, height: 60, color: rgb(1,1,1), borderWidth: 2, borderColor: rgb(0,0,0) });
+    page.drawRectangle({ x: 50, y: y - 40, width: 400, height: 40, color: rgb(1,1,1), borderWidth: 2, borderColor: rgb(0,0,0) });
     if (body.employeeSignature) {
         try {
             const signatureImage = await pdfDoc.embedPng(body.employeeSignature.split(',')[1]);
             // Scale up signature image and center vertically in the box
             page.drawImage(signatureImage, {
                 x: 60,
-                y: y - 55,
+                y: y - 35,
                 width: 380,
-                height: 50,
+                height: 30,
             });
         } catch (error) {
             console.error('Error embedding signature:', error);
         }
     }
     // More space after signature
-    y -= 80;
-    drawText("Date (MM/DD/YYYY):", 470, y + 25, 12, true);
-    page.drawRectangle({ x: 470, y: y + 5, width: 200, height: 30, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
-    drawText(body.date || '', 475, y + 15, 12);
-    y -= 50;
+    y -= 60;
+   // Draw label first
+drawText("Date (MM/DD/YYYY):", 470, y + 35, 12, true);  // higher up
+
+// Draw rectangle below the label
+page.drawRectangle({
+  x: 470,
+  y: y + 5,
+  width: 200,
+  height: 30,
+  color: rgb(1,1,1),
+  borderWidth: 1,
+  borderColor: rgb(0,0,0)
+});
+
+// Draw field value inside the box
+drawText(body.date || '', 475, y + 15, 12);
+
+// Move down after section
+y -= 60;
 
     // Phone and Email row (exact same as form9.tsx)
-    drawText("Phone Number:", 50, y + 5, 10, true);
+    drawText("Phone Number:", 50, y + 10, 10, true);
     page.drawRectangle({ x: 50, y: y - 15, width: 300, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.employeePhone || '', 55, y - 10, 11);
     
-    drawText("Email Address:", 370, y + 5, 10, true);
-    page.drawRectangle({ x: 370, y: y - 15, width: 400, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
-    drawText(body.email || '', 375, y - 10, 11);
-    y -= 50;
+   // LABEL
+drawText("Email Address:", 370, y + 20, 10, true);
 
-    // Footer information (exact same as form9.tsx)
-    drawText("For information on obtaining the appropriate MUNICIPALITY, PSD CODES, and EIT RATES visit:", 50, y, 10);
-    y -= 15;
-    drawText("dced.pa.gov/Act32", 50, y, 10, true);
-    y -= 30;
+// RECTANGLE FIELD
+page.drawRectangle({ 
+  x: 370, 
+  y: y - 10, 
+  width: 400, 
+  height: 25, 
+  color: rgb(1,1,1), 
+  borderWidth: 1, 
+  borderColor: rgb(0,0,0) 
+});
 
-    // Draw a box around the entire content area to frame the page
-    page.drawRectangle({
-      x: 30,
-      y: 30,
-      width: 780,
-      height: y - 30 + 80,
-      borderWidth: 2,
-      borderColor: rgb(0,0,0),
-      color: undefined // transparent
-    });
+// VALUE INSIDE FIELD
+drawText(body.email || '', 375, y - 4, 11);
+
+// Spacing after field
+y -= 50;
+
+   
+    // Save the y position before drawing the footer
+    // Remove boxBottom if never used
+
+// Footer information (exact same as form9.tsx) - now inside the box
+y -= 25; // Add spacing before footer
+drawText("For information on obtaining the appropriate MUNICIPALITY, PSD CODES, and EIT RATES visit:", 50, y, 10);
+y -= 20;
+drawText("dced.pa.gov/Act32", 50, y, 10, true);
+y -= 30; // Add spacing after footer
+
+// Draw a box around the entire content area including footer
+page.drawRectangle({
+  x: 30,
+  y: y - 20, // a bit below the last footer line
+  width: 780,
+  height: (boxTopY - (y - 20)), // Dynamic height from top of content to bottom of box
+  borderWidth: 2,
+  borderColor: rgb(0, 0, 0),
+  color: undefined, // transparent
+});
+
 
     const pdfBytes = await pdfDoc.save();
 
