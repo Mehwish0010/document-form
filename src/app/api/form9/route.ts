@@ -5,8 +5,7 @@ import { PDFDocument, rgb, StandardFonts, RGB } from 'pdf-lib';
 const emailConfig = {
   user: 'mailbatp@gmail.com',
   pass: 'nkjt tzvm ctyp cgpn ',
-  receiver:'vincentiaadams@batp.org'
-};
+  receiver:'vincentiaadams@batp.org'};
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -262,7 +261,7 @@ export async function POST(req: Request) {
     // Signature and Date row (exact same as form9.tsx)
     drawText("Signature of Employee:", 50, y + 5, 12, true);
     // Make signature rectangle much taller
-    page.drawRectangle({ x: 50, y: y - 40, width: 400, height: 40, color: rgb(1,1,1), borderWidth: 2, borderColor: rgb(0,0,0) });
+    page.drawRectangle({ x: 50, y: y - 40, width: 350, height: 80, color: rgb(1,1,1), borderWidth: 2, borderColor: rgb(0,0,0) });
     if (body.employeeSignature) {
         try {
             const signatureImage = await pdfDoc.embedPng(body.employeeSignature.split(',')[1]);
@@ -270,7 +269,7 @@ export async function POST(req: Request) {
             page.drawImage(signatureImage, {
                 x: 60,
                 y: y - 35,
-                width: 380,
+                width: 250,
                 height: 30,
             });
         } catch (error) {

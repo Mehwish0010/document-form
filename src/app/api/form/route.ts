@@ -236,25 +236,34 @@ export async function POST(req: NextRequest) {
     y -= 100; // Add even more space before signature
     // Signature label
     page.drawText("Signature", { x: margin, y, size: 14, font: boldFont });
-    y -= 60; // More space before the signature input area
-    // Signature input line (make it visually much larger)
-    const sigLineWidth = 400;
-    page.drawLine({
-      start: { x: margin, y },
-      end: { x: margin + sigLineWidth, y },
-      thickness: 3,
-      color: rgb(0, 0, 0),
+    y -= 100; // Add much more vertical spacing between label and input
+    // Signature input box (increase height)
+    const sigBoxWidth = 400;
+    const sigBoxHeight = 32;
+    page.drawRectangle({
+      x: margin,
+      y: y,
+      width: sigBoxWidth,
+      height: sigBoxHeight,
+      borderWidth: 2,
+      borderColor: rgb(0, 0, 0),
+      color: undefined
     });
-    // Draw signature image above the signature line, with even more height
+    // Draw signature image inside the box, scaled to fit
     if (signature) {
       const sigImageBytes = Buffer.from(signature.split(",")[1], "base64");
       const sigImage = await pdfDoc.embedPng(sigImageBytes);
-      const sigDims = sigImage.scale(1.0); // Make signature image even larger
+      // Always print the signature in a fixed, smaller size
+      const fixedWidth = 120;
+      const fixedHeight = 32;
+      // Center the signature in the box
+      const drawX = margin + (sigBoxWidth - fixedWidth) / 2;
+      const drawY = y + (sigBoxHeight - fixedHeight) / 2;
       page.drawImage(sigImage, {
-        x: margin,
-        y: y + 40,
-        width: sigDims.width,
-        height: sigDims.height,
+        x: drawX,
+        y: drawY,
+        width: fixedWidth,
+        height: fixedHeight,
       });
     }
     y -= 120; // Much more space after signature
@@ -324,13 +333,14 @@ export async function POST(req: NextRequest) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'mailbatp@gmail.com',
-        pass: 'nkjt tzvm ctyp cgpn ',
+        user:  'mailbatp@gmail.com',
+        pass:'nkjt tzvm ctyp cgpn '
+,
       },
     });
  
     await transporter.sendMail({
-      from: 'mailbatp@gmail.com',
+      from:  'mailbatp@gmail.com',
       to: 'vincentiaadams@batp.org',
       subject: 'Employment Form 02 (Arrest Conviction Form)',
       text: 'Please find the submitted PDE-6004 form attached.',

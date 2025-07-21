@@ -72,7 +72,7 @@ interface FormData {
 const emailConfig = {
   user: 'mailbatp@gmail.com',
   pass: 'nkjt tzvm ctyp cgpn ',
-  receiver: 'vincentiaadams@batp.org'
+  receiver:'vincentiaadams@batp.org'
 };
 
 const transporter = nodemailer.createTransport({
@@ -478,12 +478,14 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   } else {
     page.drawLine({ start: { x: padding + 10, y: sigLineY }, end: { x: padding + 250, y: sigLineY }, thickness: 1 });
   }
-  drawText("Signature", padding + 10, sigLineY - 18, font, 10, black);
+  drawText("Signature", padding + 10, y, font, 10, black);
+  y -= 20; // Add vertical spacing
+  // Now draw the signature line or image at the new y position
 
   // Date field (right side, same y)
-  drawText("Date:", padding + 350, sigLineY + 5, font, 12);
-  drawInputBox(padding + 350, sigLineY - 30, 120, 20);
-  drawText(formData.signatureDate || "MM/DD/YYYY", padding + 355, sigLineY - 20, font, 10);
+  drawText("Date:", padding + 350, y + 5, font, 12);
+  drawInputBox(padding + 350, y - 30, 120, 20);
+  drawText(formData.signatureDate || "MM/DD/YYYY", padding + 355, y - 20, font, 10);
 
   return pdfDoc.save();
 }

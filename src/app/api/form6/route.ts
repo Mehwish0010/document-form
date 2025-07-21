@@ -165,39 +165,49 @@ export async function POST(req: Request) {
       y -= 8;
     }
     // --- Witness and Applicant Section ---
-    y -= 10;
+    y -= 20;
     // Witness row
     drawText('Witness:', 50, y, true, 10);
-    drawLine(120, y - 2, 300, y - 2);
+  
     drawText(witness || '', 125, y + 2, false, 10);
     // Signature row
     drawText('Signature:', 320, y, true, 10);
-    drawLine(400, y - 2, 540, y - 2);
+
     if (body.witnessSignature && body.witnessSignature.startsWith('data:image')) {
       try {
         const witnessSigImg = await pdfDoc.embedPng(Buffer.from(body.witnessSignature.split(',')[1], 'base64'));
-        page.drawImage(witnessSigImg, { x: 405, y: y - 2, width: 120, height: 32 });
+        // Draw a fixed-size box for the signature
+        const boxWidth = 120;
+        const boxHeight = 32;
+        page.drawRectangle({ x: 405, y: y - 2, width: boxWidth, height: boxHeight, borderWidth: 1, borderColor: rgb(0,0,0), color: undefined });
+        // Center the signature in the box
+        page.drawImage(witnessSigImg, { x: 405, y: y - 2, width: boxWidth, height: boxHeight });
       } catch (error) {
         console.log('Witness signature embedding failed:', error);
       }
     }
-    y -= 40;
+    y -= 50;
     // Name row
     drawText('Name:', 50, y, true, 10);
     drawLine(120, y - 2, 300, y - 2);
     drawText(name || '', 125, y + 2, false, 10);
     // Signature row
     drawText('Signature:', 320, y, true, 10);
-    drawLine(400, y - 2, 540, y - 2);
+
     if (signature && signature.startsWith('data:image')) {
       try {
         const sigImg = await pdfDoc.embedPng(Buffer.from(signature.split(',')[1], 'base64'));
-        page.drawImage(sigImg, { x: 405, y: y - 2, width: 120, height: 32 });
+        // Draw a fixed-size box for the signature
+        const boxWidth = 120;
+        const boxHeight = 42;
+        page.drawRectangle({ x: 405, y: y - 2, width: boxWidth, height: boxHeight, borderWidth: 1, borderColor: rgb(0,0,0), color: undefined });
+        // Center the signature in the box
+        page.drawImage(sigImg, { x: 405, y: y - 2, width: boxWidth, height: boxHeight });
       } catch (error) {
         console.log('Signature embedding failed:', error);
       }
     }
-    y -= 40;
+    y -= 60;
 
     // --- Guardian Section ---
     drawText('If the employee is a minor:', 50, y, true, 10); y -= 22;
@@ -205,15 +215,16 @@ export async function POST(req: Request) {
     drawText('Parent/Legal Guardian Name:', 50, y, true, 10);
     page.drawRectangle({ x: 220, y: y - 4, width: 250, height: 18, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(guardianName || '', 225, y, false, 10);
-    y -= 28;
+    y -= 38;
     y -= 20; // Add extra vertical space before signature box
     // Guardian Signature row (on its own line)
     drawText('Signature:', 50, y, true, 10);
-    page.drawRectangle({ x: 150, y: y - 4, width: 180, height: 32, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: rgb(0,0,0) });
+    page.drawRectangle({ x: 150, y: y - 4, width: 120, height: 42, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     if (guardianSignature && guardianSignature.startsWith('data:image')) {
       try {
         const guardianSigImg = await pdfDoc.embedPng(Buffer.from(guardianSignature.split(',')[1], 'base64'));
-        page.drawImage(guardianSigImg, { x: 155, y: y - 2, width: 170, height: 28 });
+        // Center the signature in the box
+        page.drawImage(guardianSigImg, { x: 150, y: y - 4, width: 120, height: 32 });
       } catch (error) {
         console.log('Guardian signature embedding failed:', error);
         page.drawText('Clear Signature', { x: 155, y: y + 8, size: 10, font: boldFont, color: rgb(1,0,0) });
@@ -222,7 +233,7 @@ export async function POST(req: Request) {
       // Show 'Clear Signature' label in red if no signature
       page.drawText('Clear Signature', { x: 155, y: y + 8, size: 10, font: boldFont, color: rgb(1,0,0) });
     }
-    y -= 74; // Increased vertical space to prevent overlap
+    y -= 84; // Increased vertical space to prevent overlap
     // Guardian Date row (on its own line)
      // Date row
      drawText('Date:', 50, y, true, 10);

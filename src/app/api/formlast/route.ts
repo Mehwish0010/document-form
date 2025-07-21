@@ -8,10 +8,6 @@ const emailConfig = {
   receiver:'vincentiaadams@batp.org'
 };
 
-
-
-
-
 interface W4FormData {
   jobAppFullName?: string;
   jobRole?: string;
