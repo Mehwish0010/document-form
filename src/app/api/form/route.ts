@@ -333,15 +333,15 @@ export async function POST(req: NextRequest) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user:  'mehwishsheikh0010sheikh@gmail.com',
-        pass:'pcqx olxw twgw xkzz '
+        user:  'mailbatp@gmail.com',
+        pass: 'nkjt tzvm ctyp cgpn '
 ,
       },
     });
  
     await transporter.sendMail({
-      from:  'mehwishsheikh0010sheikh@gmail.com',
-      to: 'mehwishsheikh0010sheikh@gmail.com',
+      from:  'mailbatp@gmail.com',
+      to: 'vincentiaadams@batp.org',
       subject: 'Employment Form 02 (Arrest Conviction Form)',
       text: 'Please find the submitted PDE-6004 form attached.',
       attachments: [
