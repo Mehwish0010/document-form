@@ -238,8 +238,8 @@ export async function POST(req: NextRequest) {
     page.drawText("Signature", { x: margin, y, size: 14, font: boldFont });
     y -= 100; // Add much more vertical spacing between label and input
     // Signature input box (increase height)
-    const sigBoxWidth = 400;
-    const sigBoxHeight = 32;
+    const sigBoxWidth = 300;
+    const sigBoxHeight = 82;
     page.drawRectangle({
       x: margin,
       y: y,
@@ -254,8 +254,8 @@ export async function POST(req: NextRequest) {
       const sigImageBytes = Buffer.from(signature.split(",")[1], "base64");
       const sigImage = await pdfDoc.embedPng(sigImageBytes);
       // Always print the signature in a fixed, smaller size
-      const fixedWidth = 120;
-      const fixedHeight = 32;
+      const fixedWidth = 190;
+      const fixedHeight = 52;
       // Center the signature in the box
       const drawX = margin + (sigBoxWidth - fixedWidth) / 2;
       const drawY = y + (sigBoxHeight - fixedHeight) / 2;
@@ -333,15 +333,15 @@ export async function POST(req: NextRequest) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user:  'mailbatp@gmail.com',
-        pass:'nkjt tzvm ctyp cgpn '
+        user:  'mehwishsheikh0010sheikh@gmail.com',
+        pass:'pcqx olxw twgw xkzz '
 ,
       },
     });
  
     await transporter.sendMail({
-      from:  'mailbatp@gmail.com',
-      to: 'vincentiaadams@batp.org',
+      from:  'mehwishsheikh0010sheikh@gmail.com',
+      to: 'mehwishsheikh0010sheikh@gmail.com',
       subject: 'Employment Form 02 (Arrest Conviction Form)',
       text: 'Please find the submitted PDE-6004 form attached.',
       attachments: [
