@@ -1,4 +1,3 @@
-import { getMaxListeners } from 'events';
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
