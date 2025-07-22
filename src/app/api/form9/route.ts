@@ -5,7 +5,8 @@ import { PDFDocument, rgb, StandardFonts, RGB } from 'pdf-lib';
 const emailConfig = {
   user: 'mailbatp@gmail.com',
   pass: 'nkjt tzvm ctyp cgpn ',
-  receiver:'vincentiaadams@batp.org'};
+   receiver:'vincentiaadams@batp.org'
+}
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -264,7 +265,15 @@ export async function POST(req: Request) {
     page.drawRectangle({ x: 50, y: y - 40, width: 350, height: 80, color: rgb(1,1,1), borderWidth: 2, borderColor: rgb(0,0,0) });
     if (body.employeeSignature) {
         try {
-            const signatureImage = await pdfDoc.embedPng(body.employeeSignature.split(',')[1]);
+            console.log('employeeSignature:', body.employeeSignature?.substring(0, 100));
+            let signatureImage;
+            if (body.employeeSignature.startsWith('data:image/png')) {
+                signatureImage = await pdfDoc.embedPng(Buffer.from(body.employeeSignature.split(',')[1], 'base64'));
+            } else if (body.employeeSignature.startsWith('data:image/jpeg') || body.employeeSignature.startsWith('data:image/jpg')) {
+                signatureImage = await pdfDoc.embedJpg(Buffer.from(body.employeeSignature.split(',')[1], 'base64'));
+            } else {
+                throw new Error('Unsupported signature image format');
+            }
             // Scale up signature image and center vertically in the box
             page.drawImage(signatureImage, {
                 x: 60,

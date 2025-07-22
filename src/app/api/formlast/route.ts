@@ -226,13 +226,13 @@ async function generateW4TableLayoutPDF(formData: W4FormData) {
     ['$120k+', '$9500', '$9700', '$9900', '$10100', '$10300', '$10500', '$10700'],
   ];
 
-  drawText("Married Filing Jointly or Qualifying Surviving Spouse", 30, y, 12, true); y -= 20;
+  drawText("Married Filing Jointly or Qualifying Surviving Spouse", 30, y, 12, true); y -= 40;
   y = drawTable(30, y, headers, rows); y -= 40;
 
-  drawText("Single or Married Filing Separately", 30, y, 12, true); y -= 20;
+  drawText("Single or Married Filing Separately", 30, y, 12, true); y -= 40;
   y = drawTable(30, y, headers, rows); y -= 40;
 
-  drawText("Head of Household", 30, y, 12, true); y -= 20;
+  drawText("Head of Household", 30, y, 12, true); y -= 40;
   y = drawTable(30, y, headers, rows); y -= 40;
 
   // === Submit Button ===

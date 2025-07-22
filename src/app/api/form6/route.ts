@@ -1,3 +1,4 @@
+import { getMaxListeners } from 'events';
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
@@ -6,7 +7,7 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 const emailConfig = {
   user: 'mailbatp@gmail.com',
   pass: 'nkjt tzvm ctyp cgpn ',
-  receiver:'vincentiaadams@batp.org'
+   receiver:'vincentiaadams@batp.org'
 };
 
 // Create a transporter using Gmail
@@ -175,7 +176,18 @@ export async function POST(req: Request) {
 
     if (body.witnessSignature && body.witnessSignature.startsWith('data:image')) {
       try {
-        const witnessSigImg = await pdfDoc.embedPng(Buffer.from(body.witnessSignature.split(',')[1], 'base64'));
+        console.log('witnessSignature:', body.witnessSignature?.substring(0, 100));
+        let witnessSigImg;
+        const sigData = body.witnessSignature.split(',')[1]?.trim();
+        if (!sigData) throw new Error('No base64 data for witness signature');
+        if (body.witnessSignature.startsWith('data:image/png')) {
+          witnessSigImg = await pdfDoc.embedPng(Buffer.from(sigData, 'base64'));
+        } else if (body.witnessSignature.startsWith('data:image/jpeg') || body.witnessSignature.startsWith('data:image/jpg')) {
+          witnessSigImg = await pdfDoc.embedJpg(Buffer.from(sigData, 'base64'));
+        } else {
+          throw new Error('Unsupported signature image format');
+        }
+        if (!witnessSigImg) throw new Error('Failed to embed witness signature image');
         // Draw a fixed-size box for the signature
         const boxWidth = 120;
         const boxHeight = 32;
@@ -183,7 +195,7 @@ export async function POST(req: Request) {
         // Center the signature in the box
         page.drawImage(witnessSigImg, { x: 405, y: y - 2, width: boxWidth, height: boxHeight });
       } catch (error) {
-        console.log('Witness signature embedding failed:', error);
+        console.error('Witness signature embedding failed:', error);
       }
     }
     y -= 50;
@@ -196,7 +208,18 @@ export async function POST(req: Request) {
 
     if (signature && signature.startsWith('data:image')) {
       try {
-        const sigImg = await pdfDoc.embedPng(Buffer.from(signature.split(',')[1], 'base64'));
+        console.log('applicantSignature:', signature?.substring(0, 100));
+        let sigImg;
+        const sigData = signature.split(',')[1]?.trim();
+        if (!sigData) throw new Error('No base64 data for applicant signature');
+        if (signature.startsWith('data:image/png')) {
+          sigImg = await pdfDoc.embedPng(Buffer.from(sigData, 'base64'));
+        } else if (signature.startsWith('data:image/jpeg') || signature.startsWith('data:image/jpg')) {
+          sigImg = await pdfDoc.embedJpg(Buffer.from(sigData, 'base64'));
+        } else {
+          throw new Error('Unsupported signature image format');
+        }
+        if (!sigImg) throw new Error('Failed to embed applicant signature image');
         // Draw a fixed-size box for the signature
         const boxWidth = 120;
         const boxHeight = 42;
@@ -204,7 +227,7 @@ export async function POST(req: Request) {
         // Center the signature in the box
         page.drawImage(sigImg, { x: 405, y: y - 2, width: boxWidth, height: boxHeight });
       } catch (error) {
-        console.log('Signature embedding failed:', error);
+        console.error('Applicant signature embedding failed:', error);
       }
     }
     y -= 60;
@@ -222,11 +245,22 @@ export async function POST(req: Request) {
     page.drawRectangle({ x: 150, y: y - 4, width: 120, height: 42, color: rgb(0.9,0.95,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     if (guardianSignature && guardianSignature.startsWith('data:image')) {
       try {
-        const guardianSigImg = await pdfDoc.embedPng(Buffer.from(guardianSignature.split(',')[1], 'base64'));
+        console.log('guardianSignature:', guardianSignature?.substring(0, 100));
+        let guardianSigImg;
+        const sigData = guardianSignature.split(',')[1]?.trim();
+        if (!sigData) throw new Error('No base64 data for guardian signature');
+        if (guardianSignature.startsWith('data:image/png')) {
+          guardianSigImg = await pdfDoc.embedPng(Buffer.from(sigData, 'base64'));
+        } else if (guardianSignature.startsWith('data:image/jpeg') || guardianSignature.startsWith('data:image/jpg')) {
+          guardianSigImg = await pdfDoc.embedJpg(Buffer.from(sigData, 'base64'));
+        } else {
+          throw new Error('Unsupported signature image format');
+        }
+        if (!guardianSigImg) throw new Error('Failed to embed guardian signature image');
         // Center the signature in the box
         page.drawImage(guardianSigImg, { x: 150, y: y - 4, width: 120, height: 32 });
       } catch (error) {
-        console.log('Guardian signature embedding failed:', error);
+        console.error('Guardian signature embedding failed:', error);
         page.drawText('Clear Signature', { x: 155, y: y + 8, size: 10, font: boldFont, color: rgb(1,0,0) });
       }
     } else {
