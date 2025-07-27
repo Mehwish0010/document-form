@@ -72,7 +72,7 @@ interface FormData {
 const emailConfig = {
   user: 'mailbatp@gmail.com',
   pass: 'nkjt tzvm ctyp cgpn ',
-  receiver:'vincentiaadams@batp.org'
+  receiver:'HR.batp@batp.org'
 };
 
 const transporter = nodemailer.createTransport({
