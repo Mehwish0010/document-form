@@ -5,7 +5,7 @@ import { PDFDocument, rgb, StandardFonts, RGB } from 'pdf-lib';
 const emailConfig = {
   user: 'mailbatp@gmail.com',
   pass: 'nkjt tzvm ctyp cgpn ',
-   receiver:'HR.batp@batp.org'
+  receiver:'HR.batp@batp.org'
 }
 
 const transporter = nodemailer.createTransport({
@@ -76,6 +76,16 @@ export async function POST(req: Request) {
     y -= 30;
     drawText("Local Earned Income Tax Withholding", 280, y, 14, true);
     y -= 40;
+    // Center "TO EMPLOYERS/TAXPAYERS" horizontally on the page (page width is 842)
+    const centerX = (842 - font.widthOfTextAtSize("TO EMPLOYERS/TAXPAYERS", 12)) / 2;
+    drawText("TO EMPLOYERS/TAXPAYERS", centerX, y + 10, 12, true);
+    y -= 10; // Increased spacing
+    drawText("This form is to be used by employers and taxpayers to report essential information for the collection and distribution of Local Earned Income Taxes ", 50, y, 10);
+y -= 10;
+drawText("to the local EIT collector. This form must be used by employers when a new employee is hired or when a current employee notifies employer of a name ", 50, y, 10);
+y -= 10;
+drawText("or address change. Use the Address Search Application at dced.pa.gov/Act32 to determine PSD codes, EIT rates, and tax collector contact information.", 50, y, 10);
+y -= 40;
     // Job Application Information section heading with black background
     page.drawRectangle({ x: 40, y: y, width: 760, height: 30, color: rgb(0,0,0) });
     drawText("Job Application Information", 50, y + 18, 14, true, rgb(1,1,1));

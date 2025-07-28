@@ -165,31 +165,37 @@ async function generateW4TableLayoutPDF(formData: W4FormData) {
 
   // === Step 2: Multiple Jobs ===
   drawText("Step 2: Multiple Jobs or Spouse Works", 30, y, 12, true); y -= 30;
-  drawText(`[${formData.multipleJobs?.useEstimator ? "X" : " "}] Use estimator at irs.gov/W4App`, 30, y); y -= 20;
-  drawText(`[${formData.multipleJobs?.useWorksheet ? "X" : " "}] Use Multiple Jobs Worksheet`, 30, y); y -= 20;
-  drawText(`[${formData.multipleJobs?.twoJobsOnly ? "X" : " "}] Check this box if only two jobs`, 30, y); y -= 40;
+ 
+  drawText(`[${formData.multipleJobs?.useEstimator ? "X" : " "}] (a) Use the estimator at www.irs.gov/W4App for the most accurate withholding for this step (and Steps 3–4). `, 30, y); y -= 15;
+  drawText(`[${formData.multipleJobs?.useWorksheet ? "X" : " "}] If you or your spouse have self-employment income, use this option;`, 30, y); y -= 20;
+  drawText(`[${formData.multipleJobs?.useWorksheet ? "X" : " "}] (b) Use the Multiple Jobs Worksheet on page 3 and enter the result in Step 4(c) below`, 30, y); y -= 20;
+  drawText(`[${formData.multipleJobs?.twoJobsOnly ? "X" : " "}] (c) If there are only two jobs total, you may check this box. Do the same on Form W-4 for the other job.`, 30, y); y -= 40;
 
   // === Step 3: Dependents ===
   drawText("Step 3: Claim Dependents", 30, y, 12, true); y -= 30;
+  drawText("If your total income will be $200,000 or less ($400,000 or less if married filing jointly):", 30, y); y -= 25;
   drawText("Multiply # children under 17 by $2,000", 30, y); y -= 25;
-  drawBox(320, y, 80, 18); drawText(String(formData.dependents?.qualifyingChildren ?? ''), 325, y + 5);
+  drawBox(470, y, 80, 18); drawText(String(formData.dependents?.qualifyingChildren ?? ''), 475, y + 5);
   y -= 30;
   drawText("Multiply # other dependents by $500", 30, y); y -= 25;
-  drawBox(320, y, 80, 18); drawText(String(formData.dependents?.otherDependents ?? ''), 325, y + 5);
+  drawBox(470, y, 80, 18); drawText(String(formData.dependents?.otherDependents ?? ''), 475, y + 5);
   y -= 30;
-  drawText("Add credits and enter total", 30, y); y -= 25;
-  drawBox(320, y, 80, 18); drawText(String(formData.dependents?.totalCredits ?? ''), 325, y + 5);
+  drawText("Add the amounts above for qualifying children and other dependents. You may add to this the amount of any other credits.", 30, y); y -= 10;
+  drawText(" Enter the total here", 30, y); y -= 25;
+  drawBox(470, y, 80, 18); drawText(String(formData.dependents?.totalCredits ?? ''), 475, y + 5);
   y -= 40;
 
   // === Step 4 ===
   drawText("Step 4: (Optional) Other Adjustments", 30, y, 12, true); y -= 30;
-  drawText("a) Other income", 30, y); y -= 25;
+  drawText("a) Other income (not from jobs). If you want tax withheld for other income you expect this year that won't have withholdiing, ", 30, y); y -= 10;
+  drawText(" enter the amount of other income here. This may include interest, dividends, and retirement income . . . ", 30, y); y -= 25;
   drawBox(470, y, 80, 18); drawText(String(formData.otherAdjustments?.otherIncome ?? ''), 475, y + 5);
   y -= 30;
-  drawText("b) Deductions", 30, y); y -= 25;
+  drawText("b) Deductions. If you expect to claim deductions other than the standard deduction and want to reduce your withholding,  ", 30, y); y -= 10;
+  drawText(" use the Deductions Worksheet on page 3 and enter the result here . . . . ", 30, y); y -= 25;
   drawBox(470, y, 80, 18); drawText(String(formData.otherAdjustments?.deductions ?? ''), 475, y + 5);
   y -= 30;
-  drawText("c) Extra withholding", 30, y); y -= 25;
+  drawText("c) Extra withholding. Enter any additional tax you want withheld each pay period . .", 30, y); y -= 25;
   drawBox(470, y, 80, 18); drawText(String(formData.otherAdjustments?.extraWithholding ?? ''), 475, y + 5);
   y -= 40;
 

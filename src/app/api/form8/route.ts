@@ -185,8 +185,16 @@ export async function POST(req: Request) {
       try {
         const imageBytes = Buffer.from(section1.employeeSignature.split(',')[1], 'base64');
         const image = await pdfDoc.embedPng(imageBytes);
-        const dims = image.scale(0.35);
-        page.drawImage(image, { x: padding + 10, y: y + 20, width: dims.width, height: dims.height });
+        // Decrease the size of the signature and center it in the signature box
+        const signatureBoxWidth = 400;
+        const signatureBoxHeight = 80;
+        // Scale signature smaller (e.g., 0.18)
+        const dims = image.scale(0.25);
+        // Center horizontally in the box
+        const sigX = padding + (signatureBoxWidth - dims.width) / 2;
+        // Center vertically in the box
+        const sigY = y + (signatureBoxHeight - dims.height) / 2;
+        page.drawImage(image, { x: sigX, y: sigY, width: dims.width, height: dims.height });
       } catch {
         page.drawText('Signature not available', { x: padding + 10, y: y + 40, size: 10, font, color: rgb(1,0,0) });
       }

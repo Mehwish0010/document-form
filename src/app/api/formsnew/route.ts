@@ -315,9 +315,25 @@ export async function POST(req: Request) {
       drawText('(Pursuant to Act 168 of 2014)', 200, y, false, 11);
       y -= 30;
 
+      // Draw a box around the entire Employer Section (all labels and inputs)
+      const employerSectionX = 45;
+      const employerSectionY = y;
+      const employerSectionWidth = 550;
+      const employerSectionHeight = 250; // Adjust as needed to fit all fields
+
+      page.drawRectangle({
+        x: employerSectionX,
+        y: employerSectionY - employerSectionHeight + 10,
+        width: employerSectionWidth,
+        height: employerSectionHeight,
+        borderWidth: 1,
+        borderColor: rgb(0.2, 0.2, 0.2),
+        color: rgb(1, 1, 1),
+      });
+
       // Name of Current or Former Employer (label and input box on same line, spaced horizontally)
-      const flexLabel1X = 55;
-      const flexY = y;
+      const flexLabel1X = employerSectionX + 10;
+      const flexY = y - 10;
 
       drawText(
         'Name of Current or Former Employer',
@@ -330,21 +346,49 @@ export async function POST(req: Request) {
         safe(form.employerName),
         flexLabel1X,
         flexY - 20,
-        360,
+        300,
         20,
         'Enter employer name...'
       );
+      // Draw a rectangle around the "No applicable employment" label and its checkbox area
+      const noEmpRectX = flexLabel1X + 355;
+      const noEmpRectY = flexY - 20; // moved 10 units further down
+      const noEmpRectWidth = 170;
+      const noEmpRectHeight = 22;
+      page.drawRectangle({
+        x: noEmpRectX,
+        y: noEmpRectY,
+        width: noEmpRectWidth,
+        height: noEmpRectHeight,
+        borderWidth: 1,
+        borderColor: rgb(0.1, 0.1, 0.1),
+        color: rgb(1, 1, 1),
+      });
+
       drawText(
         'No applicable employment',
         flexLabel1X + 370,
-        flexY,
+        flexY - 10, // also move the label down to match the rectangle
         true,
         10
       );
-      // Draw the checkbox and, if checked, draw a tick symbol inside it
+      // Draw the checkbox next to the "No applicable employment" label, a little lower and aligned to the right of the label
+      const labelX = flexLabel1X + 370;
+      const labelY = flexY - 17; // y position of the label
+      const tickBoxSize = 14;
+      // Place the checkbox just to the right of the label, and a little lower
+      const tickX = labelX + 134; // 130px to the right of label (adjust as needed for spacing)
+      const tickY = labelY - 2;   // 2px lower than label baseline
+      page.drawRectangle({
+        x: tickX,
+        y: tickY,
+        width: tickBoxSize,
+        height: tickBoxSize,
+        borderWidth: 1,
+        borderColor: rgb(0.1, 0.1, 0.1),
+        color: rgb(1, 1, 1),
+      });
       if (form.employerNoApplicable) {
-        const tickX = flexLabel1X + 510;
-        const tickY = flexY + 2;
         page.drawLine({
           start: { x: tickX + 3, y: tickY + 5 },
           end: { x: tickX + 6, y: tickY + 2 },
@@ -359,7 +403,7 @@ export async function POST(req: Request) {
         });
       }
 
-      y -= 36;
+      y -= 42;
 
       drawText('Street Address', 55, y, true, 10);
       y -= 24;
@@ -451,7 +495,7 @@ export async function POST(req: Request) {
         'Enter title...'
       );
 
-      y -= 32;
+      y -= 42;
 
       y =
         drawParagraph(
@@ -915,6 +959,22 @@ export async function POST(req: Request) {
 
       drawText('Return all completed information to:', 55, y, true, 11);
       y -= 28;
+      // Draw a rectangle around the "Return all completed information to" section and the following labels
+      // Calculate the height to cover both rows of labels and their backgrounds
+      const infoBoxX = 50;
+      const infoBoxY = y + 10; // a little above the "Return all completed information to:" label
+      const infoBoxWidth = 450;
+      const infoBoxHeight = 400; // enough to cover both label rows and some padding
+
+      page.drawRectangle({
+        x: infoBoxX,
+        y: infoBoxY - infoBoxHeight,
+        width: infoBoxWidth,
+        height: infoBoxHeight,
+        borderWidth: 1.2,
+        borderColor: rgb(0.2, 0.2, 0.5),
+        color: rgb(1, 1, 1),
+      });
 
       let rowY = y;
 
