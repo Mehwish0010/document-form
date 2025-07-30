@@ -124,7 +124,10 @@ export default function JobApplicationPage() {
               </div>
               <h1 className="text-5xl font-bold text-white mb-6 tracking-tight">Join Our Team</h1>
               <p className="text-blue-100 text-xl max-w-md mx-auto leading-relaxed">
-                Start your journey with us. Complete the initial application and access all required forms.
+               Please complete the basic details below to begin your onboarding process with BATP.
+Once submitted, you will be directed to the document submission page to upload your required hiring documents.
+
+
               </p>
             </div>
           </div>
@@ -162,11 +165,11 @@ export default function JobApplicationPage() {
                 className="w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 bg-white/80 backdrop-blur-sm hover:border-gray-300"
               >
                 <option value="">Select a job role</option>
-                <option value="behavior-analyst">Behavior Analyst</option>
-                <option value="therapy-assistant">Therapy Assistant</option>
-                <option value="clinical-supervisor">Clinical Supervisor</option>
-                <option value="administrative">Administrative</option>
-                <option value="other">Other</option>
+                <option value="behavior-consultant">Behavior Consultant</option>
+                <option value="mobile-therapist">Mobile Therapist</option>
+                <option value="registered-behavior-technician">Registered Behavior Technician</option>
+                <option value="behavior-technician">Behavior Technician</option>
+                <option value="adminstartion">Adminstration</option>
               </select>
             </div>
 
@@ -214,7 +217,7 @@ export default function JobApplicationPage() {
                 type="submit"
                 className="w-full bg-blue-600  text-white py-5 px-8 rounded-2xl font-bold text-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-blue-500/50"
               >
-                Submit Application
+                Submit
               </button>
             </div>
           </form>
@@ -257,39 +260,20 @@ export default function JobApplicationPage() {
             </div>
 
             {/* Explore Links */}
-            <div className="border-t border-white/30 pt-8 mb-6">
-              <h4 className="text-lg font-semibold text-white mb-4 text-center">Explore</h4>
-              <div className="flex justify-center space-x-8">
-                <Link href="/" className="text-white/80 hover:text-white transition-colors">
-                  Home
-                </Link>
-                <Link href="/about" className="text-white/80 hover:text-white transition-colors">
-                  About Us
-                </Link>
-                <Link href="/services" className="text-white/80 hover:text-white transition-colors">
-                  Services
-                </Link>
-                <Link href="/join-team" className="text-white/80 hover:text-white transition-colors">
-                  Join Our Team
-                </Link>
-              </div>
-            </div>
+      
 
             {/* Bottom Links */}
             <div className="flex justify-center space-x-6 mb-4">
-              <Link href="/legal" className="text-white/80 hover:text-white transition-colors text-sm">
+              <Link href="https://www.batp.org/legal-/-privacy" className="text-white/80 hover:text-white transition-colors text-sm">
                 Legal / Privacy
               </Link>
-              <Link href="/contact" className="text-white/80 hover:text-white transition-colors text-sm">
+              <Link href="https://www.batp.org/contact " className="text-white/80 hover:text-white transition-colors text-sm">
                 Contact Us
               </Link>
             </div>
 
             {/* Copyright */}
-            <div className="text-center text-white/60 text-sm">
-              <p>Copyright © 2025 BATP, All Rights Reserved</p>
-            
-            </div>
+           
           </div>
         </div>
       </div>
