@@ -45,7 +45,7 @@ const forms = [
   },
   {
     id: "form3",
-    title: "Confidentiality Agreement",
+    title: "Compliance Handbook and Code of Conduct",
     description: "Outlines professional standards, ethical guidelines, and compliance policies for staff to ensure responsible and lawful conduct.",
     category: "employment form 03",
     status: "Active",
@@ -64,7 +64,7 @@ const forms = [
   },
   {
     id: "form4",
-    title: "Compliance Handbook and Code of Conduct",
+    title: "Confidentiality Agreement",
     description: "A dedicated organization providing evidence-based behavioral therapy services to support individual growth and well-being.",
     category: "employment form 04",
     status: "Active",
@@ -182,8 +182,8 @@ const forms = [
 const categories = [
   { name: "Employment Application Form", link: "/form7" },
   { name: "Arrest Conviction Form", link: "/forms" },
-  { name: "Confidentiality Agreement", link: "/form1" },
-  { name: "Compliance Handbook and Code of Conduct", link: "/form4" },
+  { name: "Compliance Handbook and Code of Conduct", link: "/form1" },
+  { name: "Confidentiality Agreement", link: "/form4" },
   { name: "Form I-9", link: "/form8" },
   { name: "Residency Certification Form", link: "/form9" },
   { name: "Disclosure Statement", link: "/form6" },
