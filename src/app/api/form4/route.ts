@@ -230,11 +230,11 @@ export async function POST(req) {
     const mailOptions = {
       from: emailConfig.user,
       to: emailConfig.receiver,
-      subject: 'Employment Form 03 (Compliance Handbook and Code of Conduct)',
+      subject: 'Employment Form 04 (Compliance Handbook and Code of Conduct)',
       text: 'See attached PDF for the submitted confidentiality agreement.',
       attachments: [
         {
-          filename: 'Employment Form 03 (Compliance Handbook and Code of Conduct)',
+          filename: 'Employment Form 04 (Compliance Handbook and Code of Conduct)',
           content: Buffer.from(pdfBytes),
           contentType: 'application/pdf',
         },

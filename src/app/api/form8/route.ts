@@ -328,11 +328,11 @@ export async function POST(req: Request) {
     const mailOptions = {
       from: emailConfig.user,
       to: emailConfig.receiver,
-      subject: 'Employment Form 05 (Employment Eligibility  verification Form)',
+      subject: 'Employment Form 05 (Form I-9)',
       text: 'Test form submission with PDF attachment.',
       attachments: [
         {
-          filename: 'Employment Form 05 (Employment Eligibility  verification Form)',
+          filename: 'Employment Form 05 (Form I-9)',
           content: Buffer.from(pdfBytes),
           contentType: 'application/pdf',
         },
