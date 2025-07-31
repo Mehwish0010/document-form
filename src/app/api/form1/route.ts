@@ -182,11 +182,11 @@ export async function POST(req) {
     const mailOptions = {
       from: emailConfig.user,
       to: emailConfig.receiver,
-      subject: 'Employment Form 04 (BATP- Confidentiality agreement)',
+      subject: 'Employment Form 04 (Confidentiality Agreement)',
       text: 'See attached PDF for the submitted confidentiality agreement.',
       attachments: [
         {
-          filename: 'Employment Form 04 (BATP- Confidentiality agreement)',
+          filename: 'Employment Form 04 ( Confidentiality Agreement)',
           content: Buffer.from(pdfBytes),
           contentType: 'application/pdf',
         },

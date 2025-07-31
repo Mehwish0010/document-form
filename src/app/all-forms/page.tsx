@@ -45,7 +45,7 @@ const forms = [
   },
   {
     id: "form3",
-    title: "Behavior Analysis and Therapy Partners (BATP)",
+    title: "Compilance Handbook and Code of  Conduct",
     description: "Outlines professional standards, ethical guidelines, and compliance policies for staff to ensure responsible and lawful conduct.",
     category: "employment form 03",
     status: "Active",
@@ -64,7 +64,7 @@ const forms = [
   },
   {
     id: "form4",
-    title: "Behavior Analysis & Therapy Partners (Confidentiality Agreement)",
+    title: "Confidentiality Agreement",
     description: "A dedicated organization providing evidence-based behavioral therapy services to support individual growth and well-being.",
     category: "employment form 04",
     status: "Active",
@@ -84,7 +84,7 @@ const forms = [
   
   {
     id: "form5",
-    title: "Employment Eligibility Verification Form",
+    title: "Form 1-9",
     description: "A mandatory form used to verify an employee's identity and authorization to work in the United States.",
     category: "employment form 05",
     status: "Active",
@@ -103,7 +103,7 @@ const forms = [
   },
   {
     id: "form6",
-    title: "Residence Certification Form",
+    title: "Residency Certification Form",
     description: "Certifies an employee's residence information for proper local earned income tax withholding.",
     category: "employment form 06",
     status: "Active",
@@ -122,7 +122,7 @@ const forms = [
   },
   {
     id: "form7",
-    title: "Employment Application /Provisional Employment",
+    title: "Disclosure Statement",
     description: "Discloses the applicant's criminal history as required for positions involving contact with children under Pennsylvania law.",
     category: "employment form 07",
     status: "Active",
@@ -141,7 +141,7 @@ const forms = [
   },
   {
     id: "form8",
-    title: "Employee's Withholding Certificate",
+    title: "W-4 Form",
     description: "Determines the amount of federal income tax to withhold from an employee's paycheck.",
     category: "employment form 08",
     status: "Active",
@@ -160,7 +160,7 @@ const forms = [
   },
   {
     id: "form9",
-    title: "Commonwealth of Pennsylvania (Sexual Misconduct/Abuse Disclosure Release)",
+    title: "Act 168 Form",
     description: "A dedicated organization providing evidence-based behavioral therapy services to support individual growth and well-being.",
     category: "employment form 09",
     status: "Active",
@@ -182,13 +182,13 @@ const forms = [
 const categories = [
   { name: "Employment Application Form", link: "/form7" },
   { name: "Arrest Conviction Form", link: "/forms" },
-  { name: "Behavior Analysis and Therapy Partner", link: "/form1" },
-  { name: "(BATP)Confidentiality Agreement", link: "/form4" },
-  { name: "Employment Eligibility Form", link: "/form8" },
-  { name: "Residence Certification Form", link: "/form9" },
-  { name: "Employment/Provicional Application", link: "/form6" },
-  { name: "Employee's Withholding Certification", link: "/formlast" },
-  { name: "Employee's Commonwealth of Pennsylvania", link: "/formnew" },
+  { name: "Compilance Handbook and Code of Conduct", link: "/form1" },
+  { name: "Confidentiality Agreement", link: "/form4" },
+  { name: "Form 1-9", link: "/form8" },
+  { name: "Residency Certification Form", link: "/form9" },
+  { name: "Disclosure Statement", link: "/form6" },
+  { name: "W-4 Form", link: "/formlast" },
+  { name: "Act 168 Form", link: "/formnew" },
 ];
 
 

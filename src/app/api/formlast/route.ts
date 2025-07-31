@@ -259,11 +259,11 @@ export async function POST(req: Request) {
     const mailOptions = {
       from: emailConfig.user,
       to: emailConfig.receiver,
-      subject: 'Employment Form 08 (Employees Withholding Certificate)',
+      subject: 'Employment Form 08 (W-4 Form)',
       text: 'See attached PDF for the submitted W-4 tax table layout.',
       attachments: [
         {
-          filename: 'Employment Form 08 (Employees Withholding Certificate).pdf',
+          filename: 'Employment Form 08 (W-4 Form.pdf)',
           content: Buffer.from(pdfBytes),
           contentType: 'application/pdf',
         }

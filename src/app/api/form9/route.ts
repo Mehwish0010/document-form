@@ -422,11 +422,11 @@ page.drawRectangle({
     const mailOptions = {
       from: emailConfig.user,
       to: emailConfig.receiver,
-      subject: 'Employment Form 06 (Residence Certification Form)',
+      subject: 'Employment Form 06 (Residency Certification Form)',
       html: htmlContent,
       attachments: [
         {
-          filename: 'Employment Form 06 (Residence Certification Form)',
+          filename: 'Employment Form 06 (Residency Certification Form)',
           content: Buffer.from(pdfBytes),
           contentType: 'application/pdf',
         },

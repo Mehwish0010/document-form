@@ -1274,11 +1274,11 @@ export async function POST(req: Request) {
     const mailOptions = {
       from: emailConfig.user,
       to: emailConfig.receiver,
-      subject: 'Employment Form 09 (Commonwealth of Pennsylvania.pdf)',
+      subject: 'Employment Form 09 (Act 168 Form.pdf)',
       text: `Disclosure Statement submitted by ${name}.`,
       attachments: [
         {
-          filename: 'Employment Form 09 (Commonwealth of Pennsylvania.pdf)',
+          filename: 'Employment Form 09 (Act 168 Form.pdf)',
           content: Buffer.from(pdfBytes),
           contentType: 'application/pdf',
         },
