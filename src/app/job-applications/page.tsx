@@ -249,16 +249,7 @@ Once submitted, you will be directed to the document submission page to upload y
               </p>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex justify-center space-x-6 mb-8">
-              <button className="px-6 py-3 bg-white text-blue-600 rounded-xl hover:bg-gray-100 transition-colors font-medium shadow-lg">
-                If you want help for your family Contact Us
-              </button>
-              <button className="px-6 py-3 border-2 border-white text-white rounded-xl hover:bg-white/10 transition-colors font-medium">
-                If you want to join our team Click Here
-              </button>
-            </div>
-
+         
             {/* Explore Links */}
       
 
