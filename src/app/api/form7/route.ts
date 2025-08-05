@@ -85,8 +85,7 @@ const transporter = nodemailer.createTransport({
 
 async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage([612, 3400]); // Increased page height to ensure all content is visible
-  const { width } = page.getSize();
+  let page = pdfDoc.addPage([595, 842]); // A4
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
@@ -97,7 +96,7 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
 
   // Equal padding on all sides
   const padding = 50;
-  const contentWidth = width - (padding * 2);
+  const contentWidth = page.getWidth() - (padding * 2);
   let y = page.getHeight() - padding;
 
   const drawText = (text: string, x: number, yPos: number, fontToUse: PDFFont, size: number, color = black) => {
@@ -144,7 +143,7 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   drawText("Location:", padding, y, font, 11, black);
   drawInputBox(padding + 90, y - 10, 180, 18);
   drawText(formData.location || '', padding + 95, y - 5, font, 11, black);
-  y -= 30;
+  y -= 40;
 
   // Company Header - Same as UI
   drawText("Behavior Analysis & Therapy Partners", padding + 100, y, fontBold, 16); y -= 20;
@@ -155,7 +154,7 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
 
   // Title - Employment Application
   drawText("Employment Application", padding + 150, y, fontBold, 22); y -= 10;
-  page.drawLine({ start: { x: padding, y }, end: { x: width - padding, y }, thickness: 2 }); y -= 20;
+  page.drawLine({ start: { x: padding, y }, end: { x: padding + contentWidth, y }, thickness: 2 }); y -= 20;
   drawText("Please print", padding + 220, y, font, 10); y -= 30;
 
   // Equal Access Statement
@@ -185,7 +184,7 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   drawText(formData.streetAddress || "Street Address", padding + 75, y - 10, font, 10);
   drawText("Apt/Unit:", padding + 380, y, font, 10);
   drawInputBox(padding + 440, y - 15, 120, 20);
-  drawText(formData.apartmentUnit || "Apt/Unit #", padding + 445, y - 10, font, 10);
+  drawText(formData.apartmentUnit || "Apt/Unit #", padding + 400, y - 10, font, 10);
   y -= 35;
 
   // City, State, ZIP row
@@ -203,7 +202,7 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   drawText(formData.phone || "Phone Number", padding + 75, y - 10, font, 10);
   drawText("Email:", padding + 280, y, font, 10);
   drawInputBox(padding + 330, y - 15, 230, 20);
-  drawText(formData.email || "Email Address", padding + 335, y - 10, font, 10);
+  drawText(formData.email || "Email Address", padding + 330, y - 10, font, 8);
   y -= 35;
 
   // Driver's License row
@@ -248,18 +247,21 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   drawCheckbox(padding + 320, y, formData.isAuthorized === 'NO'); drawText("NO", padding + 335, y, font, 10);
   y -= 30;
 
+  page = pdfDoc.addPage([595, 842]); // A4 page size
+y = 800; // reset y for new page
+
   // Previous Employment Section
   y = drawHeader("Previous Employment");
   drawText("Have you ever been employed by this company?", padding, y, font, 10);
   drawCheckbox(padding + 300, y, formData.previousEmployment === 'YES'); drawText("YES", padding + 315, y, font, 10);
   drawCheckbox(padding + 350, y, formData.previousEmployment === 'NO'); drawText("NO", padding + 365, y, font, 10);
   if (formData.previousEmployment === 'YES') {
-    y -= 25;
+    y -= 35;
     drawText("If yes, when?", padding, y, font, 10);
     drawInputBox(padding + 80, y - 15, 100, 20);
     drawText(formData.previousEmploymentDate || "MM/DD/YYYY", padding + 85, y - 10, font, 10);
   }
-  y -= 30;
+  y -= 35;
 
   // Felony Conviction Section
   y = drawHeader("Felony Conviction");
@@ -273,14 +275,14 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
     page.drawText(formData.felonyExplanation || "Explanation", { x: padding + 85, y: y - 10, size: 10, font, maxWidth: 440, lineHeight: 12 });
     y -= 50;
   }
-  y -= 30;
+  y -= 35;
 
   // Attendance Section
   y = drawHeader("Attendance");
   drawText("Can you meet the attendance requirements?", padding, y, font, 10);
   drawCheckbox(padding + 300, y, formData.canMeetAttendance === 'YES'); drawText("YES", padding + 315, y, font, 10);
   drawCheckbox(padding + 350, y, formData.canMeetAttendance === 'NO'); drawText("NO", padding + 365, y, font, 10);
-  y -= 30;
+  y -= 35;
 
   // Education Section
   y = drawHeader("Education");
@@ -327,7 +329,9 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
     drawText(formData.collegeDegree || "Degree Type", padding + 265, y - 10, font, 10);
   }
   y -= 50;
-
+  page = pdfDoc.addPage([595, 842]); // A4 page size
+  y = 800; // reset y for new page
+  
   // References Section
   y = drawHeader("References");
   drawText("Please list three professional references.", padding, y, font, 9);
@@ -353,7 +357,7 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   drawText("Address:", padding, y, font, 10);
   drawInputBox(padding + 70, y - 15, 450, 20);
   drawText(formData.ref1Address || "Address", padding + 75, y - 10, font, 10);
-  y -= 40;
+  y -= 60;
 
   // Reference 2
   drawText("Reference 2:", padding, y, fontBold, 11);
@@ -375,7 +379,7 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   drawText("Address:", padding, y, font, 10);
   drawInputBox(padding + 70, y - 15, 450, 20);
   drawText(formData.ref2Address || "Address", padding + 75, y - 10, font, 10);
-  y -= 40;
+  y -= 60;
 
   // Reference 3
   drawText("Reference 3:", padding, y, fontBold, 11);
@@ -397,7 +401,7 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   drawText("Address:", padding, y, font, 10);
   drawInputBox(padding + 70, y - 15, 450, 20);
   drawText(formData.ref3Address || "Address", padding + 75, y - 10, font, 10);
-  y -= 40;
+  y -= 60;
 
   // Military Service Section
   y = drawHeader("Military Service");
@@ -431,6 +435,9 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   }
   y -= 30;
 
+  page = pdfDoc.addPage([595, 852]); // A4 page size
+y = 800; // reset y for new page
+
   // Disclaimer Section
   y = drawHeader("Disclaimer and Signature");
   const disclaimerParagraphs = [
@@ -453,15 +460,17 @@ async function generateApplicationPDF(formData: FormData): Promise<Uint8Array> {
   }
 
   for (const para of disclaimerParagraphs) {
-    page.drawText(para, { x: padding, y, size: 9, font, maxWidth: contentWidth, lineHeight: 20 });
+    page.drawText(para, { x: padding, y, size: 8, font, maxWidth: contentWidth, lineHeight: 20 });
     const lines = estimateLines(para, contentWidth, font, 9);
     y -= (lines * 20 + 10); // 20 is lineHeight, 10 is extra spacing
   }
   y -= 10;
 
+  
+  
   // Signature and Date Section
   y = drawHeader("Signature and Date");
-  y -= 30;
+  y -= 14;
 
   // Signature line (left side)
   const sigLineY = y;

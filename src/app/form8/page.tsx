@@ -29,6 +29,11 @@ export default function EmploymentForm() {
     employeeDate: ''
   });
 
+
+
+
+  
+ 
   // State for Section 2
   const [section2, setSection2] = useState({
     document1: {
@@ -214,6 +219,8 @@ export default function EmploymentForm() {
       setNotification({ message: '❌ Failed to submit form. Please try again.', type: 'error' });
     }
   };
+
+  
 
   return (
     <form onSubmit={handleSubmit} className="max-w-[1100px] mx-auto border border-black p-2 sm:p-4 text-[14px] sm:text-[16px] leading-tight font-serif">
@@ -717,7 +724,11 @@ export default function EmploymentForm() {
       </div>
 
       {/* Submit Button and Notification */}
-      <div className="mt-8 text-center">
+  
+
+  
+
+    <div className="mt-8 text-center">
         {/* Notification ABOVE the button */}
         {notification && (
           <div className={`mb-4 p-4 rounded border flex items-center justify-between shadow-lg transition-all duration-300 ${notification.type === 'success' ? 'border-green-400 bg-green-50 text-green-800' : 'border-red-400 bg-red-50 text-red-800'}`}>
@@ -732,6 +743,7 @@ export default function EmploymentForm() {
           Submit Form
         </button>
       </div>
+
     </form>
   );
 }

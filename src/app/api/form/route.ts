@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
     // Increase PDF page height for more vertical space
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([595, 2000]); // Increased height from 1400 to 2000
+    let page = pdfDoc.addPage([595, 842]);
     const { width, height } = page.getSize();
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
@@ -161,7 +161,7 @@ export async function POST(req: NextRequest) {
     page.drawText(otherNames || '', { x: margin + 120, y, size: 12, font });
     page.drawLine({ start: { x: margin + 120, y: y - 2 }, end: { x: width - margin, y: y - 2 }, thickness: 1, color: rgb(0, 0, 0) });
     y -= lineHeight * 0.7;
-
+    
     // Section 3: Arrest or Conviction
     drawHeading("Section 2. Arrest or Conviction");
     y -= 16;
@@ -195,6 +195,8 @@ export async function POST(req: NextRequest) {
     drawLabelValue("Detail 1", arrestDetail1);
     drawLabelValue("Detail 2", arrestDetail2);
 
+    page = pdfDoc.addPage([595, 842]); // A4 page size
+    y = 800;
     // Section 4: Child Abuse
     drawHeading("Section 3. Child Abuse");
     y -= 18;
@@ -288,7 +290,8 @@ export async function POST(req: NextRequest) {
       color: rgb(0, 0, 0),
     });
     y -= 40;
-
+    page = pdfDoc.addPage([595, 842]); // A4 page size
+    y = 800;
     // Final Section: Instructions
     drawHeading("INSTRUCTIONS");
     drawParagraph(
@@ -334,14 +337,17 @@ export async function POST(req: NextRequest) {
       service: 'gmail',
       auth: {
         user:  'mailbatp@gmail.com',
-        pass: 'nkjt tzvm ctyp cgpn '
-,
+         pass: 'nkjt tzvm ctyp cgpn ',
+ 
+
       },
     });
  
     await transporter.sendMail({
       from:  'mailbatp@gmail.com',
+
       to: 'HR.batp@batp.org',
+
       subject: 'Employment Form 02 (Arrest Conviction Form)',
       text: 'Please find the submitted PDE-6004 form attached.',
       attachments: [

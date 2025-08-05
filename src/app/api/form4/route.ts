@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
 
 async function generateCompliancePDF(formData) {
   const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage([612, 4200]); // Increased height from 3500 to 4200
+  let page = pdfDoc.addPage([595, 842]); // Increased height from 3500 to 4200
   const { width } = page.getSize();
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
@@ -100,6 +100,8 @@ async function generateCompliancePDF(formData) {
   drawText("Mission Statement", padding, y, fontBold, 12, black, undefined, undefined); y -= 18;
   y = await drawParagraph(page, "Our mission is to facilitate recovery for children and adults with behavioral health problems. We seek to improve the behavioral health and wellbeing of children, families, and adults while strengthening the community's capacity to deal with behavioral health issues through the delivery of limited, accountable, and effective and accessible behavioral health services. We believe that the highest quality services are best provided through highly trained and clinically competent behavioral health professionals in collaboration with families, agency personnel, and involved community members. We hope to reunite individuals with their natural community supports. We seek to empower families to live life in accord with their highest values and to help their children overcome their behavioral health disabilities.", padding, y, font, 11, black, contentWidth, 16); y -= 20;
 
+  page = pdfDoc.addPage([595, 842]); // A4 page size
+y = 800; // reset y for new page
   // Ethical Responsibilities
   drawText("Ethical Responsibilities of all BATP Staff, Employees, Contractors, and Agents", padding, y, fontBold, 12, black, undefined, undefined); y -= 18;
   y = await drawParagraph(page, "Each staff, employee, contractor, or agent of BATP has a responsibility to conduct oneself in a totally ethical and honest manner. Dealings with payers, consumers, advocates, referral sources, co-workers, regulators, vendors, and others that are present must be beyond reproach. As stated previously, it is never in the agency's or individual's best interest to perform an illegal or unethical act. Each staff, employee, contractor, or agent of BATP has a responsibility to know the regulations and laws that apply to one's professional area of work as well as BATP's operations. It is expected that if a person has a concern or suspects an illegal situation, the individual will report the incident using the chain of command or other appropriate documented channels. Assistance should be obtained when a staff member is unsure about the ethical and legal response to a compliance situation. Compliance is everyone's responsibility and such; the individual has an obligation to report issues of concern. If the issue is not resolved through the usual chain of command or the individual feels uncomfortable reporting a particular issue to a potential violator, the issue should be reported to a supervisor or Designated Compliance Staff or presented on the Compliance Hotline: 609-471-2090.", padding, y, font, 11, black, contentWidth, 16); y -= 20;
@@ -108,7 +110,8 @@ async function generateCompliancePDF(formData) {
   drawText("Clinical Code of Conduct and Ethics", padding, y, fontBold, 12, black, undefined, undefined); y -= 18;
   drawText("Purpose", padding, y, fontBold, 11, black, undefined, undefined); y -= 16;
   y = await drawParagraph(page, "In order to assure that all associated with the BATP program understand and protect the special relationship between BATP and its clients, a clinical code of conduct has been established for all staff. It will be necessary to train all staff, employees, contractors, and agents on this policy, its interpretation, and its implementation. Every person will be trained in the Code as well as be required to sign a statement that they understand the Code, have not committed violations of the Code, and are not aware of any violations of the Code by any other staff, employee, contractor, or agent of BATP. The signed statement will be kept in each person's file and updated on an annual basis. Any and all noted violations will be reviewed by Designated Compliance Staff.", padding, y, font, 11, black, contentWidth, 16); y -= 20;
-
+  page = pdfDoc.addPage([595, 842]); // A4 page size
+  y = 800; // reset y for new page
   // The Code (bulleted)
   drawText("The Code", padding, y, fontBold, 11, black, undefined, undefined); y -= 16;
   const codeBullets = [
@@ -133,7 +136,12 @@ async function generateCompliancePDF(formData) {
   drawText("Business Code of Conduct and Ethics", padding, y, fontBold, 12, black, undefined, undefined); y -= 22;
   drawText("Purpose", padding, y, fontBold, 11, black, undefined, undefined); y -= 18;
   y = await drawParagraph(page, "In order to assure that BATP's business practices are consistent with best practices and existing laws and regulations, BATP has developed a business code of conduct and ethics. It is essential that all BATP staff... conduct themselves in an ethical and honest manner. Employees must not engage in inappropriate or unethical behavior at any time.", padding, y, font, 11, black, contentWidth, 16); y -= 16;
+  
+  page = pdfDoc.addPage([595, 842]); // A4 page size
+  y = 800; // reset y for new page
   drawText("The Code", padding, y, fontBold, 11, black, undefined, undefined); y -= 18;
+
+
   const businessBullets = [
     "Staff... must not disclose agency information, trade secrets, technology, business strategy... to anyone outside of the agency for any reason.",
     "Staff... may not accept any gift, favor or gratuity from BATP business associates which could impair their judgment or create the appearance of conflict.",
@@ -150,6 +158,7 @@ async function generateCompliancePDF(formData) {
   }
   y -= 16;
 
+
   // Training Programs
   drawText("Training Programs", padding, y, fontBold, 12, black, undefined, undefined); y -= 18;
   y = await drawParagraph(page, "The management of BATP believes that training and communication is the cornerstone of any effective compliance effort. Through its communication and training effort, BATP will secure the understanding, commitment, and cooperation of all parties associated with BATP. From the beginning of a person's association with BATP, they will receive training designed to promote awareness and conformance to BATP's standards of compliance and business ethics. By assuring that everyone receives the same message and support, BATP will see to it that compliance is built into the day-to-day activities of the organization.", padding, y, font, 11, black, contentWidth, 16); y -= 10;
@@ -157,7 +166,8 @@ async function generateCompliancePDF(formData) {
   // Training Activities
   drawText("Training Activities", padding, y, fontBold, 12, black, undefined, undefined); y -= 18;
   y = await drawParagraph(page, "Initial interview — Overview of compliance expectation. Orientation — Review and signature for the following: Staff compliance handbook, Clinical Code of Conduct and Confidentiality, Business Code of Conduct, BATP operating documents, Other mandatory BATP orientation documents, Training program on BATP compliance plan. In-Service training: Annual in-service training on assorted compliance topics, Special training sessions on applicable regulations, laws, and requirements. Participation in training on compliance issues is mandatory for all staff, employees, contractors, and agents and will be considered a condition for continued employment.", padding, y, font, 11, black, contentWidth, 16); y -= 10;
-
+  page = pdfDoc.addPage([595, 842]); // A4 page size
+  y = 800; // reset y for new page
   // Reporting Known or Suspected Compliance Violations
   drawText("Reporting Known or Suspected Compliance Violations", padding, y, fontBold, 12, black, undefined, undefined); y -= 18;
   y = await drawParagraph(page, "It is everyone's responsibility to report known or suspected violations of BATP's Compliance guidelines. There are several ways that one can go about doing so. If you are comfortable, you can report the issue to your supervisor. Your supervisor will then take the issue to Designated Compliance Staff. If you report the violation in this fashion, you will most likely be called upon to provide detail and further information about the potential violation. If you do not wish (or feel unable to) report the violation to your supervisor, you may report the violation to Designated Compliance Staff. When reporting to compliance staff, you will be asked for detail about the issue so that a comprehensive investigation can be performed. When you make a report, you are doing your duty as a partner in assuring that BATP is operating in an ethical and honest manner. As such, BATP is invested in making certain that you are comfortable and supported. Retaliation against people who report inappropriate or questionable activity will not be tolerated and will be dealt with severely.", padding, y, font, 11, black, contentWidth, 16); y -= 10;
@@ -167,6 +177,7 @@ async function generateCompliancePDF(formData) {
   drawText("Seeking Answers to Ethical Questions", padding, y, fontBold, 12, black, undefined, undefined); y -= 18;
   y = await drawParagraph(page, "Sometimes, it is not clear when an issue is right or wrong or in compliance with regulations. If you encounter a situation that causes you to question its appropriateness, BATP wants you to ask. The Helpline can be used for this purpose. By asking questions if you are uncertain if something is the right thing to do, you are protecting BATP as well as yourself. Your compliance staff will be happy to assist and guide you.", padding, y, font, 11, black, contentWidth, 16); y -= 10;
 
+ 
   // Billing and Accounting Practices
   drawText("Billing and Accounting Practices", padding, y, fontBold, 12, black, undefined, undefined); y -= 18;
   y = await drawParagraph(page, "BATP bills for the services it provides only when the service has been appropriately delivered and appropriate. BATP complies with all billing and third party requirements in the processing of invoices. Any misleading statements made to government, regulatory agencies, or payers are potentially illegal and will be cause for disciplinary action. Additionally, the person making the false statements may be subject to criminal penalties. Employees are cautioned to exercise extreme caution in this area. BATP is required by law and best practices to keep and maintain accurate financial records. All staff, employees, contractors, and agents must be truthful in their actions and reporting to assure the integrity of BATP's accounting records. Staff, employees, contractors and agents may not engage in conduct that results in false or misleading financial statements. Anyone whose lack of honesty or diligence results in inaccurate or false financial statements or records will face disciplinary action and possible legal action.", padding, y, font, 11, black, contentWidth, 16); y -= 10;
@@ -179,6 +190,8 @@ async function generateCompliancePDF(formData) {
   drawText("Copyright Infringement", padding, y, fontBold, 12, black, undefined, undefined); y -= 18;
   y = await drawParagraph(page, "Unauthorized copying of software programs and other copyright materials is strictly prohibited. Such unauthorized action could result in liability for BATP as well as you individually. Employees may only copy software for agency or personal use when existing licensing agreement authorizes such action.", padding, y, font, 11, black, contentWidth, 16); y -= 20;
 
+  page = pdfDoc.addPage([595, 842]); // A4 page size
+  y = 800; // reset y for new page
   // Page number and agency name
   drawText("7", width / 2 - 5, y, fontBold, 14, black, undefined, undefined); y -= 30;
   drawText("BEHAVIOR ANALYSIS & THERAPY PARTNERS", padding, y, fontBold, 14, black, undefined, undefined); y -= 30;

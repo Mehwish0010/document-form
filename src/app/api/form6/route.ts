@@ -6,8 +6,7 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 const emailConfig = {
   user: 'mailbatp@gmail.com',
   pass: 'nkjt tzvm ctyp cgpn ',
-  receiver:'HR.batp@batp.org'
-};
+  receiver:'HR.batp@batp.org'};
 
 // Create a transporter using Gmail
 const transporter = nodemailer.createTransport({
@@ -35,10 +34,11 @@ export async function POST(req: Request) {
 
     // Generate PDF
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([612, 1600]); // Further increased height for all text
+    let page = pdfDoc.addPage([595, 842]); // A4
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-    let y = 1540; // Start near the top for a 1600px tall page
+    let y = 800;
+    
     
     const drawText = (text: string, x: number, y: number, isBold: boolean = false, size: number = 12) => {
       page.drawText(text, {
@@ -149,6 +149,8 @@ export async function POST(req: Request) {
       drawText(c, 40, y, false, 8); y -= 12;
     }
     y -= 8;
+    page = pdfDoc.addPage([595, 842]); // A4 page size
+y = 800; // reset y for new page
     // More paragraphs
     const moreParagraphs = [
       'I swear/affirm that I have not been convicted of a felony offense under Act 64-1972 (relating to the controlled substance, drug device and cosmetic act) committed within the past five years.',
@@ -219,6 +221,7 @@ export async function POST(req: Request) {
           throw new Error('Unsupported signature image format');
         }
         if (!sigImg) throw new Error('Failed to embed applicant signature image');
+        
         // Draw a fixed-size box for the signature
         const boxWidth = 120;
         const boxHeight = 42;

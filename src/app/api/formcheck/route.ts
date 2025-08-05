@@ -28,18 +28,11 @@ export async function POST(req: Request) {
     } = body;
 
     // Generate PDF
-   // 1. Create PDF document
-const pdfDoc = await PDFDocument.create();
-
-// 2. Add first page with A4 size
-let page = pdfDoc.addPage([595, 842]);  // A4 size in points (width x height)
-
-// 3. Fonts
-const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
-
-// 4. Start Y position (near top of page)
-let y = 800;  // because A4 page height is 842
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage([612, 2800]);
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    let y = 2750;
 
     // Helper to ensure value is string
     const safe = (val: unknown): string =>
@@ -270,14 +263,14 @@ let y = 800;  // because A4 page height is 842
 
       // --- Header ---
       drawText('Commonwealth of Pennsylvania', 160, y, true, 16);
-      y -= 32;
+      y -= 22;
       drawText('Sexual Misconduct/Abuse Disclosure Release', 120, y, true, 14);
-      y -= 28;
+      y -= 18;
       drawText('(Pursuant to Act 168 of 2014)', 200, y, false, 11);
-      y -= 40;
+      y -= 30;
 
       drawText('(Instructions)', 200, y, false, 11);
-      y -= 40;
+      y -= 30;
       y =
         drawParagraph(
           'This standardized form has been developed by the Pennsylvania Department of Education, pursuant to Act 168 of 2014, to be used by school entities and independent contractors of school entities and by applicants who would be employed by or in a school entity in a position involving direct contact with children to satisfy the Act\'s requirements of providing information related to abuse or sexual misconduct. As required by Act 168, in addition to fulfilling the requirements under section 111 of the School Code and the Child Protective Services Law ("CPSL"), an applicant who would be employed by or in a school entity in a position having direct contact with children, must provide the information requested in SECTION 1 of this form and complete written authorization that consents to and authorizes the disclosure by the applicant\'s current and former employers of the information requested in SECTION 2 of this form. The applicant shall complete one form for the applicant\'s current employer(s) and one for each of the applicant\'s former employers that were school entities or where the applicant was employed in a position having direct contact with children (therefore, the applicant may have to complete more than one form). Upon completion by the applicant, the hiring school entity or independent contractor shall submit the form to the applicant\'s current and former employers to complete SECTION 2. A school entity or independent contractor may not hire an applicant who does not provide the required information for a position involving direct contact with children.',
@@ -315,8 +308,6 @@ let y = 800;  // because A4 page height is 842
           4
         ) - 10;
 
-        page = pdfDoc.addPage([595, 842]); // A4 page size
-        y = 800; // reset y for new page
       // --- Employer Section ---
       drawText('Commonwealth of Pennsylvania', 160, y, true, 16);
       y -= 22;
@@ -520,8 +511,6 @@ let y = 800;  // because A4 page height is 842
       drawLine(50, y, 550, y);
       y -= 18;
 
-
- // reset y for new page
       drawText('Section 1: Applicant Certification and Release', 55, y, true, 12);
       y -= 20;
 
@@ -604,9 +593,8 @@ let y = 800;  // because A4 page height is 842
         20,
         'Enter positions...'
       );
-      y -= 26;
-      page = pdfDoc.addPage([595, 842]); // A4 page size
-      y = 800;
+      y -= 36;
+
       y =
         drawParagraph(
           'Pursuant to Act 168, an employer, school entity, administrator and/or independent contractor that provides information or records about a current or former employee or applicant shall be immune from criminal liability under the CPSL, the Educator DisciplineAct, and from the cival liability for the disclosure of the information, or records provided were knowingly false.Such immunity shall be an addition to and not in limitation of any other immmunity provided law or any absoluten or conditional previliges applicable to such disclosure by the virtue of the circumstancesof the applicants consent thereto. Under Act 168, the willfull failure to respond to or for provide the information and records as requested may result in civil penalties and/or professional discipline, where applicable.',
@@ -615,7 +603,7 @@ let y = 800;  // because A4 page height is 842
           500,
           10,
           4
-        ) 
+        ) - 10;
 
       drawLine(50, y, 550, y);
       y -= 18;
@@ -759,9 +747,8 @@ let y = 800;  // because A4 page height is 842
           10
         );
       }
-      y -= 11;
-      page = pdfDoc.addPage([595, 842]); // A4 page size
-      y = 800; // reset y for new page
+      y -= 76;
+
       drawText(
         'Section 2: Current/Former Employer Verification ',
         55,
@@ -769,7 +756,7 @@ let y = 800;  // because A4 page height is 842
         true,
         12
       );
-      y -= 30;
+      y -= 20;
 
       drawText('Dates of employment of Applicant', 55, y, true, 10);
       drawText('Contact telephone #', 340, y, true, 10);
@@ -790,7 +777,7 @@ let y = 800;  // because A4 page height is 842
         20,
         'Enter phone...'
       );
-      y -= 50;
+      y -= 40;
 
       const section2Questions = [
         'Been the subject of an abuse or sexual misconduct investigation by any employer, state licensing agency, law enforcement agency or child protective services agency (unless the investigation resulted in a finding that the allegations were false)?',
@@ -859,10 +846,10 @@ let y = 800;  // because A4 page height is 842
         if (paraHeight > 0) {
           y -= paraHeight;
         }
-        y -= 38;
+        y -= 28;
       }
 
-      y -= 20;
+      y -= 10;
 
       // Draw signature and date fields in a flex row style (side by side)
       const sigLabelX = 55;
@@ -969,12 +956,10 @@ let y = 800;  // because A4 page height is 842
         );
       }
 
-    
+      y -= 84;
 
-      page = pdfDoc.addPage([595, 842]); // A4 page size
-y = 800; // reset y for new page
       drawText('Return all completed information to:', 55, y, true, 11);
-      
+      y -= 28;
       // Draw a rectangle around the "Return all completed information to" section and the following labels
       // Calculate the height to cover both rows of labels and their backgrounds
       const infoBoxX = 50;
