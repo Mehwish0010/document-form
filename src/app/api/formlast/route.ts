@@ -3,9 +3,9 @@ import nodemailer from 'nodemailer';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 
 const emailConfig = {
-  user: 'mailbatp@gmail.com',
-  pass: 'nkjt tzvm ctyp cgpn ',
-  receiver:'HR.batp@batp.org'
+  user: 'mehwishsheikh0010sheikh@gmail.com',
+  pass: 'pcqx olxw twgw xkzz  ',
+  receiver: 'mehwishsheikh0010sheikh@gmail.com'
 };
 
 interface W4FormData {
@@ -46,10 +46,11 @@ interface W4FormData {
 
 async function generateW4TableLayoutPDF(formData: W4FormData) {
   const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage([612, 3500]); // much larger height to fit all tables
+  let page = pdfDoc.addPage([900, 842]); // Increased width to 842
 
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  let y = 800; // Starting position for drawing elements
 
   // Helpers
   const drawText = (
@@ -88,8 +89,8 @@ async function generateW4TableLayoutPDF(formData: W4FormData) {
   };
 
   const drawTable = (startX: number, startY: number, headers: string[], rows: string[][]) => {
-    const rowHeight = 20;
-    const colWidths = [130, 60, 60, 60, 60, 60, 60, 60];
+    const rowHeight = 14;
+    const colWidths = [90, 38, 38, 38, 38, 38, 38, 38];
     let y = startY;
     let x;
     headers.forEach((header, i) => {
@@ -110,7 +111,7 @@ async function generateW4TableLayoutPDF(formData: W4FormData) {
     return y;
   };
 
-  let y = 3500;
+  
 
   // === Header ===
   page.drawRectangle({ x: 30, y: y, width: 550, height: 30, color: rgb(0, 0, 0) });
@@ -150,7 +151,7 @@ async function generateW4TableLayoutPDF(formData: W4FormData) {
   drawBox(30, y, 180, 20); drawText(formData.firstName || '', 35, y + 5);
   drawBox(230, y, 180, 20); drawText(formData.lastName || '', 235, y + 5);
   drawBox(430, y, 150, 20); drawText(formData.socialSecurityNumber || '', 435, y + 5);
-  y -= 40;
+  y -= 20;
 
   // Address fields
   drawText("Address", 30, y); y -= 25;
@@ -171,12 +172,14 @@ async function generateW4TableLayoutPDF(formData: W4FormData) {
   drawText(`[${formData.multipleJobs?.useWorksheet ? "X" : " "}] (b) Use the Multiple Jobs Worksheet on page 3 and enter the result in Step 4(c) below`, 30, y); y -= 20;
   drawText(`[${formData.multipleJobs?.twoJobsOnly ? "X" : " "}] (c) If there are only two jobs total, you may check this box. Do the same on Form W-4 for the other job.`, 30, y); y -= 40;
 
+  page = pdfDoc.addPage([900, 842]); // A4 page size
+  y = 800;
   // === Step 3: Dependents ===
   drawText("Step 3: Claim Dependents", 30, y, 12, true); y -= 30;
   drawText("If your total income will be $200,000 or less ($400,000 or less if married filing jointly):", 30, y); y -= 25;
   drawText("Multiply # children under 17 by $2,000", 30, y); y -= 25;
   drawBox(470, y, 80, 18); drawText(String(formData.dependents?.qualifyingChildren ?? ''), 475, y + 5);
-  y -= 30;
+  y -= 10;
   drawText("Multiply # other dependents by $500", 30, y); y -= 25;
   drawBox(470, y, 80, 18); drawText(String(formData.dependents?.otherDependents ?? ''), 475, y + 5);
   y -= 30;
@@ -185,6 +188,7 @@ async function generateW4TableLayoutPDF(formData: W4FormData) {
   drawBox(470, y, 80, 18); drawText(String(formData.dependents?.totalCredits ?? ''), 475, y + 5);
   y -= 40;
 
+ 
   // === Step 4 ===
   drawText("Step 4: (Optional) Other Adjustments", 30, y, 12, true); y -= 30;
   drawText("a) Other income (not from jobs). If you want tax withheld for other income you expect this year that won't have withholdiing, ", 30, y); y -= 10;
@@ -212,7 +216,8 @@ async function generateW4TableLayoutPDF(formData: W4FormData) {
   drawBox(30, y, 250, 28); drawText(formData.employerInfo?.name || '', 35, y + 8);
   drawBox(300, y, 100, 28); drawText(formData.employerInfo?.firstDateOfEmployment || '', 305, y + 8);
   drawBox(450, y, 100, 28); drawText(formData.employerInfo?.ein || '', 455, y + 8);
-  y -= 50;
+
+
 
   // === Tables ===
   const headers = ['Wage', '$0-9k', '$10-19k', '$20-29k', '$30-39k', '$40-49k', '$50-59k', '$60-69k'];
@@ -232,14 +237,17 @@ async function generateW4TableLayoutPDF(formData: W4FormData) {
     ['$120k+', '$9500', '$9700', '$9900', '$10100', '$10300', '$10500', '$10700'],
   ];
 
-  drawText("Married Filing Jointly or Qualifying Surviving Spouse", 30, y, 12, true); y -= 40;
-  y = drawTable(30, y, headers, rows); y -= 40;
+  
+  page = pdfDoc.addPage([842, 842]); // A4 page size
+  y = 800;
+  drawText("Married Filing Jointly or Qualifying Surviving Spouse", 30, y, 8, true); y -= 40;
+  y = drawTable(30, y, headers, rows); y -= 20;
 
-  drawText("Single or Married Filing Separately", 30, y, 12, true); y -= 40;
-  y = drawTable(30, y, headers, rows); y -= 40;
+  drawText("Single or Married Filing Separately", 30, y, 8, true); y -= 40;
+  y = drawTable(30, y, headers, rows); y -= 20;
 
-  drawText("Head of Household", 30, y, 12, true); y -= 40;
-  y = drawTable(30, y, headers, rows); y -= 40;
+  drawText("Head of Household", 30, y, 8, true); y -= 40;
+  y = drawTable(30, y, headers, rows); y -= 20;
 
   // === Submit Button ===
   page.drawRectangle({ x: 180, y, width: 250, height: 30, color: rgb(0, 0, 0) });

@@ -5,8 +5,8 @@ import { PDFDocument, rgb, StandardFonts, RGB } from 'pdf-lib';
 const emailConfig = {
   user: 'mailbatp@gmail.com',
   pass: 'nkjt tzvm ctyp cgpn ',
-  receiver:'HR.batp@batp.org'
-}
+  receiver:'HR.batp@batp.org'};
+
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -54,27 +54,31 @@ export async function POST(req: Request) {
     const ein = [ein1, ein2, ein3, ein4, ein5, ein6, ein7, ein8, ein9].join('');
 
     const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage([842, 2000]); // Further increased height for more space
+    let page = pdfDoc.addPage([842, 842]); // Increased width to 842
+    
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
+    // Use let for y only once in the file, and avoid redeclaration
+    let y = 800; // Starting position
+
+    // Fix: Use correct variable name for bold font in drawText
     const drawText = (text: string, x: number, y: number, size: number, isBold: boolean = false, color: RGB = rgb(0, 0, 0)) => {
       page.drawText(text, {
         x,
         y,
-        size,
-        font: isBold ? boldFont : font,
+        size:10,
+        font: isBold ? fontBold : font,
         color: color,
       });
     };
 
     // --- Job Application Fields at the top (exact same as form9.tsx) ---
-    let y = 1950; // Define y before using it
     const boxTopY = y; // Save the top Y position for the box
     // Main heading at the very top (no black background)
-    drawText("RESIDENCY CERTIFICATION FORM", 250, y, 20, true);
-    y -= 30;
-    drawText("Local Earned Income Tax Withholding", 280, y, 14, true);
+    drawText("RESIDENCY CERTIFICATION FORM", 250, y, 48, true);
+    y -= 38;
+    drawText("Local Earned Income Tax Withholding", 280, y, 20, true);
     y -= 40;
     // Center "TO EMPLOYERS/TAXPAYERS" horizontally on the page (page width is 842)
     const centerX = (842 - font.widthOfTextAtSize("TO EMPLOYERS/TAXPAYERS", 12)) / 2;
@@ -183,23 +187,25 @@ y -= 40;
     drawText(body.residentRate || '', 575, y - 10, 11);
     y -= 65; // Increased spacing
 
+    page = pdfDoc.addPage([842, 842]); // A4 page size
+y = 800;
     // EMPLOYER INFORMATION – EMPLOYMENT LOCATION (heading)
-    y -= 20;
+    y -= 40;
     page.drawRectangle({ x: 40, y: y, width: 760, height: 25, color: rgb(0,0,0) });
     drawText("EMPLOYER INFORMATION – EMPLOYMENT LOCATION", 50, y + 8, 14, true, rgb(1,1,1));
-    y -= 60; // Increased spacing
+    y -= 30; // Increased spacing
     // Employer Name and FEIN row (exact same as form9.tsx)
     drawText("Employer Business Name (Use Federal ID Name):", 50, y + 8, 10, true);
     y -= 25; // Increased spacing
     page.drawRectangle({ x: 50, y: y - 15, width: 700, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.employerName || '', 55, y - 10, 11);
-    y -= 50; // Increased spacing
+    y -= 40; // Increased spacing
 
     drawText("Employer Identification Number (EIN):", 50, y + 10, 12, true);
     y -= 25; // Increased spacing
     page.drawRectangle({ x: 50, y: y - 15, width: 700, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.ein || '', 55, y - 10, 11);
-    y -= 50; // Increased spacing
+    y -= 40; // Increased spacing
 
     
     // Employer Street Address (exact same as form9.tsx)
@@ -207,14 +213,14 @@ y -= 40;
     y -= 25; // Increased spacing
     page.drawRectangle({ x: 50, y: y - 15, width: 700, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.employerStreet || '', 55, y - 10, 11);
-    y -= 50; // Increased spacing
+    y -= 40; // Increased spacing
 
     // Employer Address Line 2 (exact same as form9.tsx)
     drawText("Address Line 2:", 50, y + 10, 12, true);
     y -= 25; // Increased spacing
     page.drawRectangle({ x: 50, y: y - 15, width: 700, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.employerAddress2 || '', 55, y - 10, 11);
-    y -= 50; // Increased spacing
+    y -= 40; // Increased spacing
 
     // Employer City, State, Zip, Phone row (exact same as form9.tsx)
     xPos = 50;
@@ -237,14 +243,14 @@ y -= 40;
     drawText("Daytime Phone Number:", xPos, y + 8, 10, true);
     page.drawRectangle({ x: xPos, y: y - 15, width: phoneWidth, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.employerPhone || '', xPos + 5, y - 10, 11);
-    y -= 50; // Increased spacing
+    y -= 40; // Increased spacing
 
     // Employer Municipality (exact same as form9.tsx)
     drawText("MUNICIPALITY (City, Borough or Township):", 50, y + 10, 12, true);
     y -= 25; // Increased spacing
     page.drawRectangle({ x: 50, y: y - 15, width: 700, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.employerMunicipality || '', 55, y - 10, 11);
-    y -= 50; // Increased spacing
+    y -= 40; // Increased spacing
 
     // Employer County and Work PSD/Rate row (exact same as form9.tsx)
     drawText("COUNTY:", 50, y + 8, 10, true);
@@ -258,13 +264,13 @@ y -= 40;
     drawText("WORK LOCATION NON-RESIDENT EIT RATE:", 570, y + 8, 10, true);
     page.drawRectangle({ x: 570, y: y - 15, width: 180, height: 20, color: rgb(1,1,1), borderWidth: 1, borderColor: rgb(0,0,0) });
     drawText(body.nonResRate || '', 575, y - 10, 11);
-    y -= 65; // Increased spacing
+    y -= 55; // Increased spacing
 
     // CERTIFICATION (exact same as form9.tsx)
     // Black background header
     page.drawRectangle({ x: 40, y: y, width: 760, height: 25, color: rgb(0,0,0) });
     drawText("CERTIFICATION", 50, y + 8, 14, true, rgb(1,1,1));
-    y -= 60; // Increased spacing
+    y -= 50; // Increased spacing
 
     drawText("Under penalties of perjury, I (we) declare that I (we) have examined this information...", 60, y, 10);
     y -= 50; // Increased spacing
@@ -296,7 +302,7 @@ y -= 40;
         }
     }
     // More space after signature
-    y -= 60;
+    y -= 50;
    // Draw label first
 drawText("Date (MM/DD/YYYY):", 470, y + 35, 12, true);  // higher up
 
@@ -315,7 +321,7 @@ page.drawRectangle({
 drawText(body.date || '', 475, y + 15, 12);
 
 // Move down after section
-y -= 60;
+y -= 40;
 
     // Phone and Email row (exact same as form9.tsx)
     drawText("Phone Number:", 50, y + 10, 10, true);
@@ -340,7 +346,7 @@ page.drawRectangle({
 drawText(body.email || '', 375, y - 4, 11);
 
 // Spacing after field
-y -= 50;
+y -= 30;
 
    
     // Save the y position before drawing the footer
@@ -351,7 +357,7 @@ y -= 25; // Add spacing before footer
 drawText("For information on obtaining the appropriate MUNICIPALITY, PSD CODES, and EIT RATES visit:", 50, y, 10);
 y -= 20;
 drawText("dced.pa.gov/Act32", 50, y, 10, true);
-y -= 30; // Add spacing after footer
+y -= 15; // Add spacing after footer
 
 // Draw a box around the entire content area including footer
 page.drawRectangle({
