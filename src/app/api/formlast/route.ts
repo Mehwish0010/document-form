@@ -3,9 +3,9 @@ import nodemailer from 'nodemailer';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 
 const emailConfig = {
-  user: 'mehwishsheikh0010sheikh@gmail.com',
-  pass: 'pcqx olxw twgw xkzz  ',
-  receiver: 'mehwishsheikh0010sheikh@gmail.com'
+  user: 'mailbatp@gmail.com',
+  pass: 'nkjt tzvm ctyp cgpn ',
+  receiver:'HR.batp@batp.org'
 };
 
 interface W4FormData {
