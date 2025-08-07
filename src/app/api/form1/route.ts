@@ -5,9 +5,7 @@ import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 const emailConfig = {
   user: 'mailbatp@gmail.com',
   pass: 'nkjt tzvm ctyp cgpn ',
-  receiver:'HR.batp@batp.org'};
-
-
+  receiver:'HR.batp@batp.org'}
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -18,7 +16,7 @@ const transporter = nodemailer.createTransport({
 
 async function generateCompliancePDF(formData) {
   const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage([612, 1800]);
+  const page = pdfDoc.addPage([595, 842]); // Increased height from 3500 to 4200
   const { width } = page.getSize();
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
@@ -74,7 +72,7 @@ drawText("Full Name", padding, labelY, fontBold, 11, black, undefined, undefined
 drawText("Job Role", padding + 180, labelY, fontBold, 11, black, undefined, undefined);
 drawText("Location", padding + 360, labelY, fontBold, 11, black, undefined, undefined);
 // Add vertical space between label row and input box row
-y -= 6;
+y -= 8;
 // Draw input boxes in a row
 drawInputBox(padding, y, 160, 22);
 drawInputBox(padding + 180, y, 160, 22);
@@ -83,7 +81,7 @@ drawInputBox(padding + 360, y, 160, 22);
 drawText(formData.jobAppFullName || '', padding + 8, y + 6, font, 11, black, undefined, undefined);
 drawText(formData.jobRole || '', padding + 188, y + 6, font, 11, black, undefined, undefined);
 drawText(formData.location || '', padding + 368, y + 6, font, 11, black, undefined, undefined);
-y -= 40;
+y -= 30;
 
   // Title and subtitle (centered, match UI)
 
@@ -93,7 +91,7 @@ y -= 40;
   y -= 30;
 
   // Agreement statement
-  y -= 10;
+  y -= 6;
   y = await drawParagraph(page, "I, ", padding, y, font, 11, black, contentWidth, 16);
   drawInputBox(padding + 20, y + 4, 200, 14);
   drawText(formData.name || '', padding + 25, y + 7, font, 11, black, undefined, undefined);
@@ -102,24 +100,24 @@ y -= 40;
 
   // Privacy Policy bold
   drawText("I have read and understood BATP's Privacy Policy.", padding, y, fontBold, 12, black, undefined, undefined);
-  y -= 20;
+  y -= 15;
 
   // Policy paragraphs
   y = await drawParagraph(page, "I understand that I may encounter confidential information during my time at BATP. As part of the condition of my work with BATP I will keep in strict confidence any information regarding any client, employee, consultant, or business of BATP or any other organization that comes to my attention while at BATP. I will do this in accordance with the BATP privacy policy and applicable laws, including those that require mandatory reporting. If I am unsure of whether or not to disclose, I will bring it up in supervision.", padding, y, font, 11, black, contentWidth, 16);
-  y -= 10;
+  y -= 6;
   y = await drawParagraph(page, "I also agree to never remove any confidential material of any kind from the premises of BATP unless authorized as part of my duties, or with the express permission or direction to do so from BATP.", padding, y, font, 11, black, contentWidth, 16);
-  y -= 20;
+  y -= 15;
 
   // INSTRUCTIONS section (move before signature fields)
   drawText("INSTRUCTIONS", padding, y, fontBold, 14, black, undefined, undefined); y -= 20;
   y = await drawParagraph(page, "This form is to be used by employers and taxpayers to report essential information for the collection and distribution of Local Earned Income Taxes to the local EIT collector.", padding, y, font, 11, black, contentWidth, 16);
-  y -= 16;
+  y -= 12;
   y = await drawParagraph(page, "This form must be used by employers when a new employee is hired or when a current employee notifies employer of a name or address change.", padding, y, font, 11, black, contentWidth, 16);
-  y -= 16;
+  y -= 12;
   y = await drawParagraph(page, "Use the Address Search Application at dced.pa.gov/Act32 to determine PSD codes, EIT rates, and tax collector contact information.", padding, y, font, 11, black, contentWidth, 16);
-  y -= 20;
+  y -= 15;
   y = await drawParagraph(page, "By signing this form, you acknowledge that you have read, understood, and agree to abide by the BATP Privacy Policy and all confidentiality requirements.", padding, y, font, 11, black, contentWidth, 16);
-  y -= 30;
+  y -= 20;
 
   // Signature and Date fields (side by side)
   // Signature label
