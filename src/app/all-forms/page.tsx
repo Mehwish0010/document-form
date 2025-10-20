@@ -49,7 +49,7 @@ const forms = [
     description: "Outlines professional standards, ethical guidelines, and compliance policies for staff to ensure responsible and lawful conduct.",
     category: "employment form 03",
     status: "Active",
-    route: "/form4",
+    route: "/form1",
     color: "from-purple-500 to-purple-600",
     icon: (
       <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,7 +68,7 @@ const forms = [
     description: "A dedicated organization providing evidence-based behavioral therapy services to support individual growth and well-being.",
     category: "employment form 04",
     status: "Active",
-    route: "/form1",
+    route: "/form4",
     color: "from-orange-500 to-orange-600",
     icon: (
       <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
