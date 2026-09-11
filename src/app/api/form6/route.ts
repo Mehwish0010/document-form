@@ -5,7 +5,7 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 // Email configuration
 const emailConfig = {
   user: 'mailbatp@gmail.com',
-  pass: 'nkjt tzvm ctyp cgpn ',
+  pass: 'mwmy nkdt yfzn zeai',
   receiver:'Joanna.Vazquez@batp.org'};
 
 // Create a transporter using Gmail

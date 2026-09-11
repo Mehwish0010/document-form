@@ -337,7 +337,7 @@ export async function POST(req: NextRequest) {
       service: 'gmail',
       auth: {
         user:  'mailbatp@gmail.com',
-         pass: 'nkjt tzvm ctyp cgpn ',
+         pass: 'mwmy nkdt yfzn zeai',
  
 
       },
