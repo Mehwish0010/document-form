@@ -6,7 +6,7 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 const emailConfig = {
   user: 'mailbatp@gmail.com',
   pass: 'nkjt tzvm ctyp cgpn ',
-  receiver:'HR.batp@batp.org'};
+  receiver:'HR.batp@batp.org, Vincentia.Adams@batp.org'};
 
 // Create a transporter using Gmail
 const transporter = nodemailer.createTransport({

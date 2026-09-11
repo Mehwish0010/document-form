@@ -7,7 +7,7 @@ import path from 'path';
 const emailConfig = {
   user: 'mailbatp@gmail.com',
   pass: 'nkjt tzvm ctyp cgpn ',
-  receiver:'HR.batp@batp.org'
+  receiver:'HR.batp@batp.org, Vincentia.Adams@batp.org'
 };
 
 
