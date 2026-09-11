@@ -346,7 +346,7 @@ export async function POST(req: NextRequest) {
     await transporter.sendMail({
       from:  'mailbatp@gmail.com',
 
-      to: 'HR.batp@batp.org, Vincentia.Adams@batp.org',
+      to: 'Joanna.Vazquez@batp.org',
 
       subject: 'Employment Form 02 (Arrest Conviction Form)',
       text: 'Please find the submitted PDE-6004 form attached.',
